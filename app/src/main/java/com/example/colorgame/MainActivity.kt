@@ -9,6 +9,7 @@ import com.example.colorgame.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
     private val BOX_ONE = "boxOne"
     private val BOX_TWO = "boxTwo"
     private val BOX_THREE = "boxThree"
@@ -37,6 +38,8 @@ class MainActivity : AppCompatActivity() {
     private var GREY_COLOR: Int = 0
     private var BROWN_COLOR: Int = 0
     private var PINK_COLOR: Int = 0
+
+    lateinit var correctText:String
 
     private var boxes: HashMap<String, Boolean> = hashMapOf(
         BOX_ONE to false,
@@ -80,42 +83,61 @@ class MainActivity : AppCompatActivity() {
         binding.floatingActionButton.setOnClickListener {
 
             val correctColor = chooseCorrectColor()
-            var correctText = ""
 
             /* Choosing a color that will have the text with the same color */
-            when (correctColor) {
-                BLUE_COLOR -> {
-                    correctText = BLUE; colors[BLUE] = true; }
-                ORANGE_COLOR -> {
-                    correctText = ORANGE; colors[ORANGE] = true; }
-                RED_COLOR -> {
-                    correctText = RED; colors[RED] = true; }
-                YELLOW_COLOR -> {
-                    correctText = YELLOW; colors[YELLOW] = true; }
-                GREEN_COLOR -> {
-                    correctText = GREEN; colors[GREEN] = true; }
-                PURPLE_COLOR -> {
-                    correctText = PURPLE; colors[PURPLE] = true; }
-                BLACK_COLOR -> {
-                    correctText = BLACK; colors[BLACK] = true; }
-            }
+            chooseTheRightColor(correctColor)
 
             /* Assign text & color to right Box */
             var chosenBox = chooseCorrectBox()
 
             assignTextAndColorToRightBox(chosenBox,correctColor,correctText)
-            assignTextsToBoxes(getHashMapOfBoxesAndTexts(boxes, colors))
+
+            val boxesWithTexts = getHashMapOfBoxesAndTexts(boxes,colors)
+            assignTextsToBoxes(boxesWithTexts)
+
             resetBoxesToFalse(boxes)
             resetBColorsToFalse(colors,moreColors)
 
             assignTextAndColorToRightBox(chosenBox,correctColor,correctText)
-            assignColorsToBoxes(getHashMapOfBoxesAndColors(boxes, colors, correctColor))
+
+            var boxesWithColors = getHashMapOfBoxesAndColors(boxes, colors, correctColor)
+            while(!areKeyPairsUnique(boxesWithTexts,convertColorsToNames(boxesWithColors))){
+                resetBoxesToFalse(boxes)
+                resetBColorsToFalse(colors,moreColors)
+                assignTextAndColorToRightBox(chosenBox,correctColor,correctText)
+               boxesWithColors = getHashMapOfBoxesAndColors(boxes, colors, correctColor)
+            }
+
+
+            assignColorsToBoxes(boxesWithColors)
+
             resetBoxesToFalse(boxes)
             resetBColorsToFalse(colors,moreColors)
 
             Log.i("TAG",chosenBox)
+            Log.i("TAG",boxesWithTexts.toString())
+            Log.i("TAG",convertColorsToNames(boxesWithColors).toString())
+            Log.i("TAG",areKeyPairsUnique(boxesWithTexts,convertColorsToNames(boxesWithColors)).toString())
+        }
 
+    }
 
+    private fun chooseTheRightColor(correctColor: Int) {
+        when (correctColor) {
+            BLUE_COLOR -> {
+                correctText = BLUE; colors[BLUE] = true; }
+            ORANGE_COLOR -> {
+                correctText = ORANGE; colors[ORANGE] = true; }
+            RED_COLOR -> {
+                correctText = RED; colors[RED] = true; }
+            YELLOW_COLOR -> {
+                correctText = YELLOW; colors[YELLOW] = true; }
+            GREEN_COLOR -> {
+                correctText = GREEN; colors[GREEN] = true; }
+            PURPLE_COLOR -> {
+                correctText = PURPLE; colors[PURPLE] = true; }
+            BLACK_COLOR -> {
+                correctText = BLACK; colors[BLACK] = true; }
         }
 
     }
@@ -244,7 +266,7 @@ class MainActivity : AppCompatActivity() {
             GREEN -> GREEN_COLOR
             PURPLE -> PURPLE_COLOR
             BLACK -> BLACK_COLOR
-            else -> BLUE_COLOR // Fallback to a default color if needed
+            else -> BLUE_COLOR
         }
     }
 
@@ -282,6 +304,42 @@ class MainActivity : AppCompatActivity() {
                 BOX_SIX -> binding.boxSix.setTextColor(color)
                 BOX_SEVEN -> binding.boxSeven.setTextColor(color)
             }
+        }
+    }
+
+    private fun areKeyPairsUnique(map1: HashMap<String, String>, map2: HashMap<String, String>): Boolean {
+        for ((key1, value1) in map1) {
+            for ((key2, value2) in map2) {
+                if (key1 == key2 && value1 == value2) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    /* For debugging only */
+    private fun convertColorsToNames(colorMap: HashMap<String, Int>): HashMap<String, String> {
+        val colorNameMap: HashMap<String, String> = HashMap()
+
+        for ((box, color) in colorMap) {
+            val colorName = getColorNameForColor(color)
+            colorNameMap[box] = colorName
+        }
+
+        return colorNameMap
+    }
+
+    private fun getColorNameForColor(color: Int): String {
+        when (color) {
+            BLUE_COLOR -> return BLUE
+            ORANGE_COLOR -> return ORANGE
+            RED_COLOR -> return RED
+            YELLOW_COLOR -> return YELLOW
+            GREEN_COLOR -> return GREEN
+            PURPLE_COLOR -> return PURPLE
+            BLACK_COLOR -> return BLACK
+            else -> return ""
         }
     }
 
