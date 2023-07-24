@@ -24,9 +24,6 @@ class MainActivity : AppCompatActivity() {
     private val GREEN = "GREEN"
     private val PURPLE = "PURPLE"
     private val BLACK = "BLACK"
-    private val BROWN = "BROWN"
-    private val GREY = "GREY"
-    private val PINK = "PINK"
 
     private var BLUE_COLOR: Int = 0
     private var ORANGE_COLOR: Int = 0
@@ -35,11 +32,8 @@ class MainActivity : AppCompatActivity() {
     private var GREEN_COLOR: Int = 0
     private var PURPLE_COLOR: Int = 0
     private var BLACK_COLOR: Int = 0
-    private var GREY_COLOR: Int = 0
-    private var BROWN_COLOR: Int = 0
-    private var PINK_COLOR: Int = 0
 
-    lateinit var correctText:String
+    private lateinit var correctText:String
 
     private var boxes: HashMap<String, Boolean> = hashMapOf(
         BOX_ONE to false,
@@ -60,19 +54,6 @@ class MainActivity : AppCompatActivity() {
         BLACK to false
     )
 
-    private var moreColors: HashMap<String, Boolean> = hashMapOf(
-        BLUE to false,
-        ORANGE to false,
-        RED to false,
-        YELLOW to false,
-        GREEN to false,
-        PURPLE to false,
-        BLACK to false,
-        PINK to false,
-        GREY to false,
-        BROWN to false
-    )
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             chooseTheRightColor(correctColor)
 
             /* Assign text & color to right Box */
-            var chosenBox = chooseCorrectBox()
+            val chosenBox = chooseCorrectBox()
 
             assignTextAndColorToRightBox(chosenBox,correctColor,correctText)
 
@@ -96,14 +77,14 @@ class MainActivity : AppCompatActivity() {
             assignTextsToBoxes(boxesWithTexts)
 
             resetBoxesToFalse(boxes)
-            resetBColorsToFalse(colors,moreColors)
+            resetColorsToFalse(colors)
 
             assignTextAndColorToRightBox(chosenBox,correctColor,correctText)
 
             var boxesWithColors = getHashMapOfBoxesAndColors(boxes, colors, correctColor)
             while(!areKeyPairsUnique(boxesWithTexts,convertColorsToNames(boxesWithColors))){
                 resetBoxesToFalse(boxes)
-                resetBColorsToFalse(colors,moreColors)
+                resetColorsToFalse(colors)
                 assignTextAndColorToRightBox(chosenBox,correctColor,correctText)
                boxesWithColors = getHashMapOfBoxesAndColors(boxes, colors, correctColor)
             }
@@ -112,7 +93,7 @@ class MainActivity : AppCompatActivity() {
             assignColorsToBoxes(boxesWithColors)
 
             resetBoxesToFalse(boxes)
-            resetBColorsToFalse(colors,moreColors)
+            resetColorsToFalse(colors)
 
             Log.i("TAG",chosenBox)
             Log.i("TAG",boxesWithTexts.toString())
@@ -183,9 +164,6 @@ class MainActivity : AppCompatActivity() {
         GREEN_COLOR = getColor(R.color.green)
         PURPLE_COLOR = getColor(R.color.purple)
         BLACK_COLOR = getColor(R.color.black)
-        GREY_COLOR = getColor(R.color.grey)
-        PINK_COLOR = getColor(R.color.pink)
-        BROWN_COLOR = getColor(R.color.brown)
     }
 
 
@@ -274,9 +252,8 @@ class MainActivity : AppCompatActivity() {
         for (key in boxes.keys) boxes[key] = false
     }
 
-    private fun resetBColorsToFalse(colors: HashMap<String, Boolean>,colorsTwo: HashMap<String, Boolean>) {
+    private fun resetColorsToFalse(colors: HashMap<String, Boolean>) {
         for (key in colors.keys) colors[key] = false
-        for (key in colorsTwo.keys) colorsTwo[key] = false
     }
 
     private fun assignTextsToBoxes(linkedBoxesAndTexts:HashMap<String,String>){
@@ -331,15 +308,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getColorNameForColor(color: Int): String {
-        when (color) {
-            BLUE_COLOR -> return BLUE
-            ORANGE_COLOR -> return ORANGE
-            RED_COLOR -> return RED
-            YELLOW_COLOR -> return YELLOW
-            GREEN_COLOR -> return GREEN
-            PURPLE_COLOR -> return PURPLE
-            BLACK_COLOR -> return BLACK
-            else -> return ""
+        return when (color) {
+            BLUE_COLOR -> BLUE
+            ORANGE_COLOR -> ORANGE
+            RED_COLOR -> RED
+            YELLOW_COLOR -> YELLOW
+            GREEN_COLOR -> GREEN
+            PURPLE_COLOR -> PURPLE
+            BLACK_COLOR -> BLACK
+            else -> ""
         }
     }
 
