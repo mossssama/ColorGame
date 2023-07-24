@@ -4,26 +4,25 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
+import com.example.colorgame.GameHelper.Companion.BLACK
+import com.example.colorgame.GameHelper.Companion.BLUE
+import com.example.colorgame.GameHelper.Companion.BOX_FIVE
+import com.example.colorgame.GameHelper.Companion.BOX_FOUR
+import com.example.colorgame.GameHelper.Companion.BOX_ONE
+import com.example.colorgame.GameHelper.Companion.BOX_SEVEN
+import com.example.colorgame.GameHelper.Companion.BOX_SIX
+import com.example.colorgame.GameHelper.Companion.BOX_THREE
+import com.example.colorgame.GameHelper.Companion.BOX_TWO
+import com.example.colorgame.GameHelper.Companion.GREEN
+import com.example.colorgame.GameHelper.Companion.ORANGE
+import com.example.colorgame.GameHelper.Companion.PURPLE
+import com.example.colorgame.GameHelper.Companion.RED
+import com.example.colorgame.GameHelper.Companion.YELLOW
 import com.example.colorgame.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
-    private val BOX_ONE = "boxOne"
-    private val BOX_TWO = "boxTwo"
-    private val BOX_THREE = "boxThree"
-    private val BOX_FOUR = "boxFour"
-    private val BOX_FIVE = "boxFive"
-    private val BOX_SIX = "boxSix"
-    private val BOX_SEVEN = "boxSeven"
-    private val BLUE = "BLUE"
-    private val ORANGE = "ORANGE"
-    private val RED = "RED"
-    private val YELLOW = "YELLOW"
-    private val GREEN = "GREEN"
-    private val PURPLE = "PURPLE"
-    private val BLACK = "BLACK"
 
     private var BLUE_COLOR: Int = 0
     private var ORANGE_COLOR: Int = 0
@@ -35,29 +34,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var correctText:String
 
-    private var boxes: HashMap<String, Boolean> = hashMapOf(
-        BOX_ONE to false,
-        BOX_TWO to false,
-        BOX_THREE to false,
-        BOX_FOUR to false,
-        BOX_FIVE to false,
-        BOX_SIX to false,
-        BOX_SEVEN to false
-    )
-    private var colors: HashMap<String, Boolean> = hashMapOf(
-        BLUE to false,
-        ORANGE to false,
-        RED to false,
-        YELLOW to false,
-        GREEN to false,
-        PURPLE to false,
-        BLACK to false
-    )
-
+    private lateinit var gameHelper: GameHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        gameHelper=GameHelper()
 
         initTextsColors()
 
@@ -73,27 +56,27 @@ class MainActivity : AppCompatActivity() {
 
             assignTextAndColorToRightBox(chosenBox,correctColor,correctText)
 
-            val boxesWithTexts = getHashMapOfBoxesAndTexts(boxes,colors)
+            val boxesWithTexts = getHashMapOfBoxesAndTexts(gameHelper.boxes,gameHelper.colors)
             assignTextsToBoxes(boxesWithTexts)
 
-            resetBoxesToFalse(boxes)
-            resetColorsToFalse(colors)
+            resetBoxesToFalse(gameHelper.boxes)
+            resetColorsToFalse(gameHelper.colors)
 
             assignTextAndColorToRightBox(chosenBox,correctColor,correctText)
 
-            var boxesWithColors = getHashMapOfBoxesAndColors(boxes, colors, correctColor)
+            var boxesWithColors = getHashMapOfBoxesAndColors(gameHelper.boxes, gameHelper.colors, correctColor)
             while(!areKeyPairsUnique(boxesWithTexts,convertColorsToNames(boxesWithColors))){
-                resetBoxesToFalse(boxes)
-                resetColorsToFalse(colors)
+                resetBoxesToFalse(gameHelper.boxes)
+                resetColorsToFalse(gameHelper.colors)
                 assignTextAndColorToRightBox(chosenBox,correctColor,correctText)
-               boxesWithColors = getHashMapOfBoxesAndColors(boxes, colors, correctColor)
+               boxesWithColors = getHashMapOfBoxesAndColors(gameHelper.boxes, gameHelper.colors, correctColor)
             }
 
 
             assignColorsToBoxes(boxesWithColors)
 
-            resetBoxesToFalse(boxes)
-            resetColorsToFalse(colors)
+            resetBoxesToFalse(gameHelper.boxes)
+            resetColorsToFalse(gameHelper.colors)
 
             Log.i("TAG",chosenBox)
             Log.i("TAG",boxesWithTexts.toString())
@@ -106,19 +89,19 @@ class MainActivity : AppCompatActivity() {
     private fun chooseTheRightColor(correctColor: Int) {
         when (correctColor) {
             BLUE_COLOR -> {
-                correctText = BLUE; colors[BLUE] = true; }
+                correctText = BLUE; gameHelper.colors[BLUE] = true; }
             ORANGE_COLOR -> {
-                correctText = ORANGE; colors[ORANGE] = true; }
+                correctText = ORANGE; gameHelper.colors[ORANGE] = true; }
             RED_COLOR -> {
-                correctText = RED; colors[RED] = true; }
+                correctText = RED; gameHelper.colors[RED] = true; }
             YELLOW_COLOR -> {
-                correctText = YELLOW; colors[YELLOW] = true; }
+                correctText = YELLOW; gameHelper.colors[YELLOW] = true; }
             GREEN_COLOR -> {
-                correctText = GREEN; colors[GREEN] = true; }
+                correctText = GREEN; gameHelper.colors[GREEN] = true; }
             PURPLE_COLOR -> {
-                correctText = PURPLE; colors[PURPLE] = true; }
+                correctText = PURPLE; gameHelper.colors[PURPLE] = true; }
             BLACK_COLOR -> {
-                correctText = BLACK; colors[BLACK] = true; }
+                correctText = BLACK; gameHelper.colors[BLACK] = true; }
         }
 
     }
@@ -126,31 +109,31 @@ class MainActivity : AppCompatActivity() {
     private fun assignTextAndColorToRightBox(chosenBox: String,correctColor:Int,correctText:String) {
         when (chosenBox) {
             BOX_ONE -> {
-                binding.boxOne.setTextColor(correctColor); binding.boxOne.text = correctText; boxes[BOX_ONE] = true
+                binding.boxOne.setTextColor(correctColor); binding.boxOne.text = correctText; gameHelper.boxes[BOX_ONE] = true
             }
             BOX_TWO -> {
                 binding.boxTwo.setTextColor(correctColor); binding.boxTwo.text =
-                    correctText; boxes[BOX_TWO] = true
+                    correctText; gameHelper.boxes[BOX_TWO] = true
             }
             BOX_THREE -> {
                 binding.boxThree.setTextColor(correctColor); binding.boxThree.text =
-                    correctText; boxes[BOX_THREE] = true
+                    correctText; gameHelper.boxes[BOX_THREE] = true
             }
             BOX_FOUR -> {
                 binding.boxFour.setTextColor(correctColor); binding.boxFour.text =
-                    correctText; boxes[BOX_FOUR] = true
+                    correctText; gameHelper.boxes[BOX_FOUR] = true
             }
             BOX_FIVE -> {
                 binding.boxFive.setTextColor(correctColor); binding.boxFive.text =
-                    correctText; boxes[BOX_FIVE] = true
+                    correctText; gameHelper.boxes[BOX_FIVE] = true
             }
             BOX_SIX -> {
                 binding.boxSix.setTextColor(correctColor); binding.boxSix.text =
-                    correctText; boxes[BOX_SIX] = true
+                    correctText; gameHelper.boxes[BOX_SIX] = true
             }
             BOX_SEVEN -> {
                 binding.boxSeven.setTextColor(correctColor); binding.boxSeven.text =
-                    correctText; boxes[BOX_SEVEN] = true
+                    correctText; gameHelper.boxes[BOX_SEVEN] = true
             }
         }
     }
@@ -234,7 +217,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     private fun getColorForStringColor(color: String): Int {
         return when (color) {
             BLUE -> BLUE_COLOR
@@ -245,6 +227,19 @@ class MainActivity : AppCompatActivity() {
             PURPLE -> PURPLE_COLOR
             BLACK -> BLACK_COLOR
             else -> BLUE_COLOR
+        }
+    }
+
+    private fun getColorNameForColor(color: Int): String {
+        return when (color) {
+            BLUE_COLOR -> BLUE
+            ORANGE_COLOR -> ORANGE
+            RED_COLOR -> RED
+            YELLOW_COLOR -> YELLOW
+            GREEN_COLOR -> GREEN
+            PURPLE_COLOR -> PURPLE
+            BLACK_COLOR -> BLACK
+            else -> ""
         }
     }
 
@@ -307,18 +302,7 @@ class MainActivity : AppCompatActivity() {
         return colorNameMap
     }
 
-    private fun getColorNameForColor(color: Int): String {
-        return when (color) {
-            BLUE_COLOR -> BLUE
-            ORANGE_COLOR -> ORANGE
-            RED_COLOR -> RED
-            YELLOW_COLOR -> YELLOW
-            GREEN_COLOR -> GREEN
-            PURPLE_COLOR -> PURPLE
-            BLACK_COLOR -> BLACK
-            else -> ""
-        }
-    }
+
 
 }
 
