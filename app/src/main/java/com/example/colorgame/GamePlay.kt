@@ -50,7 +50,7 @@ class GamePlay {
         BLACK to false
     )
 
-    fun initTextsColors(context: Context) {
+    fun initColors(context: Context) {
         blueColor = context.getColor(R.color.blue)
         orangeColor = context.getColor(R.color.orange)
         redColor = context.getColor(R.color.red)
@@ -60,7 +60,7 @@ class GamePlay {
         blackColor = context.getColor(R.color.black)
     }
 
-    fun chooseCorrectColor(): Int {
+    fun chooseRandomColor(): Int {
         val numbers = listOf(
             blueColor,
             orangeColor,
@@ -99,7 +99,7 @@ class GamePlay {
         }
     }
 
-    fun chooseCorrectBox(): String {
+    fun chooseRandomBox(): String {
         val numbers = listOf("boxOne", "boxTwo", "boxThree", "boxFour", "boxFive", "boxSix", "boxSeven")
         return numbers.random()
     }
@@ -123,7 +123,7 @@ class GamePlay {
         return true
     }
 
-    fun chooseTheRightColor(correctColor: Int): String {
+    fun getColorText(correctColor: Int): String {
         var correctText=""
         when (correctColor) {
             blueColor -> { correctText = BLUE; colors[BLUE] = true; }
@@ -137,7 +137,7 @@ class GamePlay {
         return correctText
     }
 
-    fun getHashMapOfBoxesAndTexts(
+    fun getMapOfBoxesAndTexts(
         boxes: HashMap<String, Boolean>,
         colors: HashMap<String, Boolean>
     ): HashMap<String, String> {
@@ -159,7 +159,7 @@ class GamePlay {
         return linkedHashMap
     }
 
-    fun getHashMapOfBoxesAndColors(
+    fun getMapOfBoxesAndColors(
         boxes: HashMap<String, Boolean>,
         colors: HashMap<String, Boolean>,
         currentColor: Int
@@ -236,6 +236,11 @@ class GamePlay {
             BOX_SIX -> { binding.boxSix.setTextColor(correctColor);     binding.boxSix.text = correctText;      boxes[BOX_SIX] = true }
             BOX_SEVEN -> { binding.boxSeven.setTextColor(correctColor); binding.boxSeven.text = correctText;    boxes[BOX_SEVEN] = true }
         }
+    }
+
+    fun resetBoxesAndColors(){
+        resetBoxesToFalse(boxes)
+        resetColorsToFalse(colors)
     }
 
 }
