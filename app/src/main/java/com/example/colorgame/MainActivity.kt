@@ -23,6 +23,10 @@ class MainActivity : AppCompatActivity() {
     private val GREEN = "GREEN"
     private val PURPLE = "PURPLE"
     private val BLACK = "BLACK"
+    private val BROWN = "BROWN"
+    private val GREY = "GREY"
+    private val PINK = "PINK"
+
     private var BLUE_COLOR: Int = 0
     private var ORANGE_COLOR: Int = 0
     private var RED_COLOR: Int = 0
@@ -30,6 +34,10 @@ class MainActivity : AppCompatActivity() {
     private var GREEN_COLOR: Int = 0
     private var PURPLE_COLOR: Int = 0
     private var BLACK_COLOR: Int = 0
+    private var GREY_COLOR: Int = 0
+    private var BROWN_COLOR: Int = 0
+    private var PINK_COLOR: Int = 0
+
     private var boxes: HashMap<String, Boolean> = hashMapOf(
         BOX_ONE to false,
         BOX_TWO to false,
@@ -47,6 +55,19 @@ class MainActivity : AppCompatActivity() {
         GREEN to false,
         PURPLE to false,
         BLACK to false
+    )
+
+    private var moreColors: HashMap<String, Boolean> = hashMapOf(
+        BLUE to false,
+        ORANGE to false,
+        RED to false,
+        YELLOW to false,
+        GREEN to false,
+        PURPLE to false,
+        BLACK to false,
+        PINK to false,
+        GREY to false,
+        BROWN to false
     )
 
 
@@ -83,16 +104,17 @@ class MainActivity : AppCompatActivity() {
             var chosenBox = chooseCorrectBox()
 
             assignTextAndColorToRightBox(chosenBox,correctColor,correctText)
-            assignTextsToBoxes(createHashMapOfBoxesAndTexts(boxes, colors))
+            assignTextsToBoxes(getHashMapOfBoxesAndTexts(boxes, colors))
             resetBoxesToFalse(boxes)
-            resetBColorsToFalse(colors)
+            resetBColorsToFalse(colors,moreColors)
 
             assignTextAndColorToRightBox(chosenBox,correctColor,correctText)
-            assignColorsToBoxes(createHashMapOfBoxesAndColors(boxes, colors))
+            assignColorsToBoxes(getHashMapOfBoxesAndColors(boxes, colors, correctColor))
             resetBoxesToFalse(boxes)
-            resetBColorsToFalse(colors)
+            resetBColorsToFalse(colors,moreColors)
 
             Log.i("TAG",chosenBox)
+
 
         }
 
@@ -101,8 +123,7 @@ class MainActivity : AppCompatActivity() {
     private fun assignTextAndColorToRightBox(chosenBox: String,correctColor:Int,correctText:String) {
         when (chosenBox) {
             BOX_ONE -> {
-                binding.boxOne.setTextColor(correctColor); binding.boxOne.text =
-                    correctText; boxes[BOX_ONE] = true
+                binding.boxOne.setTextColor(correctColor); binding.boxOne.text = correctText; boxes[BOX_ONE] = true
             }
             BOX_TWO -> {
                 binding.boxTwo.setTextColor(correctColor); binding.boxTwo.text =
@@ -140,12 +161,14 @@ class MainActivity : AppCompatActivity() {
         GREEN_COLOR = getColor(R.color.green)
         PURPLE_COLOR = getColor(R.color.purple)
         BLACK_COLOR = getColor(R.color.black)
+        GREY_COLOR = getColor(R.color.grey)
+        PINK_COLOR = getColor(R.color.pink)
+        BROWN_COLOR = getColor(R.color.brown)
     }
 
 
     private fun chooseCorrectBox(): String {
-        val numbers =
-            listOf("boxOne", "boxTwo", "boxThree", "boxFour", "boxFive", "boxSix", "boxSeven")
+        val numbers = listOf("boxOne", "boxTwo", "boxThree", "boxFour", "boxFive", "boxSix", "boxSeven")
         return numbers.random()
     }
 
@@ -162,7 +185,7 @@ class MainActivity : AppCompatActivity() {
         return numbers.random()
     }
 
-    private fun createHashMapOfBoxesAndTexts(
+    private fun getHashMapOfBoxesAndTexts(
         boxes: HashMap<String, Boolean>,
         colors: HashMap<String, Boolean>
     ): HashMap<String, String> {
@@ -184,22 +207,24 @@ class MainActivity : AppCompatActivity() {
         return linkedHashMap
     }
 
-    private fun createHashMapOfBoxesAndColors(
+    private fun getHashMapOfBoxesAndColors(
         boxes: HashMap<String, Boolean>,
-        colors: HashMap<String, Boolean>
+        colors: HashMap<String, Boolean>,
+        currentColor: Int
     ): HashMap<String, Int> {
         val linkedHashMap: HashMap<String, Int> = HashMap()
         val shuffledBoxes = boxes.filterValues { !it }.keys.toList().shuffled()
-        val shuffledColors = colors.filterValues { !it }.keys.toList().shuffled()
 
-        val pairsCount = minOf(shuffledBoxes.size, shuffledColors.size)
+        // Filter out the color assigned to the true box and currentColor from available colors
+        val shuffledAvailableColors = colors.filterValues { !it }
+            .filterKeys { getColorForStringColor(it) != currentColor }
+            .keys.toList().shuffled()
 
-        val shuffledAvailableColors = shuffledColors.map { getColorForStringColor(it) }
-        val shuffledAvailableBoxes = shuffledBoxes.toMutableList()
+        val pairsCount = minOf(shuffledBoxes.size, shuffledAvailableColors.size)
 
         for (i in 0 until pairsCount) {
-            val box = shuffledAvailableBoxes.removeAt(0)
-            val color = shuffledAvailableColors[i]
+            val box = shuffledBoxes[i]
+            val color = getColorForStringColor(shuffledAvailableColors[i])
 
             linkedHashMap[box] = color
             boxes[box] = true
@@ -207,6 +232,7 @@ class MainActivity : AppCompatActivity() {
 
         return linkedHashMap
     }
+
 
 
     private fun getColorForStringColor(color: String): Int {
@@ -223,15 +249,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun resetBoxesToFalse(boxes: HashMap<String, Boolean>) {
-        for (key in boxes.keys) {
-            boxes[key] = false
-        }
+        for (key in boxes.keys) boxes[key] = false
     }
 
-    private fun resetBColorsToFalse(colors: HashMap<String, Boolean>) {
-        for (key in colors.keys) {
-            colors[key] = false
-        }
+    private fun resetBColorsToFalse(colors: HashMap<String, Boolean>,colorsTwo: HashMap<String, Boolean>) {
+        for (key in colors.keys) colors[key] = false
+        for (key in colorsTwo.keys) colorsTwo[key] = false
     }
 
     private fun assignTextsToBoxes(linkedBoxesAndTexts:HashMap<String,String>){

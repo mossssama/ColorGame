@@ -14,4 +14,8 @@
     <color name="purple">#5E35B1</color>
     <color name="blue">#1E88E5</color>
     <color name="yellow">#FDD835</color>
+    <color name="pink">#C69999</color>
+    <color name="brown">#350202</color>
+    <color name="grey">#8E8B93</color>
+
 </resources>
