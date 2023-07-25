@@ -2,7 +2,8 @@ package com.example.colorgame
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.colorgame.databinding.ActivityMainBinding
 
@@ -10,6 +11,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var gamePlay: GamePlay
+    private lateinit var chosenBox:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,44 +20,41 @@ class MainActivity : AppCompatActivity() {
 
         gamePlay.initColors(this)
 
-        binding.floatingActionButton.setOnClickListener { updateGamePlayUI() }
-
+        chosenBox = gamePlay.getNewUI(binding)
+        onBoxesListener()
     }
 
-    private fun updateGamePlayUI() {
-        val correctColor = gamePlay.chooseRandomColor()                                     /* Choose Random Color to be the Right Color */
-        val correctText = gamePlay.getColorText(correctColor)                               /* Return the Color as Text */
-        val chosenBox = gamePlay.chooseRandomBox()                                          /* Choose Random box to put in it the text Colored with the same color of the written word */
-        gamePlay.assignTextAndColorToRightBox(chosenBox,correctColor,correctText,binding)   /* Assign text Colored to the chosenBox */
-
-        /* Write a text to each box */
-        val boxesTextsMap = gamePlay.getMapOfBoxesAndTexts(gamePlay.boxes,gamePlay.colors)
-        gamePlay.assignTextsToBoxes(boxesTextsMap,binding)
-
-        /* Choose a color to text that is different from the text word */
-        val boxesColorsMap = assureEveryBoxHasTextAndDifferentColor(chosenBox,correctColor, correctText, boxesTextsMap)
-
-        /* Apply a color to each box */
-        gamePlay.assignColorsToBoxes(boxesColorsMap,binding)
-
-        gamePlay.resetBoxesAndColors()
-
-        /* For debugging only */
-        Log.i("TAG",chosenBox)
-        Log.i("TAG",boxesTextsMap.toString())
-        Log.i("TAG",gamePlay.convertColorsToNames(boxesColorsMap).toString())
-        Log.i("TAG",gamePlay.areKeyPairsUnique(boxesTextsMap,gamePlay.convertColorsToNames(boxesColorsMap)).toString())
+    private fun onBoxesListener() {
+        boxOnClickListener(binding.boxOne)
+        boxOnClickListener(binding.boxTwo)
+        boxOnClickListener(binding.boxThree)
+        boxOnClickListener(binding.boxFour)
+        boxOnClickListener(binding.boxFive)
+        boxOnClickListener(binding.boxSix)
+        boxOnClickListener(binding.boxSeven)
     }
 
-    private fun assureEveryBoxHasTextAndDifferentColor(chosenBox:String,correctColor:Int,correctText:String,boxesTextsMap:HashMap<String,String>): HashMap<String, Int> {
-        var boxesColorsMap:HashMap<String,Int>
-        do{
-            gamePlay.resetBoxesAndColors()
-            gamePlay.assignTextAndColorToRightBox(chosenBox,correctColor,correctText,binding)
-            boxesColorsMap = gamePlay.getMapOfBoxesAndColors(gamePlay.boxes, gamePlay.colors, correctColor)
-        }while(!gamePlay.areKeyPairsUnique(boxesTextsMap,gamePlay.convertColorsToNames(boxesColorsMap)))
-        return boxesColorsMap
+    private fun boxOnClickListener(boxView: View) {
+        boxView.setOnClickListener {
+            val boxId = when (boxView.id) {
+                R.id.boxOne -> GamePlay.BOX_ONE
+                R.id.boxTwo -> GamePlay.BOX_TWO
+                R.id.boxThree -> GamePlay.BOX_THREE
+                R.id.boxFour -> GamePlay.BOX_FOUR
+                R.id.boxFive -> GamePlay.BOX_FIVE
+                R.id.boxSix -> GamePlay.BOX_SIX
+                R.id.boxSeven -> GamePlay.BOX_SEVEN
+                else -> return@setOnClickListener
+            }
+
+            /* in (if) we can handle right answers counts & in (else) we can handle gameOver */
+            if (chosenBox == boxId) Toast.makeText(baseContext, "Right", Toast.LENGTH_SHORT).show()
+            else Toast.makeText(baseContext, "Wrong", Toast.LENGTH_SHORT).show()
+
+            chosenBox = gamePlay.getNewUI(binding)
+        }
     }
+
 
 
 }

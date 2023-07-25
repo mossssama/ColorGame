@@ -1,6 +1,7 @@
 package com.example.colorgame
 
 import android.content.Context
+import android.util.Log
 import com.example.colorgame.databinding.ActivityMainBinding
 
 class GamePlay {
@@ -30,7 +31,7 @@ class GamePlay {
     private var purpleColor: Int = 0
     private var blackColor: Int = 0
 
-    var boxes: HashMap<String, Boolean> = hashMapOf(
+    private var boxes: HashMap<String, Boolean> = hashMapOf(
         BOX_ONE to false,
         BOX_TWO to false,
         BOX_THREE to false,
@@ -40,7 +41,7 @@ class GamePlay {
         BOX_SEVEN to false
     )
 
-    var colors: HashMap<String, Boolean> = hashMapOf(
+    private var colors: HashMap<String, Boolean> = hashMapOf(
         BLUE to false,
         ORANGE to false,
         RED to false,
@@ -60,20 +61,10 @@ class GamePlay {
         blackColor = context.getColor(R.color.black)
     }
 
-    fun chooseRandomColor(): Int {
-        val numbers = listOf(
-            blueColor,
-            orangeColor,
-            redColor,
-            yellowColor,
-            greenColor,
-            purpleColor,
-            blackColor
-        )
-        return numbers.random()
-    }
+    private fun chooseRandomColor(): Int = listOf(blueColor, orangeColor, redColor, yellowColor, greenColor, purpleColor, blackColor).random()
+    private fun chooseRandomBox(): String = listOf("boxOne", "boxTwo", "boxThree", "boxFour", "boxFive", "boxSix", "boxSeven").random()
 
-    private fun getColorForStringColor(color: String): Int {
+    private fun getColorForColorName(color: String): Int {
         return when (color) {
             BLUE -> blueColor
             ORANGE -> orangeColor
@@ -86,7 +77,7 @@ class GamePlay {
         }
     }
 
-    private fun getColorNameForColor(color: Int): String {
+    private fun getColorNameForColorInt(color: Int): String {
         return when (color) {
             blueColor -> BLUE
             orangeColor -> ORANGE
@@ -99,20 +90,7 @@ class GamePlay {
         }
     }
 
-    fun chooseRandomBox(): String {
-        val numbers = listOf("boxOne", "boxTwo", "boxThree", "boxFour", "boxFive", "boxSix", "boxSeven")
-        return numbers.random()
-    }
-
-    fun resetBoxesToFalse(boxes: HashMap<String, Boolean>) {
-        for (key in boxes.keys) boxes[key] = false
-    }
-
-    fun resetColorsToFalse(colors: HashMap<String, Boolean>) {
-        for (key in colors.keys) colors[key] = false
-    }
-
-    fun areKeyPairsUnique(map1: HashMap<String, String>, map2: HashMap<String, String>): Boolean {
+    private fun areKeyPairsUnique(map1: HashMap<String, String>, map2: HashMap<String, String>): Boolean {
         for ((key1, value1) in map1) {
             for ((key2, value2) in map2) {
                 if (key1 == key2 && value1 == value2) {
@@ -123,7 +101,7 @@ class GamePlay {
         return true
     }
 
-    fun getColorText(correctColor: Int): String {
+    private fun getColorText(correctColor: Int): String {
         var correctText=""
         when (correctColor) {
             blueColor -> { correctText = BLUE; colors[BLUE] = true; }
@@ -137,11 +115,11 @@ class GamePlay {
         return correctText
     }
 
-    fun getMapOfBoxesAndTexts(
+    private fun getMapOfBoxesAndTexts(
         boxes: HashMap<String, Boolean>,
         colors: HashMap<String, Boolean>
     ): HashMap<String, String> {
-        val linkedHashMap: HashMap<String, String> = HashMap()
+        val boxesAndTextsMap: HashMap<String, String> = HashMap()
         val shuffledBoxes = boxes.filterValues { !it }.keys.toList().shuffled()
         val shuffledColors = colors.filterValues { !it }.keys.toList().shuffled()
 
@@ -151,54 +129,54 @@ class GamePlay {
             val box = shuffledBoxes[i]
             val color = shuffledColors[i]
 
-            linkedHashMap[box] = color
+            boxesAndTextsMap[box] = color
             boxes[box] = true
             colors[color] = true
         }
 
-        return linkedHashMap
+        return boxesAndTextsMap
     }
 
-    fun getMapOfBoxesAndColors(
+    private fun getMapOfBoxesAndColors(
         boxes: HashMap<String, Boolean>,
         colors: HashMap<String, Boolean>,
         currentColor: Int
     ): HashMap<String, Int> {
-        val linkedHashMap: HashMap<String, Int> = HashMap()
+        val boxesAndColorsMap: HashMap<String, Int> = HashMap()
         val shuffledBoxes = boxes.filterValues { !it }.keys.toList().shuffled()
 
         // Filter out the color assigned to the true box and currentColor from available colors
         val shuffledAvailableColors = colors.filterValues { !it }
-            .filterKeys { getColorForStringColor(it) != currentColor }
+            .filterKeys { getColorForColorName(it) != currentColor }
             .keys.toList().shuffled()
 
         val pairsCount = minOf(shuffledBoxes.size, shuffledAvailableColors.size)
 
         for (i in 0 until pairsCount) {
             val box = shuffledBoxes[i]
-            val color = getColorForStringColor(shuffledAvailableColors[i])
+            val color = getColorForColorName(shuffledAvailableColors[i])
 
-            linkedHashMap[box] = color
+            boxesAndColorsMap[box] = color
             boxes[box] = true
         }
 
-        return linkedHashMap
+        return boxesAndColorsMap
     }
 
 
     /* For debugging only */
-    fun convertColorsToNames(colorMap: HashMap<String, Int>): HashMap<String, String> {
+    private fun convertColorsToNames(colorMap: HashMap<String, Int>): HashMap<String, String> {
         val colorNameMap: HashMap<String, String> = HashMap()
 
         for ((box, color) in colorMap) {
-            val colorName = getColorNameForColor(color)
+            val colorName = getColorNameForColorInt(color)
             colorNameMap[box] = colorName
         }
 
         return colorNameMap
     }
 
-    fun assignColorsToBoxes(linkedBoxesAndColors: HashMap<String, Int>,binding: ActivityMainBinding) {
+    private fun assignColorsToBoxes(linkedBoxesAndColors: HashMap<String, Int>, binding: ActivityMainBinding) {
         for ((box, color) in linkedBoxesAndColors) {
             when (box) {
                 BOX_ONE ->  binding.boxOne.setTextColor(color)
@@ -212,7 +190,7 @@ class GamePlay {
         }
     }
 
-    fun assignTextsToBoxes(linkedBoxesAndTexts:HashMap<String,String>,binding: ActivityMainBinding){
+    private fun assignTextsToBoxes(linkedBoxesAndTexts:HashMap<String,String>, binding: ActivityMainBinding){
         for ((box, color) in linkedBoxesAndTexts) {
             when (box) {
                 BOX_ONE ->  binding.boxOne.text = color
@@ -226,7 +204,7 @@ class GamePlay {
         }
     }
 
-    fun assignTextAndColorToRightBox(chosenBox: String,correctColor:Int,correctText:String,binding: ActivityMainBinding) {
+    private fun assignTextAndColorToRightBox(chosenBox: String, correctColor:Int, correctText:String, binding: ActivityMainBinding) {
         when (chosenBox) {
             BOX_ONE -> { binding.boxOne.setTextColor(correctColor);     binding.boxOne.text = correctText;      boxes[BOX_ONE] = true }
             BOX_TWO -> { binding.boxTwo.setTextColor(correctColor);     binding.boxTwo.text = correctText;      boxes[BOX_TWO] = true }
@@ -238,9 +216,58 @@ class GamePlay {
         }
     }
 
-    fun resetBoxesAndColors(){
+    private fun resetBoxesAndColors(){
         resetBoxesToFalse(boxes)
         resetColorsToFalse(colors)
+    }
+
+    private fun resetBoxesToFalse(boxes: HashMap<String, Boolean>) {
+        for (key in boxes.keys) boxes[key] = false
+    }
+
+    private fun resetColorsToFalse(colors: HashMap<String, Boolean>) {
+        for (key in colors.keys) colors[key] = false
+    }
+
+    private fun assureEveryBoxHasTextAndDifferentColor(chosenBox:String, correctColor:Int, correctText:String, boxesTextsMap:HashMap<String,String>, binding: ActivityMainBinding): HashMap<String, Int> {
+        var boxesColorsMap:HashMap<String,Int>
+        do{
+            resetBoxesAndColors()
+            assignTextAndColorToRightBox(chosenBox,correctColor,correctText,binding)
+            boxesColorsMap = getMapOfBoxesAndColors(boxes, colors, correctColor)
+        }while(!areKeyPairsUnique(boxesTextsMap,convertColorsToNames(boxesColorsMap)))
+        return boxesColorsMap
+    }
+
+    private fun debuggingForCheck(chosenBox: String, boxesTextsMap: HashMap<String, String>, boxesColorsMap: HashMap<String, Int>) {
+        Log.i("TAG",chosenBox)
+        Log.i("TAG",boxesTextsMap.toString())
+        Log.i("TAG",convertColorsToNames(boxesColorsMap).toString())
+        Log.i("TAG",areKeyPairsUnique(boxesTextsMap,convertColorsToNames(boxesColorsMap)).toString())
+    }
+
+    fun getNewUI(binding: ActivityMainBinding):String {
+        val correctColor = chooseRandomColor()                                     /* Choose Random Color to be the Right Color */
+        val correctText = getColorText(correctColor)                               /* Return the Color as Text */
+        val chosenBox = chooseRandomBox()                                          /* Choose Random box to put in it the text Colored with the same color of the written word */
+        assignTextAndColorToRightBox(chosenBox,correctColor,correctText,binding)   /* Assign text Colored to the chosenBox */
+
+        /* Write a text to each box */
+        val boxesTextsMap = getMapOfBoxesAndTexts(boxes,colors)
+        assignTextsToBoxes(boxesTextsMap,binding)
+
+        /* Choose a color to text that is different from the text word */
+        val boxesColorsMap = assureEveryBoxHasTextAndDifferentColor(chosenBox,correctColor, correctText, boxesTextsMap,binding)
+
+        /* Apply a color to each box */
+        assignColorsToBoxes(boxesColorsMap,binding)
+
+        resetBoxesAndColors()
+
+        /* For debugging only */
+        debuggingForCheck(chosenBox,boxesTextsMap,boxesColorsMap)
+
+        return chosenBox
     }
 
 }
