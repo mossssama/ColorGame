@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.kapt'              /* Dependencies to use Room */
 }
 
 android {
@@ -35,7 +36,6 @@ android {
 }
 
 dependencies {
-
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
@@ -43,4 +43,19 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    /* Dependencies to use Room */
+    implementation "androidx.room:room-runtime:2.5.2"
+    annotationProcessor "androidx.room:room-compiler:2.5.2"
+    kapt "androidx.room:room-compiler:2.5.2"                            // To use Kotlin annotation processing tool (kapt)
+
+    implementation "androidx.room:room-ktx:2.5.2"                       // optional - Kotlin Extensions and Coroutines support for Room
+
+//    ksp "androidx.room:room-compiler:2.5.2"                             // To use Kotlin Symbol Processing (KSP)
+
+//    implementation "androidx.room:room-rxjava2:2.5.2"                   // optional - RxJava2 support for Room
+//    implementation "androidx.room:room-rxjava3:2.5.2"                   // optional - RxJava3 support for Room
+//    implementation "androidx.room:room-guava:2.5.2"                     // optional - Guava support for Room, including Optional and ListenableFuture
+//    testImplementation "androidx.room:room-testing:2.5.2"               // optional - Test helpers
+//    implementation "androidx.room:room-paging:2.5.2"                    // optional - Paging 3 Integration
 }

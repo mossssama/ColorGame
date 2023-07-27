@@ -2,6 +2,8 @@ package com.example.colorgame
 
 import android.content.Context
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import com.example.colorgame.databinding.ActivityMainBinding
 
 class GamePlay {
@@ -21,6 +23,13 @@ class GamePlay {
         const val GREEN = "GREEN"
         const val PURPLE = "PURPLE"
         const val BLACK = "BLACK"
+
+        const val HUNDRED_SEC_MODE = "hundredSecondMode"
+        const val CONTINUOUS_RIGHT_MODE = "continuousRightMode"
+        const val RIGHT_WRONG_MODE = "rightWrongMode"
+
+        var continuousRightAnswers: Int = 0
+        lateinit var chosenBox: String
     }
 
     private var blueColor: Int = 0
@@ -268,6 +277,43 @@ class GamePlay {
         debuggingForCheck(chosenBox,boxesTextsMap,boxesColorsMap)
 
         return chosenBox
+    }
+
+    fun onBoxesListener(gameMode: String,binding: ActivityMainBinding,context: Context) {
+        boxOnClickListener(binding.boxOne,gameMode,binding,context)
+        boxOnClickListener(binding.boxTwo,gameMode,binding,context)
+        boxOnClickListener(binding.boxThree,gameMode,binding,context)
+        boxOnClickListener(binding.boxFour,gameMode,binding,context)
+        boxOnClickListener(binding.boxFive,gameMode,binding,context)
+        boxOnClickListener(binding.boxSix,gameMode,binding,context)
+        boxOnClickListener(binding.boxSeven,gameMode,binding,context)
+    }
+
+    private fun boxOnClickListener(boxView: View, gameMode: String,binding: ActivityMainBinding, context: Context) {
+        boxView.setOnClickListener {
+            val boxId = when (boxView.id) {
+                R.id.boxOne -> BOX_ONE
+                R.id.boxTwo -> BOX_TWO
+                R.id.boxThree -> BOX_THREE
+                R.id.boxFour -> BOX_FOUR
+                R.id.boxFive -> BOX_FIVE
+                R.id.boxSix -> BOX_SIX
+                R.id.boxSeven -> BOX_SEVEN
+                else -> return@setOnClickListener
+            }
+
+            when (gameMode){
+                CONTINUOUS_RIGHT_MODE -> continuousRightModeGamePlay(boxId,binding,context)
+                HUNDRED_SEC_MODE -> {}
+                RIGHT_WRONG_MODE -> {}
+            }
+
+        }
+    }
+
+    private fun continuousRightModeGamePlay(boxId: String,binding: ActivityMainBinding,context: Context){
+        if(chosenBox==boxId) { continuousRightAnswers++; chosenBox = getNewUI(binding) }
+        else Toast.makeText(context,"GameOver! Your Score is $continuousRightAnswers", Toast.LENGTH_LONG).show()
     }
 
 }
