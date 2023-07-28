@@ -1,4 +1,4 @@
-package com.example.colorgame
+package com.example.colorgame.utils
 
 import java.text.SimpleDateFormat
 import java.util.*

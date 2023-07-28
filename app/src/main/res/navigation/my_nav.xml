@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    app:startDestination="@id/introFragment">
+
+    <fragment
+        android:id="@+id/introFragment"
+        android:name="com.example.colorgame.ui.IntroFragment"
+        android:label="fragment_intro"
+        tools:layout="@layout/fragment_intro" >
+        <action
+            android:id="@+id/navigate_to_gamePlayFragment"
+            app:destination="@id/gamePlayFragment">
+        <argument
+            android:name="gameMode"
+            app:argType="string"
+            android:defaultValue="hundredSec" />
+        </action>
+        <argument
+            android:name="gameMode"
+            app:argType="string"
+            android:defaultValue="hundredSec" />
+    </fragment>
+    <fragment
+        android:id="@+id/gamePlayFragment"
+        android:name="com.example.colorgame.ui.GamePlayFragment"
+        android:label="fragment_game_play"
+        tools:layout="@layout/fragment_game_play" />
+</navigation>

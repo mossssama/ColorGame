@@ -1,61 +1,65 @@
-plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    id 'org.jetbrains.kotlin.kapt'              /* Dependencies to use Room */
-}
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdk 33
-
+    compileSdkVersion 33
+    buildFeatures {
+        dataBinding true
+    }
     defaultConfig {
-        applicationId "com.example.colorgame"
-        minSdk 23
-        targetSdk 32
+        applicationId 'com.example.colorgame'
+        minSdkVersion 23
+        targetSdkVersion 33
+        vectorDrawables.useSupportLibrary = true
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    productFlavors {}
+
+    sourceSets{
+        main{
+            kotlin{
+                srcDirs += 'build/generated/source/navigation-args/'
+            }
+        }
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-    dataBinding{
-        enabled = true
+
+    kotlinOptions{
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
 
+def room_version = "2.5.2"
 dependencies {
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    /* Dependencies to use Room */
-    implementation "androidx.room:room-runtime:2.5.2"
-    annotationProcessor "androidx.room:room-compiler:2.5.2"
-    kapt "androidx.room:room-compiler:2.5.2"                            // To use Kotlin annotation processing tool (kapt)
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
 
-    implementation "androidx.room:room-ktx:2.5.2"                       // optional - Kotlin Extensions and Coroutines support for Room
+    // Constraint Layout
+    implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
 
-//    ksp "androidx.room:room-compiler:2.5.2"                             // To use Kotlin Symbol Processing (KSP)
+    // Core
+    implementation "androidx.core:core-ktx:$version_core"
 
-//    implementation "androidx.room:room-rxjava2:2.5.2"                   // optional - RxJava2 support for Room
-//    implementation "androidx.room:room-rxjava3:2.5.2"                   // optional - RxJava3 support for Room
-//    implementation "androidx.room:room-guava:2.5.2"                     // optional - Guava support for Room, including Optional and ListenableFuture
-//    testImplementation "androidx.room:room-testing:2.5.2"               // optional - Test helpers
-//    implementation "androidx.room:room-paging:2.5.2"                    // optional - Paging 3 Integration
+    // Material Design
+    implementation "com.google.android.material:material:$version_material"
+
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"            /* Navigation Component */
+    implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"                  /* Navigation Component */
+
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version" // optional - Kotlin Extensions and Coroutines support for Room
 }
+

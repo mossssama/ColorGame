@@ -5,9 +5,10 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.example.colorgame.databinding.ActivityMainBinding
+import com.example.colorgame.databinding.FragmentGamePlayBinding
 import com.example.colorgame.room.Score
 import com.example.colorgame.room.ScoreDatabase
+import com.example.colorgame.utils.DateUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,14 +35,14 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         const val HUNDRED_SEC_MODE = "hundredSecondMode"
         const val CONTINUOUS_RIGHT_MODE = "continuousRightMode"
         const val THREE_WRONG_MODE = "threeWrongMode"
-
-        var continuousRightAnswers: Int = 0
-        var totalCorrectAnswers: Int =0
-        var totalInCorrectAnswers: Int = 0
         lateinit var chosenBox: String
 
         private var countdownTimer: CountDownTimer? = null
     }
+
+    var continuousRightAnswers: Int = 0
+    var totalCorrectAnswers: Int =0
+    var totalInCorrectAnswers: Int = 0
 
     private var blueColor: Int = context.getColor(R.color.blue)
     private var orangeColor: Int = context.getColor(R.color.orange)
@@ -186,7 +187,7 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         return colorNameMap
     }
 
-    private fun assignColorsToBoxes(linkedBoxesAndColors: HashMap<String, Int>, binding: ActivityMainBinding) {
+    private fun assignColorsToBoxes(linkedBoxesAndColors: HashMap<String, Int>, binding: FragmentGamePlayBinding) {
         for ((box, color) in linkedBoxesAndColors) {
             when (box) {
                 BOX_ONE ->  binding.boxOne.setTextColor(color)
@@ -200,7 +201,7 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         }
     }
 
-    private fun assignTextsToBoxes(linkedBoxesAndTexts:HashMap<String,String>, binding: ActivityMainBinding){
+    private fun assignTextsToBoxes(linkedBoxesAndTexts:HashMap<String,String>, binding:FragmentGamePlayBinding){
         for ((box, color) in linkedBoxesAndTexts) {
             when (box) {
                 BOX_ONE ->  binding.boxOne.text = color
@@ -214,7 +215,7 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         }
     }
 
-    private fun assignTextAndColorToRightBox(chosenBox: String, correctColor:Int, correctText:String, binding: ActivityMainBinding) {
+    private fun assignTextAndColorToRightBox(chosenBox: String, correctColor:Int, correctText:String, binding: FragmentGamePlayBinding) {
         when (chosenBox) {
             BOX_ONE -> { binding.boxOne.setTextColor(correctColor);     binding.boxOne.text = correctText;      boxes[BOX_ONE] = true }
             BOX_TWO -> { binding.boxTwo.setTextColor(correctColor);     binding.boxTwo.text = correctText;      boxes[BOX_TWO] = true }
@@ -239,7 +240,7 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         for (key in colors.keys) colors[key] = false
     }
 
-    private fun assureEveryBoxHasTextAndDifferentColor(chosenBox:String, correctColor:Int, correctText:String, boxesTextsMap:HashMap<String,String>, binding: ActivityMainBinding): HashMap<String, Int> {
+    private fun assureEveryBoxHasTextAndDifferentColor(chosenBox:String, correctColor:Int, correctText:String, boxesTextsMap:HashMap<String,String>, binding: FragmentGamePlayBinding): HashMap<String, Int> {
         var boxesColorsMap:HashMap<String,Int>
         do{
             resetBoxesAndColors()
@@ -256,7 +257,7 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         Log.i("TAG",areKeyPairsUnique(boxesTextsMap,convertColorsToNames(boxesColorsMap)).toString())
     }
 
-    fun getNewUI(binding: ActivityMainBinding):String {
+    fun getNewUI(binding: FragmentGamePlayBinding):String {
         val correctColor = chooseRandomColor()                                     /* Choose Random Color to be the Right Color */
         val correctText = getColorText(correctColor)                               /* Return the Color as Text */
         val chosenBox = chooseRandomBox()                                          /* Choose Random box to put in it the text Colored with the same color of the written word */
@@ -281,12 +282,12 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
     }
 
 
-    fun setGamePlay(gameMode: String,binding: ActivityMainBinding,context: Context){
+    fun setGamePlay(gameMode: String,binding: FragmentGamePlayBinding,context: Context){
         if(gameMode == HUNDRED_SEC_MODE) startCountdown(binding,context,100)
         onBoxesListener(gameMode,binding,context)
     }
 
-    private fun onBoxesListener(gameMode: String,binding: ActivityMainBinding,context: Context) {
+    private fun onBoxesListener(gameMode: String,binding: FragmentGamePlayBinding,context: Context) {
         boxOnClickListener(binding.boxOne,gameMode,binding,context)
         boxOnClickListener(binding.boxTwo,gameMode,binding,context)
         boxOnClickListener(binding.boxThree,gameMode,binding,context)
@@ -296,7 +297,7 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         boxOnClickListener(binding.boxSeven,gameMode,binding,context)
     }
 
-    private fun boxOnClickListener(boxView: View, gameMode: String,binding: ActivityMainBinding, context: Context) {
+    private fun boxOnClickListener(boxView: View, gameMode: String,binding: FragmentGamePlayBinding, context: Context) {
         boxView.setOnClickListener {
             val boxId = when (boxView.id) {
                 R.id.boxOne -> BOX_ONE
@@ -318,33 +319,36 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         }
     }
 
-    private fun threeWrongGamePlay(boxId: String, binding: ActivityMainBinding, context: Context) {
-        if(totalInCorrectAnswers==2) {
+    private fun threeWrongGamePlay(boxId: String, binding: FragmentGamePlayBinding, context: Context) {
+        if(chosenBox!=boxId) { totalInCorrectAnswers++}
+
+        if(totalInCorrectAnswers>2) {
             Toast.makeText(context,"GameOver! Your Score is $totalCorrectAnswers", Toast.LENGTH_LONG).show()
-            lifecycleScope.launch { insertScoreToDatabase(context, Score(THREE_WRONG_MODE, totalCorrectAnswers,DateUtils.getCurrentDate())) }
+            lifecycleScope.launch { insertScoreToDatabase(context, Score(THREE_WRONG_MODE, totalCorrectAnswers,
+                DateUtils.getCurrentDate())) }
         }
         else{
             if(chosenBox==boxId) totalCorrectAnswers++
-            else                 totalInCorrectAnswers++
             chosenBox=getNewUI(binding)
         }
     }
 
-    private fun continuousRightModeGamePlay(boxId: String,binding: ActivityMainBinding,context: Context){
+    private fun continuousRightModeGamePlay(boxId: String,binding: FragmentGamePlayBinding,context: Context){
         if(chosenBox==boxId) { continuousRightAnswers++; chosenBox = getNewUI(binding) }
         else {
             Toast.makeText(context,"GameOver! Your Score is $continuousRightAnswers", Toast.LENGTH_LONG).show()
-            lifecycleScope.launch { insertScoreToDatabase(context, Score(CONTINUOUS_RIGHT_MODE, continuousRightAnswers,DateUtils.getCurrentDate())) }
+            lifecycleScope.launch { insertScoreToDatabase(context, Score(CONTINUOUS_RIGHT_MODE, continuousRightAnswers,
+                DateUtils.getCurrentDate())) }
         }
     }
 
-    private fun hundredSecondGamePlay(boxId: String,binding: ActivityMainBinding){
+    private fun hundredSecondGamePlay(boxId: String,binding: FragmentGamePlayBinding){
         if(chosenBox==boxId) { continuousRightAnswers++; }
         else { continuousRightAnswers--; }
         chosenBox = getNewUI(binding)
     }
 
-    private fun startCountdown(binding: ActivityMainBinding,context: Context,seconds: Long) {
+    private fun startCountdown(binding:FragmentGamePlayBinding,context: Context,seconds: Long) {
         countdownTimer?.cancel() // Cancel any existing timers
         countdownTimer = object : CountDownTimer(seconds * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
@@ -354,7 +358,8 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
             override fun onFinish() {
                 binding.countdownTextView.text = "0"
                 Toast.makeText(context,"GameOver! Your Score is $continuousRightAnswers", Toast.LENGTH_LONG).show()
-                lifecycleScope.launch { insertScoreToDatabase(context, Score(HUNDRED_SEC_MODE, continuousRightAnswers,DateUtils.getCurrentDate())) }
+                lifecycleScope.launch { insertScoreToDatabase(context, Score(HUNDRED_SEC_MODE, continuousRightAnswers,
+                    DateUtils.getCurrentDate())) }
             }    // Countdown has finished, you can perform any action here
         }.start()
     }
