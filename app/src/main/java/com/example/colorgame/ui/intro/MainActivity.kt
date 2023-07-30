@@ -1,8 +1,9 @@
-package com.example.colorgame
+package com.example.colorgame.ui.intro
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import com.example.colorgame.R
 import com.example.colorgame.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

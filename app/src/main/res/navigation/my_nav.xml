@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/introFragment"
-        android:name="com.example.colorgame.ui.IntroFragment"
+        android:name="com.example.colorgame.ui.intro.IntroFragment"
         android:label="fragment_intro"
         tools:layout="@layout/fragment_intro" >
         <action
@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/gamePlayFragment"
-        android:name="com.example.colorgame.ui.GamePlayFragment"
+        android:name="com.example.colorgame.ui.game.GamePlayFragment"
         android:label="fragment_game_play"
         tools:layout="@layout/fragment_game_play" >
         <action
@@ -70,7 +70,7 @@
 
     <fragment
         android:id="@+id/tryAgainFragment"
-        android:name="com.example.colorgame.ui.TryAgainFragment"
+        android:name="com.example.colorgame.ui.results.TryAgainFragment"
         android:label="fragment_try_again"
         tools:layout="@layout/fragment_try_again" >
         <action
@@ -90,7 +90,7 @@
 
     <fragment
         android:id="@+id/congratsFragment"
-        android:name="com.example.colorgame.ui.CongratsFragment"
+        android:name="com.example.colorgame.ui.results.CongratsFragment"
         android:label="fragment_congrats"
         tools:layout="@layout/fragment_congrats" >
         <action
@@ -109,7 +109,7 @@
     </fragment>
     <fragment
         android:id="@+id/resultsFragment"
-        android:name="com.example.colorgame.ui.ResultsFragment"
+        android:name="com.example.colorgame.ui.results.ResultsFragment"
         android:label="fragment_results"
         tools:layout="@layout/fragment_results" />
 </navigation>

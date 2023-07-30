@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.colorgame.room.pojo.Score
 
 @Database(entities = [Score::class], version = 1)
 abstract class ScoreDatabase: RoomDatabase() {
@@ -15,11 +16,7 @@ abstract class ScoreDatabase: RoomDatabase() {
 
         fun getInstance(context: Context): ScoreDatabase {
             return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    ScoreDatabase::class.java,
-                    "score_database"
-                ).build()
+                val instance = Room.databaseBuilder(context.applicationContext, ScoreDatabase::class.java, "score_database").build()
                 INSTANCE = instance
                 instance
             }

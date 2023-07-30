@@ -1,4 +1,4 @@
-package com.example.colorgame.ui
+package com.example.colorgame.ui.game
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,10 +10,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.example.colorgame.dataStore.DataStoreManager
-import com.example.colorgame.GamePlay
+import com.example.colorgame.domain.GamePlay
 import com.example.colorgame.R
 import com.example.colorgame.databinding.FragmentGamePlayBinding
-
+import com.example.colorgame.ui.intro.IntroFragmentArgs
 
 class GamePlayFragment : Fragment() {
     private val args: IntroFragmentArgs by navArgs()
@@ -43,12 +43,12 @@ class GamePlayFragment : Fragment() {
     }
 
     private fun goToTryAgainFragment(binding: FragmentGamePlayBinding,score: Int,gameMode: String){
-        val action = GamePlayFragmentDirections.navigateToTryAgainFragment(score,gameMode)
+        val action = GamePlayFragmentDirections.navigateToTryAgainFragment(score, gameMode)
         Navigation.findNavController(binding.root).navigate(action)
     }
 
     private fun goToCongratsFragment(binding: FragmentGamePlayBinding,score: Int,gameMode: String){
-        val action = GamePlayFragmentDirections.navigateToCongratsFragment(score,gameMode)
+        val action = GamePlayFragmentDirections.navigateToCongratsFragment(score, gameMode)
         Navigation.findNavController(binding.root).navigate(action)
     }
 

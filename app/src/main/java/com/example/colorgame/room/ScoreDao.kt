@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.colorgame.room.pojo.Score
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -15,11 +16,12 @@ interface ScoreDao {
     suspend fun deleteScore(score: Score)
 
     @Query("SELECT * FROM Score WHERE gameMode = :gameMode ORDER BY score DESC")
-    fun getAllScoresByGameMode(gameMode: String): Flow<List<Score>>
+    fun getAllScoresByGameMode(gameMode: String): List<Score>
 
     @Query("SELECT COUNT(*) FROM Score WHERE gameMode = :gameMode")
     fun getNumberOfScoresByGameMode(gameMode: String): Flow<Int>
 
     @Query("DELETE FROM Score WHERE gameMode = :gameMode")
     fun deleteScoresByGameMode(gameMode: String)
+
 }

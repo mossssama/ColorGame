@@ -1,12 +1,13 @@
-package com.example.colorgame
+package com.example.colorgame.domain
 
 import android.content.Context
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
+import com.example.colorgame.R
 import com.example.colorgame.dataStore.DataStoreManager
 import com.example.colorgame.databinding.FragmentGamePlayBinding
-import com.example.colorgame.room.Score
+import com.example.colorgame.room.pojo.Score
 import com.example.colorgame.room.ScoreDatabase
 import com.example.colorgame.utils.DateUtils
 import kotlinx.coroutines.CoroutineScope
@@ -325,20 +326,20 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
     }
 
     private fun threeWrongGamePlay(boxId: String, binding: FragmentGamePlayBinding, context: Context) {
-        if(chosenBox!=boxId) { totalInCorrectAnswers++}
+        if(chosenBox !=boxId) { totalInCorrectAnswers++}
 
         if(totalInCorrectAnswers>2) {
             lifecycleScope.launch { insertScoreToDatabase(context, Score(THREE_WRONG_MODE, totalCorrectAnswers, DateUtils.getCurrentDate())) }
             lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
         }
         else{
-            if(chosenBox==boxId) totalCorrectAnswers++
-            chosenBox=getNewUI(binding)
+            if(chosenBox ==boxId) totalCorrectAnswers++
+            chosenBox =getNewUI(binding)
         }
     }
 
     private fun continuousRightModeGamePlay(boxId: String,binding: FragmentGamePlayBinding,context: Context){
-        if(chosenBox==boxId) { continuousRightAnswers++; chosenBox = getNewUI(binding) }
+        if(chosenBox ==boxId) { continuousRightAnswers++; chosenBox = getNewUI(binding) }
         else {
             lifecycleScope.launch { insertScoreToDatabase(context, Score(CONTINUOUS_RIGHT_MODE, continuousRightAnswers, DateUtils.getCurrentDate())) }
             lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
@@ -346,7 +347,7 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
     }
 
     private fun hundredSecondGamePlay(boxId: String,binding: FragmentGamePlayBinding){
-        if(chosenBox==boxId) { continuousRightAnswers++; }
+        if(chosenBox ==boxId) { continuousRightAnswers++; }
         else { continuousRightAnswers--; }
         chosenBox = getNewUI(binding)
     }
@@ -360,7 +361,7 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
             }
             override fun onFinish() {
                 binding.countdownTextView.text = "0"
-                lifecycleScope.launch { insertScoreToDatabase(context, Score(HUNDRED_SEC_MODE, totalCorrectAnswers, DateUtils.getCurrentDate())) }
+                lifecycleScope.launch { insertScoreToDatabase(context, Score(HUNDRED_SEC_MODE, continuousRightAnswers, DateUtils.getCurrentDate())) }
                 lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
             }    // Countdown has finished, you can perform any action here
         }.start()

@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.IntroFragment">
+        tools:context=".ui.intro.IntroFragment">
 
         <Button
             android:id="@+id/correctRun"
@@ -54,11 +53,12 @@
 
 
         <TextView
+            android:text="HELLO"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:text="HELLO"
-            android:layout_gravity="center"
+            app:autoSizeTextType="uniform"
             android:gravity="center"
+            android:layout_gravity="center"
             app:layout_constraintBottom_toTopOf="@+id/guideline5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
