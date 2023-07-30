@@ -37,12 +37,11 @@
                 android:name="score"
                 android:defaultValue="0"
                 app:argType="integer" />
+            <argument
+                android:name="gameMode"
+                app:argType="string"
+                android:defaultValue="hundredSec" />
         </action>
-
-        <argument
-            android:name="score"
-            app:argType="integer"
-            android:defaultValue="0" />
 
         <action
             android:id="@+id/navigateToTryAgainFragment"
@@ -52,7 +51,20 @@
                 android:name="score"
                 android:defaultValue="0"
                 app:argType="integer" />
+            <argument
+                android:name="gameMode"
+                app:argType="string"
+                android:defaultValue="hundredSec" />
         </action>
+
+        <argument
+            android:name="score"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="gameMode"
+            app:argType="string"
+            android:defaultValue="hundredSec" />
 
     </fragment>
 
@@ -60,12 +72,42 @@
         android:id="@+id/tryAgainFragment"
         android:name="com.example.colorgame.ui.TryAgainFragment"
         android:label="fragment_try_again"
-        tools:layout="@layout/fragment_try_again" />
+        tools:layout="@layout/fragment_try_again" >
+        <action
+            android:id="@+id/navigateFromTryAgainToResultsFragment"
+            app:destination="@id/resultsFragment" >
+            <argument
+                android:name="gameMode"
+                app:argType="string"
+                android:defaultValue="hundredeSec" />
+        </action>
+        <argument
+            android:name="gameMode"
+            app:argType="string"
+            android:defaultValue="hundredeSec" />
+    </fragment>
 
     <fragment
         android:id="@+id/congratsFragment"
         android:name="com.example.colorgame.ui.CongratsFragment"
         android:label="fragment_congrats"
         tools:layout="@layout/fragment_congrats" >
+        <action
+            android:id="@+id/navigateFromCongratsToResultsFragment"
+            app:destination="@id/resultsFragment" >
+            <argument
+                android:name="gameMode"
+                app:argType="string"
+                android:defaultValue="hundredSec" />
+        </action>
+        <argument
+            android:name="gameMode"
+            app:argType="string"
+            android:defaultValue="hundredSec" />
     </fragment>
+    <fragment
+        android:id="@+id/resultsFragment"
+        android:name="com.example.colorgame.ui.ResultsFragment"
+        android:label="fragment_results"
+        tools:layout="@layout/fragment_results" />
 </navigation>

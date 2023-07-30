@@ -20,7 +20,7 @@ class DataStoreManager private constructor(private val context: Context) {
     private val _isGameOver = MutableStateFlow(false)
     val isGameOver: StateFlow<Boolean> = _isGameOver.asStateFlow()
 
-    init {
+    init {  
         _isGameOver.value = false
         observeDataStore()
     }

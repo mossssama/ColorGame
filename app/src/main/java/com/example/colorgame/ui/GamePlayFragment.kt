@@ -31,27 +31,25 @@ class GamePlayFragment : Fragment() {
             dataStoreManager.isGameOver.collect { isGameOver ->
                 if(isGameOver){
                     when (args.gameMode) {
-                        /* 100sec time limit ->  Right Answer +1 | Wrong Answer -1  */
-                        GamePlay.HUNDRED_SEC_MODE -> {
-                            val action = GamePlayFragmentDirections.navigateToCongratsFragment(gamePlay.continuousRightAnswers)
-                            Navigation.findNavController(binding.root).navigate(action)
-                        }
-                        /* One chance  */
-                        GamePlay.CONTINUOUS_RIGHT_MODE -> {
-                            val action = GamePlayFragmentDirections.navigateToTryAgainFragment(gamePlay.continuousRightAnswers)
-                            Navigation.findNavController(binding.root).navigate(action)
-                        }
-                        /* Three chances */
-                        GamePlay.THREE_WRONG_MODE -> {
-                            val action = GamePlayFragmentDirections.navigateToTryAgainFragment(gamePlay.totalCorrectAnswers)
-                            Navigation.findNavController(binding.root).navigate(action)
-                        }
+                        GamePlay.HUNDRED_SEC_MODE -> {      goToCongratsFragment(binding,gamePlay.continuousRightAnswers,args.gameMode) }        /* 100sec time limit ->  Right Answer +1 | Wrong Answer -1  */
+                        GamePlay.CONTINUOUS_RIGHT_MODE -> { goToTryAgainFragment(binding,gamePlay.continuousRightAnswers,args.gameMode) }        /* One chance  */
+                        GamePlay.THREE_WRONG_MODE -> {      goToTryAgainFragment(binding,gamePlay.totalCorrectAnswers,args.gameMode)    }        /* Three chances */
                     }
                 }
             }
         }
 
         return binding.root
+    }
+
+    private fun goToTryAgainFragment(binding: FragmentGamePlayBinding,score: Int,gameMode: String){
+        val action = GamePlayFragmentDirections.navigateToTryAgainFragment(score,gameMode)
+        Navigation.findNavController(binding.root).navigate(action)
+    }
+
+    private fun goToCongratsFragment(binding: FragmentGamePlayBinding,score: Int,gameMode: String){
+        val action = GamePlayFragmentDirections.navigateToCongratsFragment(score,gameMode)
+        Navigation.findNavController(binding.root).navigate(action)
     }
 
 }

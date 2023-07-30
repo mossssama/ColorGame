@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.example.colorgame.R
 import com.example.colorgame.databinding.FragmentTryAgainBinding
@@ -17,9 +18,16 @@ class TryAgainFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentTryAgainBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_try_again,container,false)
 
+        /* To be used to display latest score when adjusting UI */
         Toast.makeText(requireActivity().applicationContext,"${args.score}", Toast.LENGTH_LONG).show()
+
+        binding.showResults.setOnClickListener { goToResultsFragment(binding) }
 
         return binding.root
     }
 
+    private fun goToResultsFragment(binding: FragmentTryAgainBinding){
+        val action = TryAgainFragmentDirections.navigateFromTryAgainToResultsFragment(args.gameMode)
+        Navigation.findNavController(binding.root).navigate(action)
+    }
 }
