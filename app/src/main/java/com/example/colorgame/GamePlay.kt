@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
-import android.widget.Toast
+import com.example.colorgame.dataStore.DataStoreManager
 import com.example.colorgame.databinding.FragmentGamePlayBinding
 import com.example.colorgame.room.Score
 import com.example.colorgame.room.ScoreDatabase
@@ -42,7 +42,8 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
 
     var continuousRightAnswers: Int = 0
     var totalCorrectAnswers: Int =0
-    var totalInCorrectAnswers: Int = 0
+    private var totalInCorrectAnswers: Int = 0
+
 
     private var blueColor: Int = context.getColor(R.color.blue)
     private var orangeColor: Int = context.getColor(R.color.orange)
@@ -51,6 +52,8 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
     private var greenColor: Int = context.getColor(R.color.green)
     private var purpleColor: Int = context.getColor(R.color.purple)
     private var blackColor: Int = context.getColor(R.color.black)
+
+    private val dataStoreManager = DataStoreManager.getInstance(context)
 
     private var boxes: HashMap<String, Boolean> = hashMapOf(
         BOX_ONE to false,
@@ -71,6 +74,8 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         PURPLE to false,
         BLACK to false
     )
+
+    init { lifecycleScope.launch { dataStoreManager.saveGameOver(false) } }
 
     private fun chooseRandomColor(): Int = listOf(blueColor, orangeColor, redColor, yellowColor, greenColor, purpleColor, blackColor).random()
     private fun chooseRandomBox(): String = listOf("boxOne", "boxTwo", "boxThree", "boxFour", "boxFive", "boxSix", "boxSeven").random()
@@ -323,9 +328,8 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         if(chosenBox!=boxId) { totalInCorrectAnswers++}
 
         if(totalInCorrectAnswers>2) {
-            Toast.makeText(context,"GameOver! Your Score is $totalCorrectAnswers", Toast.LENGTH_LONG).show()
-            lifecycleScope.launch { insertScoreToDatabase(context, Score(THREE_WRONG_MODE, totalCorrectAnswers,
-                DateUtils.getCurrentDate())) }
+            lifecycleScope.launch { insertScoreToDatabase(context, Score(THREE_WRONG_MODE, totalCorrectAnswers, DateUtils.getCurrentDate())) }
+            lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
         }
         else{
             if(chosenBox==boxId) totalCorrectAnswers++
@@ -336,9 +340,8 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
     private fun continuousRightModeGamePlay(boxId: String,binding: FragmentGamePlayBinding,context: Context){
         if(chosenBox==boxId) { continuousRightAnswers++; chosenBox = getNewUI(binding) }
         else {
-            Toast.makeText(context,"GameOver! Your Score is $continuousRightAnswers", Toast.LENGTH_LONG).show()
-            lifecycleScope.launch { insertScoreToDatabase(context, Score(CONTINUOUS_RIGHT_MODE, continuousRightAnswers,
-                DateUtils.getCurrentDate())) }
+            lifecycleScope.launch { insertScoreToDatabase(context, Score(CONTINUOUS_RIGHT_MODE, continuousRightAnswers, DateUtils.getCurrentDate())) }
+            lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
         }
     }
 
@@ -357,9 +360,8 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
             }
             override fun onFinish() {
                 binding.countdownTextView.text = "0"
-                Toast.makeText(context,"GameOver! Your Score is $continuousRightAnswers", Toast.LENGTH_LONG).show()
-                lifecycleScope.launch { insertScoreToDatabase(context, Score(HUNDRED_SEC_MODE, continuousRightAnswers,
-                    DateUtils.getCurrentDate())) }
+                lifecycleScope.launch { insertScoreToDatabase(context, Score(HUNDRED_SEC_MODE, totalCorrectAnswers, DateUtils.getCurrentDate())) }
+                lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
             }    // Countdown has finished, you can perform any action here
         }.start()
     }

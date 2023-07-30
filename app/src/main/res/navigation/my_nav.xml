@@ -23,9 +23,49 @@
             app:argType="string"
             android:defaultValue="hundredSec" />
     </fragment>
+
     <fragment
         android:id="@+id/gamePlayFragment"
         android:name="com.example.colorgame.ui.GamePlayFragment"
         android:label="fragment_game_play"
-        tools:layout="@layout/fragment_game_play" />
+        tools:layout="@layout/fragment_game_play" >
+        <action
+            android:id="@+id/navigateToCongratsFragment"
+            app:destination="@id/congratsFragment"
+            app:popUpTo="@id/introFragment">
+            <argument
+                android:name="score"
+                android:defaultValue="0"
+                app:argType="integer" />
+        </action>
+
+        <argument
+            android:name="score"
+            app:argType="integer"
+            android:defaultValue="0" />
+
+        <action
+            android:id="@+id/navigateToTryAgainFragment"
+            app:destination="@id/tryAgainFragment"
+            app:popUpTo="@id/introFragment">
+            <argument
+                android:name="score"
+                android:defaultValue="0"
+                app:argType="integer" />
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/tryAgainFragment"
+        android:name="com.example.colorgame.ui.TryAgainFragment"
+        android:label="fragment_try_again"
+        tools:layout="@layout/fragment_try_again" />
+
+    <fragment
+        android:id="@+id/congratsFragment"
+        android:name="com.example.colorgame.ui.CongratsFragment"
+        android:label="fragment_congrats"
+        tools:layout="@layout/fragment_congrats" >
+    </fragment>
 </navigation>
