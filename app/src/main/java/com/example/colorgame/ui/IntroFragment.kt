@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 
 class IntroFragment : Fragment() {
 
-//    private lateinit var scoreDatabase: ScoreDatabase
     private lateinit var dataStoreManager: DataStoreManager
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentIntroBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_intro,container,false)
@@ -25,9 +24,6 @@ class IntroFragment : Fragment() {
         binding.hundredSec.setOnClickListener {     navigateToGamePlayFragment(binding,GamePlay.HUNDRED_SEC_MODE)                       }
         binding.threeMistakes.setOnClickListener {  navigateToGamePlayFragment(binding,GamePlay.THREE_WRONG_MODE)                       }
         binding.multiplier.setOnClickListener {     Snackbar.make(binding.root,"Will be added later",Snackbar.LENGTH_LONG).show()  }
-
-//        scoreDatabase = ScoreDatabase.getInstance(requireActivity().baseContext)
-//        readNumberOfScores(THREE_WRONG_MODE)
 
         return binding.root
     }
@@ -41,11 +37,5 @@ class IntroFragment : Fragment() {
         super.onResume()
         lifecycleScope.launch { dataStoreManager.saveGameOver(false) }
     }
-
-//    private fun readNumberOfScores(gameMode: String) {
-//        lifecycleScope.launch {
-//            scoreDatabase.scoreDao.getNumberOfScoresByGameMode(gameMode).collect{ Toast.makeText(requireContext(),"$it",Toast.LENGTH_LONG).show() }
-//        }
-//    }
 
 }

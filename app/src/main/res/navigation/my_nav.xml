@@ -75,11 +75,12 @@
         tools:layout="@layout/fragment_try_again" >
         <action
             android:id="@+id/navigateFromTryAgainToResultsFragment"
-            app:destination="@id/resultsFragment" >
+            app:destination="@id/resultsFragment"
+            app:popUpTo="@id/introFragment">
             <argument
                 android:name="gameMode"
-                app:argType="string"
-                android:defaultValue="hundredeSec" />
+                android:defaultValue="hundredeSec"
+                app:argType="string" />
         </action>
         <argument
             android:name="gameMode"
@@ -94,11 +95,12 @@
         tools:layout="@layout/fragment_congrats" >
         <action
             android:id="@+id/navigateFromCongratsToResultsFragment"
-            app:destination="@id/resultsFragment" >
+            app:destination="@id/resultsFragment"
+            app:popUpTo="@id/introFragment">
             <argument
                 android:name="gameMode"
-                app:argType="string"
-                android:defaultValue="hundredSec" />
+                android:defaultValue="hundredSec"
+                app:argType="string" />
         </action>
         <argument
             android:name="gameMode"
