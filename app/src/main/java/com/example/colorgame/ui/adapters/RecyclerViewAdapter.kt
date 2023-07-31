@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.colorgame.R
 import com.example.colorgame.room.pojo.ScoreItem
 
-class RecyclerViewAdapter(private val scoresList:List<ScoreItem>):
-    RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>() {
+class RecyclerViewAdapter(private val scoresList:List<ScoreItem>): RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.list_item,parent,false)
@@ -30,4 +29,5 @@ class RecyclerViewAdapter(private val scoresList:List<ScoreItem>):
         val scoreDate: TextView = itemView.findViewById(R.id.date)
         val score: TextView = itemView.findViewById(R.id.score)
     }
+
 }

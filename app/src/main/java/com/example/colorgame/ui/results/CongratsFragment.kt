@@ -28,4 +28,5 @@ class CongratsFragment : Fragment() {
         val action = CongratsFragmentDirections.navigateFromCongratsToResultsFragment(args.gameMode)
         Navigation.findNavController(binding.root).navigate(action)
     }
+
 }

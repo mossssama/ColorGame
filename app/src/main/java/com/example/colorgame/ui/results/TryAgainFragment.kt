@@ -28,4 +28,5 @@ class TryAgainFragment : Fragment() {
         val action = TryAgainFragmentDirections.navigateFromTryAgainToResultsFragment(args.gameMode)
         Navigation.findNavController(binding.root).navigate(action)
     }
+
 }

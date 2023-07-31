@@ -13,6 +13,9 @@ import com.example.colorgame.dataStore.DataStoreManager
 import com.example.colorgame.domain.GamePlay
 import com.example.colorgame.R
 import com.example.colorgame.databinding.FragmentGamePlayBinding
+import com.example.colorgame.domain.GamePlay.Companion.CONTINUOUS_RIGHT_MODE
+import com.example.colorgame.domain.GamePlay.Companion.HUNDRED_SEC_MODE
+import com.example.colorgame.domain.GamePlay.Companion.THREE_WRONG_MODE
 import com.example.colorgame.ui.intro.IntroFragmentArgs
 
 class GamePlayFragment : Fragment() {
@@ -31,9 +34,9 @@ class GamePlayFragment : Fragment() {
             dataStoreManager.isGameOver.collect { isGameOver ->
                 if(isGameOver){
                     when (args.gameMode) {
-                        GamePlay.HUNDRED_SEC_MODE -> {      goToCongratsFragment(binding,gamePlay.continuousRightAnswers,args.gameMode) }        /* 100sec time limit ->  Right Answer +1 | Wrong Answer -1  */
-                        GamePlay.CONTINUOUS_RIGHT_MODE -> { goToTryAgainFragment(binding,gamePlay.continuousRightAnswers,args.gameMode) }        /* One chance  */
-                        GamePlay.THREE_WRONG_MODE -> {      goToTryAgainFragment(binding,gamePlay.totalCorrectAnswers,args.gameMode)    }        /* Three chances */
+                        HUNDRED_SEC_MODE -> {      goToCongratsFragment(binding,gamePlay.continuousRightAnswers,args.gameMode) }        /* 100sec time limit ->  Right Answer +1 | Wrong Answer -1  */
+                        CONTINUOUS_RIGHT_MODE -> { goToTryAgainFragment(binding,gamePlay.continuousRightAnswers,args.gameMode) }        /* One chance  */
+                        THREE_WRONG_MODE -> {      goToTryAgainFragment(binding,gamePlay.totalCorrectAnswers,args.gameMode)    }        /* Three chances */
                     }
                 }
             }

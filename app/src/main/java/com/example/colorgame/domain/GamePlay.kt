@@ -371,4 +371,5 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         val database = ScoreDatabase.getInstance(context = context)
         withContext(Dispatchers.IO) { database.scoreDao.insertScore(score) }
     }
+
 }

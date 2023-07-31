@@ -14,12 +14,11 @@ abstract class ScoreDatabase: RoomDatabase() {
         @Volatile
         private var INSTANCE: ScoreDatabase? = null
 
-        fun getInstance(context: Context): ScoreDatabase {
-            return INSTANCE ?: synchronized(this) {
+        fun getInstance(context: Context): ScoreDatabase = INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(context.applicationContext, ScoreDatabase::class.java, "score_database").build()
                 INSTANCE = instance
                 instance
             }
-        }
     }
+
 }

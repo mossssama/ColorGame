@@ -111,5 +111,9 @@
         android:id="@+id/resultsFragment"
         android:name="com.example.colorgame.ui.results.ResultsFragment"
         android:label="fragment_results"
-        tools:layout="@layout/fragment_results" />
+        tools:layout="@layout/fragment_results" >
+        <action
+            android:id="@+id/navigateToIntroFragment"
+            app:destination="@id/introFragment" />
+    </fragment>
 </navigation>

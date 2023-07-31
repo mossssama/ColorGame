@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.colorgame.R
@@ -27,8 +28,7 @@ class ResultsFragment : Fragment() {
     private lateinit var scoreDatabase: ScoreDatabase
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding: FragmentResultsBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_results, container, false)
+        val binding: FragmentResultsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_results, container, false)
         val gameMode = if (argsOne.gameMode == "hundredSec") argsTwo.gameMode else argsOne.gameMode
         val newArrayList: ArrayList<ScoreItem> = ArrayList()
         scoreDatabase = ScoreDatabase.getInstance(requireActivity().baseContext)
@@ -37,23 +37,27 @@ class ResultsFragment : Fragment() {
 
         lifecycleScope.launch {
             val results = getResults(readResults(gameMode))
-            newArrayList.addAll(results) // Add the retrieved results to the list
+            newArrayList.addAll(results)                                     // Add the retrieved results to the list
             binding.recyclerView.adapter = RecyclerViewAdapter(newArrayList) // Set the RecyclerView adapter here
         }
+
+        binding.back.setOnClickListener { goToIntroFragment(binding) }
+
         return binding.root
     }
 
-
-    private suspend fun readResults(gameMode: String): List<Score> {
-        return withContext(Dispatchers.IO) {
-            scoreDatabase.scoreDao.getAllScoresByGameMode(gameMode)
-        }
-    }
+    private suspend fun readResults(gameMode: String): List<Score> = withContext(Dispatchers.IO) { scoreDatabase.scoreDao.getAllScoresByGameMode(gameMode) }
 
     private fun getResults(scores: List<Score>): List<ScoreItem> {
         val sortedScores = scores.sortedByDescending { it.score }
         return sortedScores.mapIndexed { index, score -> ScoreItem(rank = index + 1, data = score.date, score = score.score) }
     }
+
+    private fun goToIntroFragment(binding: FragmentResultsBinding){
+        val action = ResultsFragmentDirections.navigateToIntroFragment()
+        Navigation.findNavController(binding.root).navigate(action)
+    }
+
 }
 
 
