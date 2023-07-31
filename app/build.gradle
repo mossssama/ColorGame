@@ -66,5 +66,11 @@ dependencies {
     /* DataStore dependencies */
     implementation "androidx.datastore:datastore-preferences:1.0.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1"
+
+
+    /* Admob Ads dependency */
+    implementation 'com.google.android.gms:play-services-ads:22.2.0'
+
+
 }
 

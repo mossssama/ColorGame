@@ -12,20 +12,25 @@ import com.example.colorgame.databinding.FragmentIntroBinding
 import com.example.colorgame.domain.GamePlay.Companion.CONTINUOUS_RIGHT_MODE
 import com.example.colorgame.domain.GamePlay.Companion.HUNDRED_SEC_MODE
 import com.example.colorgame.domain.GamePlay.Companion.THREE_WRONG_MODE
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class IntroFragment : Fragment() {
 
     private lateinit var dataStoreManager: DataStoreManager
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: FragmentIntroBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_intro,container,false)
         dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)
 
         binding.correctRun.setOnClickListener {     goToGamePlayFragment(binding, CONTINUOUS_RIGHT_MODE)   }
         binding.hundredSec.setOnClickListener {     goToGamePlayFragment(binding, HUNDRED_SEC_MODE)        }
         binding.threeMistakes.setOnClickListener {  goToGamePlayFragment(binding, THREE_WRONG_MODE)        }
-        binding.multiplier.setOnClickListener {     fireSnackbar(binding)                                  }
+        binding.multiplier.setOnClickListener {     fireSnack(binding)                                  }
+
+        /* Load ads on Banner */
+        MobileAds.initialize(requireContext()) { loadAds(binding) }
 
         return binding.root
     }
@@ -40,8 +45,12 @@ class IntroFragment : Fragment() {
         Navigation.findNavController(binding.root).navigate(action)
     }
 
-    private fun fireSnackbar(binding: FragmentIntroBinding){
+    private fun fireSnack(binding: FragmentIntroBinding){
         Snackbar.make(binding.root,"Will be added later",Snackbar.LENGTH_LONG).show()
     }
 
+    private fun loadAds(binding: FragmentIntroBinding){
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
+    }
 }
