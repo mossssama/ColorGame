@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ColorGame</string>
+    <string name="app_name">ColorQuest</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="app_admob_id">"ca-app-pub-3940256099942544~3347511713</string>

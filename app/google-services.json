@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "771686035605",
+    "project_id": "colorquest-d5b73",
+    "storage_bucket": "colorquest-d5b73.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771686035605:android:0c8698ba067482f6926b9c",
+        "android_client_info": {
+          "package_name": "com.example.colorgame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "771686035605-1bv28q38n6e17oa9mm3iqeuakmgakbgk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmJryLUne5Jb7RW19huB1M-MlOZa9Mpfo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "771686035605-1bv28q38n6e17oa9mm3iqeuakmgakbgk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

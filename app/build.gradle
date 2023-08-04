@@ -3,11 +3,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 33
+
     buildFeatures {
         dataBinding true
+        viewBinding true
     }
     defaultConfig {
         applicationId 'com.example.colorgame'
@@ -59,6 +62,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"                  /* Navigation Component */
 
     implementation "androidx.room:room-runtime:$room_version"
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.7.0'
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version" // optional - Kotlin Extensions and Coroutines support for Room
 

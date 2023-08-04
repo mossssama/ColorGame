@@ -22,11 +22,14 @@
             android:name="gameMode"
             app:argType="string"
             android:defaultValue="hundredSec" />
+        <action
+            android:id="@+id/navigateToMultiplierFragment"
+            app:destination="@id/multiplierFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/gamePlayFragment"
-        android:name="com.example.colorgame.ui.game.GamePlayFragment"
+        android:name="com.example.colorgame.ui.mainMode.GamePlayFragment"
         android:label="fragment_game_play"
         tools:layout="@layout/fragment_game_play" >
         <action
@@ -114,6 +117,90 @@
         tools:layout="@layout/fragment_results" >
         <action
             android:id="@+id/navigateToIntroFragment"
+            app:destination="@id/introFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.colorgame.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/friendsFragment"
+        android:name="com.example.colorgame.FriendsFragment"
+        android:label="fragment_friends"
+        tools:layout="@layout/fragment_friends" />
+    <fragment
+        android:id="@+id/multiplierFragment"
+        android:name="com.example.colorgame.ui.multiplayerMode.MultiplayerSetupFragment"
+        android:label="fragment_multiplier"
+        tools:layout="@layout/fragment_multiplier" >
+        <action
+            android:id="@+id/navigateToMultiplayerGamePlay"
+            app:destination="@id/multiplayerGamePlayFragment"
+            app:popUpTo="@id/introFragment">
+            <argument
+                android:name="myUserName"
+                app:argType="string" />
+            <argument
+                android:name="myFriendName"
+                app:argType="string" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/multiplayerGamePlayFragment"
+        android:name="com.example.colorgame.ui.multiplayerMode.MultiplayerGamePlayFragment"
+        android:label="fragment_multiplayer_game_play"
+        tools:layout="@layout/fragment_multiplayer_game_play" >
+        <argument
+            android:name="myUserName"
+            app:argType="string" />
+        <argument
+            android:name="myFriendName"
+            app:argType="string" />
+        <action
+            android:id="@+id/navigateToMultiplayerResultsFragment"
+            app:destination="@id/multiplayerResultsFragment"
+            app:popUpTo="@id/introFragment">
+            <argument
+                android:name="myUserName"
+                app:argType="string" />
+            <argument
+                android:name="myFriendName"
+                app:argType="string" />
+            <argument
+                android:name="myScore"
+                app:argType="integer"
+                android:defaultValue="0" />
+            <argument
+                android:name="myFriendScore"
+                app:argType="integer"
+                android:defaultValue="0" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/multiplayerResultsFragment"
+        android:name="com.example.colorgame.ui.multiplayerMode.MultiplayerResultsFragment"
+        android:label="fragment_multiplayer_results"
+        tools:layout="@layout/fragment_multiplayer_results" >
+        <argument
+            android:name="myUserName"
+            app:argType="string" />
+        <argument
+            android:name="myFriendName"
+            app:argType="string" />
+        <argument
+            android:name="myScore"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="myFriendScore"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/returnToMultiPlayerGamePlayFragment"
+            app:destination="@id/multiplayerGamePlayFragment" />
+        <action
+            android:id="@+id/returnToIntroFragment"
             app:destination="@id/introFragment" />
     </fragment>
 </navigation>

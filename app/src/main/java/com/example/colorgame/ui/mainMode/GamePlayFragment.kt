@@ -1,4 +1,4 @@
-package com.example.colorgame.ui.game
+package com.example.colorgame.ui.mainMode
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import com.example.colorgame.dataStore.DataStoreManager
+import com.example.colorgame.jetPackDataStore.DataStoreManager
 import com.example.colorgame.domain.GamePlay
 import com.example.colorgame.R
 import com.example.colorgame.databinding.FragmentGamePlayBinding

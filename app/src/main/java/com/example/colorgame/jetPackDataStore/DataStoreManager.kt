@@ -1,4 +1,4 @@
-package com.example.colorgame.dataStore
+package com.example.colorgame.jetPackDataStore
 
 import android.content.Context
 import androidx.datastore.core.DataStore

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.multiplayerMode.MultiplayerSetupFragment">
+
+        <EditText
+            android:id="@+id/etOne"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Enter a unique username for you"
+            android:inputType="text"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.8" />
+
+        <EditText
+            android:id="@+id/etTwo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Enter your friend's username"
+            android:inputType="text"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etOne"
+            app:layout_constraintWidth_percent="0.8" />
+
+        <Button
+            android:id="@+id/addMe"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            app:layout_constraintBottom_toBottomOf="@+id/etOne"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/etOne"
+            app:layout_constraintTop_toTopOf="@+id/etOne" />
+
+        <Button
+            android:id="@+id/addFriend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            app:layout_constraintBottom_toBottomOf="@+id/etTwo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/etOne"
+            app:layout_constraintTop_toBottomOf="@+id/addMe" />
+
+
+        <Button
+            android:id="@+id/startPlaying"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Start Playing"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

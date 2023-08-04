@@ -5,11 +5,15 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import com.example.colorgame.R
-import com.example.colorgame.dataStore.DataStoreManager
+import com.example.colorgame.jetPackDataStore.DataStoreManager
 import com.example.colorgame.databinding.FragmentGamePlayBinding
+import com.example.colorgame.databinding.FragmentMultiplayerGamePlayBinding
+import com.example.colorgame.firebaseFireStore.FirestoreManager
 import com.example.colorgame.room.pojo.Score
 import com.example.colorgame.room.ScoreDatabase
 import com.example.colorgame.utils.DateUtils
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -55,6 +59,7 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
     private var blackColor: Int = context.getColor(R.color.black)
 
     private val dataStoreManager = DataStoreManager.getInstance(context)
+    private val fireStoreManager = FirestoreManager(Firebase.firestore)
 
     private var boxes: HashMap<String, Boolean> = hashMapOf(
         BOX_ONE to false,
@@ -207,7 +212,35 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         }
     }
 
+    private fun assignColorsToBoxes(linkedBoxesAndColors: HashMap<String, Int>, binding: FragmentMultiplayerGamePlayBinding) {
+        for ((box, color) in linkedBoxesAndColors) {
+            when (box) {
+                BOX_ONE ->  binding.boxOne.setTextColor(color)
+                BOX_TWO ->  binding.boxTwo.setTextColor(color)
+                BOX_THREE -> binding.boxThree.setTextColor(color)
+                BOX_FOUR -> binding.boxFour.setTextColor(color)
+                BOX_FIVE -> binding.boxFive.setTextColor(color)
+                BOX_SIX -> binding.boxSix.setTextColor(color)
+                BOX_SEVEN -> binding.boxSeven.setTextColor(color)
+            }
+        }
+    }
+
     private fun assignTextsToBoxes(linkedBoxesAndTexts:HashMap<String,String>, binding:FragmentGamePlayBinding){
+        for ((box, color) in linkedBoxesAndTexts) {
+            when (box) {
+                BOX_ONE ->  binding.boxOne.text = color
+                BOX_TWO ->  binding.boxTwo.text = color
+                BOX_THREE -> binding.boxThree.text = color
+                BOX_FOUR -> binding.boxFour.text = color
+                BOX_FIVE -> binding.boxFive.text = color
+                BOX_SIX -> binding.boxSix.text = color
+                BOX_SEVEN -> binding.boxSeven.text = color
+            }
+        }
+    }
+
+    private fun assignTextsToBoxes(linkedBoxesAndTexts:HashMap<String,String>, binding:FragmentMultiplayerGamePlayBinding){
         for ((box, color) in linkedBoxesAndTexts) {
             when (box) {
                 BOX_ONE ->  binding.boxOne.text = color
@@ -233,6 +266,18 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         }
     }
 
+    private fun assignTextAndColorToRightBox(chosenBox: String, correctColor:Int, correctText:String, binding: FragmentMultiplayerGamePlayBinding) {
+        when (chosenBox) {
+            BOX_ONE -> { binding.boxOne.setTextColor(correctColor);     binding.boxOne.text = correctText;      boxes[BOX_ONE] = true }
+            BOX_TWO -> { binding.boxTwo.setTextColor(correctColor);     binding.boxTwo.text = correctText;      boxes[BOX_TWO] = true }
+            BOX_THREE -> { binding.boxThree.setTextColor(correctColor); binding.boxThree.text = correctText;    boxes[BOX_THREE] = true }
+            BOX_FOUR -> { binding.boxFour.setTextColor(correctColor);   binding.boxFour.text = correctText;     boxes[BOX_FOUR] = true }
+            BOX_FIVE -> { binding.boxFive.setTextColor(correctColor);   binding.boxFive.text = correctText;     boxes[BOX_FIVE] = true }
+            BOX_SIX -> { binding.boxSix.setTextColor(correctColor);     binding.boxSix.text = correctText;      boxes[BOX_SIX] = true }
+            BOX_SEVEN -> { binding.boxSeven.setTextColor(correctColor); binding.boxSeven.text = correctText;    boxes[BOX_SEVEN] = true }
+        }
+    }
+
     private fun resetBoxesAndColors(){
         resetBoxesToFalse(boxes)
         resetColorsToFalse(colors)
@@ -247,6 +292,16 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
     }
 
     private fun assureEveryBoxHasTextAndDifferentColor(chosenBox:String, correctColor:Int, correctText:String, boxesTextsMap:HashMap<String,String>, binding: FragmentGamePlayBinding): HashMap<String, Int> {
+        var boxesColorsMap:HashMap<String,Int>
+        do{
+            resetBoxesAndColors()
+            assignTextAndColorToRightBox(chosenBox,correctColor,correctText,binding)
+            boxesColorsMap = getMapOfBoxesAndColors(boxes, colors, correctColor)
+        }while(!areKeyPairsUnique(boxesTextsMap,convertColorsToNames(boxesColorsMap)))
+        return boxesColorsMap
+    }
+
+    private fun assureEveryBoxHasTextAndDifferentColor(chosenBox:String, correctColor:Int, correctText:String, boxesTextsMap:HashMap<String,String>, binding: FragmentMultiplayerGamePlayBinding): HashMap<String, Int> {
         var boxesColorsMap:HashMap<String,Int>
         do{
             resetBoxesAndColors()
@@ -287,10 +342,38 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         return chosenBox
     }
 
+    fun getNewUI(binding: FragmentMultiplayerGamePlayBinding):String {
+        val correctColor = chooseRandomColor()                                     /* Choose Random Color to be the Right Color */
+        val correctText = getColorText(correctColor)                               /* Return the Color as Text */
+        val chosenBox = chooseRandomBox()                                          /* Choose Random box to put in it the text Colored with the same color of the written word */
+        assignTextAndColorToRightBox(chosenBox,correctColor,correctText,binding)   /* Assign text Colored to the chosenBox */
+
+        /* Write a text to each box */
+        val boxesTextsMap = getMapOfBoxesAndTexts(boxes,colors)
+        assignTextsToBoxes(boxesTextsMap,binding)
+
+        /* Choose a color to text that is different from the text word */
+        val boxesColorsMap = assureEveryBoxHasTextAndDifferentColor(chosenBox,correctColor, correctText, boxesTextsMap,binding)
+
+        /* Apply a color to each box */
+        assignColorsToBoxes(boxesColorsMap,binding)
+
+        resetBoxesAndColors()
+
+        /* For debugging only */
+        debuggingForCheck(chosenBox,boxesTextsMap,boxesColorsMap)
+
+        return chosenBox
+    }
 
     fun setGamePlay(gameMode: String,binding: FragmentGamePlayBinding,context: Context){
         if(gameMode == HUNDRED_SEC_MODE) startCountdown(binding,context,100)
         onBoxesListener(gameMode,binding,context)
+    }
+
+    fun setGamePlay(gameMode: String,playerName: String,binding: FragmentMultiplayerGamePlayBinding,context: Context){
+        if(gameMode == HUNDRED_SEC_MODE) startCountdown(binding,context,100)
+        onBoxesListener(gameMode,playerName,binding,context)
     }
 
     private fun onBoxesListener(gameMode: String,binding: FragmentGamePlayBinding,context: Context) {
@@ -301,6 +384,16 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         boxOnClickListener(binding.boxFive,gameMode,binding,context)
         boxOnClickListener(binding.boxSix,gameMode,binding,context)
         boxOnClickListener(binding.boxSeven,gameMode,binding,context)
+    }
+
+    private fun onBoxesListener(gameMode: String,playerName: String,binding: FragmentMultiplayerGamePlayBinding,context: Context) {
+        boxOnClickListener(binding.boxOne,gameMode,playerName,binding,context)
+        boxOnClickListener(binding.boxTwo,gameMode,playerName,binding,context)
+        boxOnClickListener(binding.boxThree,gameMode,playerName,binding,context)
+        boxOnClickListener(binding.boxFour,gameMode,playerName,binding,context)
+        boxOnClickListener(binding.boxFive,gameMode,playerName,binding,context)
+        boxOnClickListener(binding.boxSix,gameMode,playerName,binding,context)
+        boxOnClickListener(binding.boxSeven,gameMode,playerName,binding,context)
     }
 
     private fun boxOnClickListener(boxView: View, gameMode: String,binding: FragmentGamePlayBinding, context: Context) {
@@ -325,7 +418,42 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         }
     }
 
+    private fun boxOnClickListener(boxView: View, gameMode: String,playerName: String,binding: FragmentMultiplayerGamePlayBinding, context: Context) {
+        boxView.setOnClickListener {
+            val boxId = when (boxView.id) {
+                R.id.boxOne -> BOX_ONE
+                R.id.boxTwo -> BOX_TWO
+                R.id.boxThree -> BOX_THREE
+                R.id.boxFour -> BOX_FOUR
+                R.id.boxFive -> BOX_FIVE
+                R.id.boxSix -> BOX_SIX
+                R.id.boxSeven -> BOX_SEVEN
+                else -> return@setOnClickListener
+            }
+
+            when (gameMode){
+                CONTINUOUS_RIGHT_MODE -> continuousRightModeGamePlay(boxId,binding,context)
+                HUNDRED_SEC_MODE -> hundredSecondGamePlay(playerName,boxId,binding)
+                THREE_WRONG_MODE -> threeWrongGamePlay(boxId,binding,context)
+            }
+
+        }
+    }
+
     private fun threeWrongGamePlay(boxId: String, binding: FragmentGamePlayBinding, context: Context) {
+        if(chosenBox !=boxId) { totalInCorrectAnswers++}
+
+        if(totalInCorrectAnswers>2) {
+            lifecycleScope.launch { insertScoreToDatabase(context, Score(THREE_WRONG_MODE, totalCorrectAnswers, DateUtils.getCurrentDate())) }
+            lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
+        }
+        else{
+            if(chosenBox ==boxId) totalCorrectAnswers++
+            chosenBox =getNewUI(binding)
+        }
+    }
+
+    private fun threeWrongGamePlay(boxId: String, binding: FragmentMultiplayerGamePlayBinding, context: Context) {
         if(chosenBox !=boxId) { totalInCorrectAnswers++}
 
         if(totalInCorrectAnswers>2) {
@@ -346,13 +474,42 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         }
     }
 
+    private fun continuousRightModeGamePlay(boxId: String,binding: FragmentMultiplayerGamePlayBinding,context: Context){
+        if(chosenBox ==boxId) { continuousRightAnswers++; chosenBox = getNewUI(binding) }
+        else {
+            lifecycleScope.launch { insertScoreToDatabase(context, Score(CONTINUOUS_RIGHT_MODE, continuousRightAnswers, DateUtils.getCurrentDate())) }
+            lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
+        }
+    }
+
     private fun hundredSecondGamePlay(boxId: String,binding: FragmentGamePlayBinding){
         if(chosenBox ==boxId) { continuousRightAnswers++; }
         else { continuousRightAnswers--; }
         chosenBox = getNewUI(binding)
     }
 
+    private fun hundredSecondGamePlay(playerName: String, boxId: String,binding: FragmentMultiplayerGamePlayBinding){
+        if(chosenBox ==boxId) { fireStoreManager.incrementScore(playerName, onSuccess = {}, onFailure = {});  continuousRightAnswers++; }
+        else { fireStoreManager.decrementScore(playerName, onSuccess = {}, onFailure = {}); continuousRightAnswers--; }
+        chosenBox = getNewUI(binding)
+    }
+
     private fun startCountdown(binding:FragmentGamePlayBinding,context: Context,seconds: Long) {
+        countdownTimer?.cancel() // Cancel any existing timers
+        countdownTimer = object : CountDownTimer(seconds * 1000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val remainingSeconds = millisUntilFinished / 1000
+                binding.countdownTextView.text = remainingSeconds.toString()        // Update the TextView with the remaining seconds
+            }
+            override fun onFinish() {
+                binding.countdownTextView.text = "0"
+                lifecycleScope.launch { insertScoreToDatabase(context, Score(HUNDRED_SEC_MODE, continuousRightAnswers, DateUtils.getCurrentDate())) }
+                lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
+            }    // Countdown has finished, you can perform any action here
+        }.start()
+    }
+
+    private fun startCountdown(binding:FragmentMultiplayerGamePlayBinding,context: Context,seconds: Long) {
         countdownTimer?.cancel() // Cancel any existing timers
         countdownTimer = object : CountDownTimer(seconds * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {

@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:background="@color/black"
         android:fitsSystemWindows="true"
-        tools:context=".ui.game.GamePlayFragment">
+        tools:context=".ui.mainMode.GamePlayFragment">
 
         <TextView
             android:id="@+id/boxOne"
