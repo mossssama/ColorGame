@@ -21,7 +21,6 @@ class MultiplayerSetupFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentMultiplierBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplier,container,false)
-
         val fireStoreManager = FirestoreManager(Firebase.firestore)
 
         binding.addMe.setOnClickListener { addMe(binding,fireStoreManager) }

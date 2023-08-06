@@ -9,10 +9,10 @@ import androidx.navigation.Navigation
 import com.example.colorgame.R
 import com.example.colorgame.jetPackDataStore.DataStoreManager
 import com.example.colorgame.databinding.FragmentIntroBinding
+import com.example.colorgame.domain.AdsManager
 import com.example.colorgame.domain.GamePlay.Companion.CONTINUOUS_RIGHT_MODE
 import com.example.colorgame.domain.GamePlay.Companion.HUNDRED_SEC_MODE
 import com.example.colorgame.domain.GamePlay.Companion.THREE_WRONG_MODE
-import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.launch
 
@@ -22,11 +22,13 @@ class IntroFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: FragmentIntroBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_intro,container,false)
+        val adsManager = AdsManager(requireContext(),"IntroFragment")
+
         dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)
 
         initOnClickListeners(binding)                                   /* Init onClickListeners */
 
-        MobileAds.initialize(requireContext()) { loadAds(binding) }     /* Load ads on Banner */
+        MobileAds.initialize(requireContext()) { adsManager.loadBannerAds(binding) }     /* Load ads on Banner */
 
         return binding.root
     }
@@ -49,11 +51,6 @@ class IntroFragment : Fragment() {
 
     private fun goToMultiplierFragment(binding: FragmentIntroBinding){
         Navigation.findNavController(binding.root).navigate(IntroFragmentDirections.navigateToMultiplierFragment())
-    }
-
-    private fun loadAds(binding: FragmentIntroBinding){
-        val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
     }
 
 }

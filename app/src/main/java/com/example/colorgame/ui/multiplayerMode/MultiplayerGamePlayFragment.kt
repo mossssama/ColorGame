@@ -7,15 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.example.colorgame.domain.AdsManager
 import com.example.colorgame.R
 import com.example.colorgame.databinding.FragmentMultiplayerGamePlayBinding
 import com.example.colorgame.domain.GamePlay
 import com.example.colorgame.firebaseFireStore.FirestoreManager
 import com.example.colorgame.jetPackDataStore.DataStoreManager
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.GlobalScope
@@ -25,13 +24,15 @@ class MultiplayerGamePlayFragment : Fragment() {
     private val args: MultiplayerGamePlayFragmentArgs by navArgs()
 
     private lateinit var fireStoreManager: FirestoreManager
-    private lateinit var dataStoreManager: DataStoreManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentMultiplayerGamePlayBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplayer_game_play,container,false)
-        dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)   /* DataStore instance */
+        val adsManager = AdsManager(requireContext(),"MultiplayerGamePlayFragment")             /* AdsManager instance */
+        val dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)   /* DataStore instance */
 
-        MobileAds.initialize(requireContext()) { loadAds(binding) }     /* Load ads on Banner */
+        MobileAds.initialize(requireContext()) { adsManager.loadBannerAds(binding); adsManager.loadInterstitialAds() }     /* Load ads */
+
+        resetValues()
         setNames(binding,args.myUserName,args.myFriendName)             /* Set names */
 
         fireStoreManager = FirestoreManager(Firebase.firestore)
@@ -41,7 +42,6 @@ class MultiplayerGamePlayFragment : Fragment() {
         fireStoreManager.listenToScoreChanges(args.myFriendName) { score -> binding.myFriendScore.text=score.toString() }
 
         /* init game */
-        resetValues()
         val gamePlay= GamePlay(lifecycleScope, requireActivity().baseContext)
         GamePlay.chosenBox = gamePlay.getNewUI(binding)
         gamePlay.setGamePlay(GamePlay.HUNDRED_SEC_MODE,args.myUserName,binding,requireActivity().baseContext)
@@ -52,8 +52,8 @@ class MultiplayerGamePlayFragment : Fragment() {
                 if(isGameOver){
                     fireStoreManager.readScore(args.myUserName, onSuccess = { myScore ->
                         fireStoreManager.readScore(args.myFriendName, onSuccess = { myFriendScore ->
-                            goToMultiplayerResultsFragment(binding,args.myUserName,args.myFriendName,myScore,myFriendScore)
-                            setGameOverToFalse()
+                            adsManager.showInterstitialAds(binding,args.myUserName,args.myFriendName,myScore,myFriendScore)
+                            setGameOverToFalse(dataStoreManager)
                         }, onFailure = {})
                     }, onFailure = {})
                 }
@@ -74,22 +74,13 @@ class MultiplayerGamePlayFragment : Fragment() {
         binding.myFriend.text=myFriendName
     }
 
-    private fun goToMultiplayerResultsFragment(binding: FragmentMultiplayerGamePlayBinding,myUserName:String,myFriendName:String,myScore:Int,myFriendScore:Int){
-        Navigation.findNavController(binding.root).navigate(MultiplayerGamePlayFragmentDirections.navigateToMultiplayerResultsFragment(myUserName, myFriendName, myScore, myFriendScore))
-    }
-
     private fun resetValues(){
         fireStoreManager.updateCountDown(args.myUserName,100, onSuccess = {}, onFailure = {})
         fireStoreManager.setScoreToZero(args.myUserName, onSuccess = {}, onFailure = {})
         fireStoreManager.setScoreToZero(args.myFriendName, onSuccess = {}, onFailure = {})
     }
 
-    private fun loadAds(binding: FragmentMultiplayerGamePlayBinding){
-        val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
-    }
-
-    private fun setGameOverToFalse() {
+    private fun setGameOverToFalse(dataStoreManager: DataStoreManager) {
         GlobalScope.launch { dataStoreManager.saveGameOver(false) }
     }
 

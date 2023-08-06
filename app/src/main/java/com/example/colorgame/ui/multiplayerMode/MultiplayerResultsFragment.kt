@@ -58,8 +58,7 @@ class MultiplayerResultsFragment : Fragment() {
     }
 
     private fun updateBannerText(binding: FragmentMultiplayerResultsBinding, myScore: Int, myFriendScore: Int){
-        if(myScore>=myFriendScore)    binding.congratsOrHardLuck.text="Well Done"
-        else                          binding.congratsOrHardLuck.text="Hard Luck"
+        binding.congratsOrHardLuck.text=if (myScore >= myFriendScore) "Well Done" else "Hard Luck"
     }
 
     private fun updateScoresUI(binding: FragmentMultiplayerResultsBinding, myScore: Int, myFriendScore: Int){

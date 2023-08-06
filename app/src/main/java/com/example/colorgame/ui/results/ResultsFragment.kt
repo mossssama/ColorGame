@@ -25,18 +25,16 @@ class ResultsFragment : Fragment() {
     private val argsOne: CongratsFragmentArgs by navArgs()
     private val argsTwo: TryAgainFragmentArgs by navArgs()
 
-    private lateinit var scoreDatabase: ScoreDatabase
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: FragmentResultsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_results, container, false)
+        val scoreDatabase = ScoreDatabase.getInstance(requireActivity().baseContext)
         val gameMode = if (argsOne.gameMode == "hundredSec") argsTwo.gameMode else argsOne.gameMode
         val newArrayList: ArrayList<ScoreItem> = ArrayList()
-        scoreDatabase = ScoreDatabase.getInstance(requireActivity().baseContext)
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         lifecycleScope.launch {
-            val results = getResults(readResults(gameMode))
+            val results = getResults(readResults(scoreDatabase,gameMode))
             newArrayList.addAll(results)                                     // Add the retrieved results to the list
             binding.recyclerView.adapter = RecyclerViewAdapter(newArrayList) // Set the RecyclerView adapter here
         }
@@ -46,7 +44,7 @@ class ResultsFragment : Fragment() {
         return binding.root
     }
 
-    private suspend fun readResults(gameMode: String): List<Score> = withContext(Dispatchers.IO) { scoreDatabase.scoreDao.getAllScoresByGameMode(gameMode) }
+    private suspend fun readResults(scoreDatabase: ScoreDatabase,gameMode: String): List<Score> = withContext(Dispatchers.IO) { scoreDatabase.scoreDao.getAllScoresByGameMode(gameMode) }
 
     private fun getResults(scores: List<Score>): List<ScoreItem> {
         val sortedScores = scores.sortedByDescending { it.score }
