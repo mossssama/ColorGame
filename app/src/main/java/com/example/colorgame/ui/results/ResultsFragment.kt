@@ -54,8 +54,7 @@ class ResultsFragment : Fragment() {
     }
 
     private fun goToIntroFragment(binding: FragmentResultsBinding){
-        val action = ResultsFragmentDirections.navigateToIntroFragment()
-        Navigation.findNavController(binding.root).navigate(action)
+        Navigation.findNavController(binding.root).navigate(ResultsFragmentDirections.navigateToIntroFragment())
     }
 
 }

@@ -27,7 +27,6 @@ class MultiplayerGamePlayFragment : Fragment() {
     private lateinit var fireStoreManager: FirestoreManager
     private lateinit var dataStoreManager: DataStoreManager
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentMultiplayerGamePlayBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplayer_game_play,container,false)
         dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)   /* DataStore instance */
@@ -42,7 +41,7 @@ class MultiplayerGamePlayFragment : Fragment() {
         fireStoreManager.listenToScoreChanges(args.myFriendName) { score -> binding.myFriendScore.text=score.toString() }
 
         /* init game */
-        resetScores()
+        resetValues()
         val gamePlay= GamePlay(lifecycleScope, requireActivity().baseContext)
         GamePlay.chosenBox = gamePlay.getNewUI(binding)
         gamePlay.setGamePlay(GamePlay.HUNDRED_SEC_MODE,args.myUserName,binding,requireActivity().baseContext)
@@ -64,27 +63,23 @@ class MultiplayerGamePlayFragment : Fragment() {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        fireStoreManager.removeAllScoreListeners()
+        fireStoreManager.removeAllCountDownListeners()
+    }
+
     private fun setNames(binding:FragmentMultiplayerGamePlayBinding,myName:String,myFriendName:String){
         binding.me.text=myName
         binding.myFriend.text=myFriendName
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        fireStoreManager.removeAllScoreListeners()
-    }
-
     private fun goToMultiplayerResultsFragment(binding: FragmentMultiplayerGamePlayBinding,myUserName:String,myFriendName:String,myScore:Int,myFriendScore:Int){
-        val action = MultiplayerGamePlayFragmentDirections.navigateToMultiplayerResultsFragment(
-            myUserName,
-            myFriendName,
-            myScore,
-            myFriendScore
-        )
-        Navigation.findNavController(binding.root).navigate(action)
+        Navigation.findNavController(binding.root).navigate(MultiplayerGamePlayFragmentDirections.navigateToMultiplayerResultsFragment(myUserName, myFriendName, myScore, myFriendScore))
     }
 
-    private fun resetScores(){
+    private fun resetValues(){
+        fireStoreManager.updateCountDown(args.myUserName,100, onSuccess = {}, onFailure = {})
         fireStoreManager.setScoreToZero(args.myUserName, onSuccess = {}, onFailure = {})
         fireStoreManager.setScoreToZero(args.myFriendName, onSuccess = {}, onFailure = {})
     }
@@ -95,7 +90,6 @@ class MultiplayerGamePlayFragment : Fragment() {
     }
 
     private fun setGameOverToFalse() {
-        // Call the saveGameOver method with false to set the gameOver variable to false
         GlobalScope.launch { dataStoreManager.saveGameOver(false) }
     }
 

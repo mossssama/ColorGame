@@ -31,19 +31,16 @@ class MultiplayerSetupFragment : Fragment() {
     }
 
     private fun goToMultiplayerGamePlayFragment(binding: FragmentMultiplierBinding,myUserName:String,myFriendUserName: String){
-        val action = MultiplayerSetupFragmentDirections.navigateToMultiplayerGamePlay(
-            myUserName,
-            myFriendUserName
-        )
-        Navigation.findNavController(binding.root).navigate(action)
+        Navigation.findNavController(binding.root).navigate(MultiplayerSetupFragmentDirections.navigateToMultiplayerGamePlay(myUserName, myFriendUserName))
     }
 
     private fun addMe(binding: FragmentMultiplierBinding,fireStoreManager: FirestoreManager){
         currentPlayerUserName = binding.etOne.text.toString()
-        val initScore = hashMapOf("score" to 0)
+        val initPlayer = mapOf("score" to 0,"countDown" to 100)
+
         if (currentPlayerUserName.isNotBlank()) {
-            fireStoreManager.addUserIfDoesNotExist(currentPlayerUserName, initScore,
-                onSuccess = { fireStoreManager.initPlayerScore(currentPlayerUserName, initScore, onSuccess = {}) {} },
+            fireStoreManager.addUserIfDoesNotExist(currentPlayerUserName, initPlayer,
+                onSuccess = { fireStoreManager.initPlayerKeyValuePair(currentPlayerUserName, initPlayer, onSuccess = {}) {} },
                 onFailure = { e -> Log.i("TAG", "Error adding user or initializing score.", e) }
             )
         } else Toast.makeText(requireContext(), "Can't keep textField empty", Toast.LENGTH_LONG).show()

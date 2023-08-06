@@ -44,13 +44,11 @@ class IntroFragment : Fragment() {
     }
 
     private fun goToGamePlayFragment(binding: FragmentIntroBinding, gameMode: String){
-        val action = IntroFragmentDirections.navigateToGamePlayFragment(gameMode)
-        Navigation.findNavController(binding.root).navigate(action)
+        Navigation.findNavController(binding.root).navigate(IntroFragmentDirections.navigateToGamePlayFragment(gameMode))
     }
 
     private fun goToMultiplierFragment(binding: FragmentIntroBinding){
-        val action = IntroFragmentDirections.navigateToMultiplierFragment()
-        Navigation.findNavController(binding.root).navigate(action)
+        Navigation.findNavController(binding.root).navigate(IntroFragmentDirections.navigateToMultiplierFragment())
     }
 
     private fun loadAds(binding: FragmentIntroBinding){

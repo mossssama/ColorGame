@@ -34,8 +34,7 @@ class CongratsFragment : Fragment() {
     }
 
     private fun goToResultsFragment(binding: FragmentCongratsBinding){
-        val action = CongratsFragmentDirections.navigateFromCongratsToResultsFragment(args.gameMode)
-        Navigation.findNavController(binding.root).navigate(action)
+        Navigation.findNavController(binding.root).navigate(CongratsFragmentDirections.navigateFromCongratsToResultsFragment(args.gameMode))
     }
 
     private fun loadAds(){

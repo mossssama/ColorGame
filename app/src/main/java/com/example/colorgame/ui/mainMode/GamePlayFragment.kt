@@ -46,13 +46,11 @@ class GamePlayFragment : Fragment() {
     }
 
     private fun goToTryAgainFragment(binding: FragmentGamePlayBinding,score: Int,gameMode: String){
-        val action = GamePlayFragmentDirections.navigateToTryAgainFragment(score, gameMode)
-        Navigation.findNavController(binding.root).navigate(action)
+        Navigation.findNavController(binding.root).navigate(GamePlayFragmentDirections.navigateToTryAgainFragment(score, gameMode))
     }
 
     private fun goToCongratsFragment(binding: FragmentGamePlayBinding,score: Int,gameMode: String){
-        val action = GamePlayFragmentDirections.navigateToCongratsFragment(score, gameMode)
-        Navigation.findNavController(binding.root).navigate(action)
+        Navigation.findNavController(binding.root).navigate(GamePlayFragmentDirections.navigateToCongratsFragment(score, gameMode))
     }
 
 }

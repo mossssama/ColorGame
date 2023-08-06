@@ -372,7 +372,7 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
     }
 
     fun setGamePlay(gameMode: String,playerName: String,binding: FragmentMultiplayerGamePlayBinding,context: Context){
-        if(gameMode == HUNDRED_SEC_MODE) startCountdown(binding,context,100)
+        if(gameMode == HUNDRED_SEC_MODE) startCountdown(binding,context,100,playerName)
         onBoxesListener(gameMode,playerName,binding,context)
     }
 
@@ -509,11 +509,13 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         }.start()
     }
 
-    private fun startCountdown(binding:FragmentMultiplayerGamePlayBinding,context: Context,seconds: Long) {
+    private fun startCountdown(binding:FragmentMultiplayerGamePlayBinding,context: Context,seconds: Long,playerName: String) {
         countdownTimer?.cancel() // Cancel any existing timers
+        fireStoreManager.setCountDownToHundred(playerName, onSuccess = {}, onFailure = {})
         countdownTimer = object : CountDownTimer(seconds * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val remainingSeconds = millisUntilFinished / 1000
+                fireStoreManager.updateCountDown(playerName,remainingSeconds.toInt(), onSuccess = {}, onFailure = {})
                 binding.countdownTextView.text = remainingSeconds.toString()        // Update the TextView with the remaining seconds
             }
             override fun onFinish() {

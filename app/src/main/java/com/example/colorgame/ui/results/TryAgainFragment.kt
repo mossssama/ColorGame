@@ -34,8 +34,7 @@ class TryAgainFragment : Fragment() {
     }
 
     private fun goToResultsFragment(binding: FragmentTryAgainBinding){
-        val action = TryAgainFragmentDirections.navigateFromTryAgainToResultsFragment(args.gameMode)
-        Navigation.findNavController(binding.root).navigate(action)
+        Navigation.findNavController(binding.root).navigate(TryAgainFragmentDirections.navigateFromTryAgainToResultsFragment(args.gameMode))
     }
 
     private fun loadAds(){
