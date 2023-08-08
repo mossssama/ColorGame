@@ -4,13 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"
+        android:background="@color/ui_background"
         tools:context=".ui.multiplayerMode.MultiplayerGamePlayFragment">
 
         <androidx.constraintlayout.widget.Guideline
@@ -28,9 +27,9 @@
             android:layout_centerHorizontal="true"
             app:adSize="BANNER"
             app:adUnitId="@string/intro_banner_id"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline11"></com.google.android.gms.ads.AdView>
+            app:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline11"
@@ -50,6 +49,8 @@
             android:id="@+id/me"
             style="@style/box_style"
             android:hint="You"
+            android:textColor="@color/white"
+            android:background="@color/ui_purple"
             app:layout_constraintBottom_toTopOf="@+id/guideline11"
             app:layout_constraintEnd_toStartOf="@+id/guideline10"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,14 +60,18 @@
             android:id="@+id/myScore"
             style="@style/box_style"
             android:hint="0"
-            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            android:textColor="@color/white"
+            android:background="@color/ui_purple"
+            app:layout_constraintBottom_toTopOf="@+id/adView"
             app:layout_constraintEnd_toStartOf="@+id/guideline10"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/adView" />
+            app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
         <TextView
             android:id="@+id/myFriend"
             style="@style/box_style"
+            android:textColor="@color/white"
+            android:background="@color/ui_purple"
             android:hint="Your Friend"
             app:layout_constraintBottom_toTopOf="@+id/guideline11"
             app:layout_constraintEnd_toEndOf="parent"
@@ -77,15 +82,17 @@
             android:id="@+id/myFriendScore"
             style="@style/box_style"
             android:hint="0"
-            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            android:textColor="@color/white"
+            android:background="@color/ui_purple"
+            app:layout_constraintBottom_toTopOf="@+id/adView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline10"
-            app:layout_constraintTop_toBottomOf="@+id/adView" />
+            app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/black"
+            android:background="@color/ui_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guideline">
 

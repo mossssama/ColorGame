@@ -22,7 +22,7 @@ class MultiplayerResultsFragment : Fragment() {
 
         loadUI(binding,args.myUserName,args.myFriendName,args.myScore)
 
-        binding.playAgain.setOnClickListener { goToMultiplayerGamePlayFragment(binding,args.myUserName,args.myFriendName) }
+        binding.playAgain.setOnClickListener { resetScores();  goToMultiplayerGamePlayFragment(binding,args.myUserName,args.myFriendName) }
         binding.returnToMainPage.setOnClickListener { goToIntroFragment(binding) }
 
         return binding.root
@@ -58,7 +58,7 @@ class MultiplayerResultsFragment : Fragment() {
     }
 
     private fun updateBannerText(binding: FragmentMultiplayerResultsBinding, myScore: Int, myFriendScore: Int){
-        binding.congratsOrHardLuck.text=if (myScore >= myFriendScore) "Well Done" else "Hard Luck"
+        binding.congratsOrHardLuck.text=if (myScore >= myFriendScore) "Winner" else "Loser"
     }
 
     private fun updateScoresUI(binding: FragmentMultiplayerResultsBinding, myScore: Int, myFriendScore: Int){
@@ -69,6 +69,11 @@ class MultiplayerResultsFragment : Fragment() {
     private fun updateNamesUI(binding:FragmentMultiplayerResultsBinding, myName:String, myFriendName: String){
         binding.myScoreTv.text=myName
         binding.myFriendScoreTv.text=myFriendName
+    }
+
+    private fun resetScores(){
+        val fireStoreManager = FirestoreManager(Firebase.firestore)
+        fireStoreManager.setScoreToZero(args.myUserName, onSuccess = {}, onFailure = {})
     }
 
 }

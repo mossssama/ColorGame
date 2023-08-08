@@ -9,13 +9,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/ui_background"
         tools:context=".ui.results.ResultsFragment">
 
         <TextView
             android:id="@+id/score_tv"
             android:text="Results"
             android:padding="8dp"
+            android:textStyle="bold"
 
+            android:textColor="@color/white"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:autoSizeTextType="uniform"
@@ -38,9 +41,11 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/back"
             android:text="Back"
+            android:background="@color/ui_mint_green"
+            android:textColor="@color/white"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"

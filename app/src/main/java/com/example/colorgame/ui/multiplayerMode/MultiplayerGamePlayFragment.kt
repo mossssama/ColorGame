@@ -29,13 +29,12 @@ class MultiplayerGamePlayFragment : Fragment() {
         val binding: FragmentMultiplayerGamePlayBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplayer_game_play,container,false)
         val adsManager = AdsManager(requireContext(),"MultiplayerGamePlayFragment")             /* AdsManager instance */
         val dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)   /* DataStore instance */
+        fireStoreManager = FirestoreManager(Firebase.firestore)
 
         MobileAds.initialize(requireContext()) { adsManager.loadBannerAds(binding); adsManager.loadInterstitialAds() }     /* Load ads */
 
         resetValues()
         setNames(binding,args.myUserName,args.myFriendName)             /* Set names */
-
-        fireStoreManager = FirestoreManager(Firebase.firestore)
 
         /* update scores*/
         fireStoreManager.listenToScoreChanges(args.myUserName) { score -> binding.myScore.text=score.toString() }

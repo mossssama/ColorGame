@@ -11,7 +11,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import com.example.colorgame.R
 import com.example.colorgame.databinding.FragmentMultiplierBinding
+import com.example.colorgame.domain.AdsManager
 import com.example.colorgame.firebaseFireStore.FirestoreManager
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -22,6 +24,9 @@ class MultiplayerSetupFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentMultiplierBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplier,container,false)
         val fireStoreManager = FirestoreManager(Firebase.firestore)
+        val adsManager = AdsManager(requireContext(),"MultiplayerSetupFragment")
+
+        MobileAds.initialize(requireContext()) { adsManager.loadBannerAds(binding) }     /* Load ads on Banner */
 
         binding.addMe.setOnClickListener { addMe(binding,fireStoreManager) }
         binding.addFriend.setOnClickListener { addMyFriend(binding,fireStoreManager) }

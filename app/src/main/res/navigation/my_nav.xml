@@ -120,16 +120,6 @@
             app:destination="@id/introFragment" />
     </fragment>
     <fragment
-        android:id="@+id/aboutFragment"
-        android:name="com.example.colorgame.AboutFragment"
-        android:label="fragment_about"
-        tools:layout="@layout/fragment_about" />
-    <fragment
-        android:id="@+id/friendsFragment"
-        android:name="com.example.colorgame.FriendsFragment"
-        android:label="fragment_friends"
-        tools:layout="@layout/fragment_friends" />
-    <fragment
         android:id="@+id/multiplierFragment"
         android:name="com.example.colorgame.ui.multiplayerMode.MultiplayerSetupFragment"
         android:label="fragment_multiplier"

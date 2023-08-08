@@ -18,4 +18,13 @@
     <color name="brown">#350202</color>
     <color name="grey">#8E8B93</color>
 
+    <color name="ui_mint_green">#3DBA90</color>
+    <color name="ui_purple">#9183BE</color>
+    <color name="ui_background">#0F193D</color>
+    <color name="ui_rose">#F2737E</color>
+    <color name="ui_dark_green">#17B79B</color>
+    <color name="ui_baby_blue">#63BDDF</color>
+    <color name="ui_orange">#F79534</color>
+    <color name="ui_dark_blue">#4C4D9F</color>
+
 </resources>

@@ -5,10 +5,7 @@ import android.content.Context
 import android.util.Log
 import androidx.navigation.Navigation
 import com.example.colorgame.R
-import com.example.colorgame.databinding.FragmentCongratsBinding
-import com.example.colorgame.databinding.FragmentIntroBinding
-import com.example.colorgame.databinding.FragmentMultiplayerGamePlayBinding
-import com.example.colorgame.databinding.FragmentTryAgainBinding
+import com.example.colorgame.databinding.*
 import com.example.colorgame.ui.multiplayerMode.MultiplayerGamePlayFragmentDirections
 import com.example.colorgame.ui.results.CongratsFragmentDirections
 import com.example.colorgame.ui.results.TryAgainFragmentDirections
@@ -22,13 +19,17 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 class AdsManager(private val context: Context,private val tAG: String) {
     private var mInterstitialAd: InterstitialAd? = null
 
-
     fun loadBannerAds(binding: FragmentMultiplayerGamePlayBinding){
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
     }
 
     fun loadBannerAds(binding: FragmentIntroBinding){
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
+    }
+
+    fun loadBannerAds(binding: FragmentMultiplierBinding){
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
     }
@@ -40,7 +41,6 @@ class AdsManager(private val context: Context,private val tAG: String) {
             override fun onAdLoaded(interstitialAd: InterstitialAd) { mInterstitialAd = interstitialAd }
         })
     }
-
 
     fun showInterstitialAds(binding: FragmentMultiplayerGamePlayBinding, myUserName: String, myFriendName: String, myScore: Int, myFriendScore: Int) {
         if (mInterstitialAd != null) {

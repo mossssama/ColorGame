@@ -9,13 +9,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/ui_background"
         tools:context=".ui.results.CongratsFragment">
 
         <TextView
             android:id="@+id/congratulations_tv"
             android:text="Congratulations"
             android:padding="8dp"
+            android:textStyle="bold"
 
+            android:textColor="@color/white"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:autoSizeTextType="uniform"
@@ -31,6 +34,7 @@
             android:id="@+id/score_tv"
             android:text="Score"
 
+            android:textColor="@color/white"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:autoSizeTextType="uniform"
@@ -46,7 +50,9 @@
             android:id="@+id/score_is_tv"
             android:text=""
             android:padding="8dp"
+            android:textStyle="italic"
 
+            android:textColor="@color/white"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:autoSizeTextType="uniform"
@@ -58,9 +64,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/showResults"
             android:text="Show Results"
+            android:layout_marginTop="4dp"
+            android:background="@color/ui_mint_green"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"

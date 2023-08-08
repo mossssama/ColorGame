@@ -9,13 +9,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/ui_background"
         tools:context=".ui.multiplayerMode.MultiplayerResultsFragment">
 
         <TextView
             android:id="@+id/congrats_or_hard_luck"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@color/ui_dark_blue"
 
+            android:layout_margin="4dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="8dp"
@@ -30,7 +35,13 @@
         <TextView
             android:id="@+id/my_score_tv"
             android:layout_width="0dp"
+            android:background="@color/ui_mint_green"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
 
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:gravity="center"
@@ -46,7 +57,13 @@
             android:id="@+id/my_score_is_tv"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@color/ui_mint_green"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="4dp"
 
+            android:textColor="@color/white"
+            android:textStyle="italic"
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="8dp"
@@ -62,7 +79,13 @@
             android:id="@+id/my_friend_score_tv"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@color/ui_rose"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
 
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="8dp"
@@ -78,7 +101,13 @@
             android:id="@+id/my_friend_score_is_tv"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@color/ui_rose"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="4dp"
 
+            android:textColor="@color/white"
+            android:textStyle="italic"
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="8dp"
@@ -90,25 +119,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/playAgain"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_margin="8dp"
+            android:background="@color/ui_purple"
             android:text="Play Again"
+            android:textStyle="bold"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline13"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/my_friend_score_is_tv" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/returnToMainPage"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_margin="8dp"
+            android:background="@color/ui_purple"
             android:text="Go to Home"
+            android:textStyle="bold"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline13" />
+            app:layout_constraintStart_toStartOf="@+id/guideline13"
+            app:layout_constraintTop_toBottomOf="@+id/my_friend_score_is_tv" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline7"
