@@ -12,8 +12,8 @@ import com.example.colorgame.domain.AdsManager
 import com.example.colorgame.R
 import com.example.colorgame.databinding.FragmentMultiplayerGamePlayBinding
 import com.example.colorgame.domain.GamePlay
-import com.example.colorgame.firebaseFireStore.FirestoreManager
-import com.example.colorgame.jetPackDataStore.DataStoreManager
+import com.example.colorgame.cloudFirestore.FirestoreManager
+import com.example.colorgame.dataStore.DataStoreManager
 import com.google.android.gms.ads.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -34,7 +34,7 @@ class MultiplayerGamePlayFragment : Fragment() {
         MobileAds.initialize(requireContext()) { adsManager.loadBannerAds(binding); adsManager.loadInterstitialAds() }     /* Load ads */
 
         resetValues()
-        setNames(binding,args.myUserName,args.myFriendName)             /* Set names */
+        loadUI(binding,args.myUserName,args.myFriendName,0,0)             /* Set names */
 
         /* update scores*/
         fireStoreManager.listenToScoreChanges(args.myUserName) { score -> binding.myScore.text=score.toString() }
@@ -68,15 +68,16 @@ class MultiplayerGamePlayFragment : Fragment() {
         fireStoreManager.removeAllCountDownListeners()
     }
 
-    private fun setNames(binding:FragmentMultiplayerGamePlayBinding,myName:String,myFriendName:String){
+    private fun loadUI(binding:FragmentMultiplayerGamePlayBinding, myName:String, myFriendName:String, myScore: Int, myFriendScore: Int){
         binding.me.text=myName
         binding.myFriend.text=myFriendName
+        binding.myScore.text=myScore.toString()
+        binding.myFriendScore.text=myFriendScore.toString()
     }
 
     private fun resetValues(){
         fireStoreManager.updateCountDown(args.myUserName,100, onSuccess = {}, onFailure = {})
         fireStoreManager.setScoreToZero(args.myUserName, onSuccess = {}, onFailure = {})
-        fireStoreManager.setScoreToZero(args.myFriendName, onSuccess = {}, onFailure = {})
     }
 
     private fun setGameOverToFalse(dataStoreManager: DataStoreManager) {

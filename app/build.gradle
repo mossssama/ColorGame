@@ -44,7 +44,7 @@ android {
 def room_version = "2.5.2"
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-
+    
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
 
@@ -74,7 +74,6 @@ dependencies {
 
     /* Admob Ads dependency */
     implementation 'com.google.android.gms:play-services-ads:22.2.0'
-
 
 }
 

@@ -12,7 +12,7 @@ import androidx.navigation.Navigation
 import com.example.colorgame.R
 import com.example.colorgame.databinding.FragmentMultiplierBinding
 import com.example.colorgame.domain.AdsManager
-import com.example.colorgame.firebaseFireStore.FirestoreManager
+import com.example.colorgame.cloudFirestore.FirestoreManager
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -34,13 +34,9 @@ class MultiplayerSetupFragment : Fragment() {
         return binding.root
     }
 
-    private fun goToMultiplayerGamePlayFragment(binding: FragmentMultiplierBinding,myUserName:String,myFriendUserName: String){
-        Navigation.findNavController(binding.root).navigate(MultiplayerSetupFragmentDirections.navigateToMultiplayerGamePlay(myUserName, myFriendUserName))
-    }
-
     private fun addMe(binding: FragmentMultiplierBinding,fireStoreManager: FirestoreManager){
         currentPlayerUserName = binding.etOne.text.toString()
-        val initPlayer = mapOf("score" to 0,"countDown" to 100)
+        val initPlayer = mapOf("score" to 0,"countDown" to 100,"startPlaying" to false)
 
         if (currentPlayerUserName.isNotBlank()) {
             fireStoreManager.addUserIfDoesNotExist(currentPlayerUserName, initPlayer,
@@ -52,14 +48,28 @@ class MultiplayerSetupFragment : Fragment() {
 
     private fun addMyFriend(binding: FragmentMultiplierBinding, fireStoreManager: FirestoreManager){
         val friendUserName = binding.etTwo.text.toString()
+
         if (friendUserName.isNotBlank()) {
             fireStoreManager.checkIfUserExists(friendUserName,
                 onSuccess = { exists ->
-                    if (exists) binding.startPlaying.setOnClickListener { goToMultiplayerGamePlayFragment(binding, currentPlayerUserName, friendUserName) }
+                    if (exists){
+                        binding.startPlaying.setOnClickListener {
+                            setStartPlaying(fireStoreManager)
+                            fireProgressFragment(binding,currentPlayerUserName,friendUserName)
+                        }
+                }
                     else Toast.makeText(requireContext(), "No Player with this userName", Toast.LENGTH_LONG).show()
                 },
                 onFailure = { exception -> Log.i("TAG", "Check failed", exception) }
             )
         } else Toast.makeText(requireContext(), "Can't keep textField empty", Toast.LENGTH_LONG).show()
+    }
+
+    private fun fireProgressFragment(binding: FragmentMultiplierBinding,userName:String,friendName:String){
+        Navigation.findNavController(binding.root).navigate(MultiplayerSetupFragmentDirections.navigateToProgressFragment(userName,friendName))
+    }
+
+    private fun setStartPlaying(fireStoreManager: FirestoreManager){
+        fireStoreManager.setStartPlaying(currentPlayerUserName, true, onSuccess = {}, onFailure = {})
     }
 }

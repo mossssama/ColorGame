@@ -1,4 +1,4 @@
-package com.example.colorgame.firebaseFireStore
+package com.example.colorgame.cloudFirestore
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
@@ -8,6 +8,7 @@ class FirestoreManager(private val db: FirebaseFirestore) {
 
     private val scoreListeners: MutableMap<String, ListenerRegistration> = mutableMapOf()
     private val countDownListeners: MutableMap<String, ListenerRegistration> = mutableMapOf()
+    private val startPlayingListeners: MutableMap<String, ListenerRegistration> = mutableMapOf()
 
     fun addUserIfDoesNotExist(playerName: String, initScore: Map<String, Any>, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         db.collection("users").document(playerName).get().addOnCompleteListener { task ->
@@ -34,10 +35,10 @@ class FirestoreManager(private val db: FirebaseFirestore) {
         }
     }
 
-    fun initPlayerKeyValuePair(playerName: String, updatedpair: Map<String, Any>, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+    fun initPlayerKeyValuePair(playerName: String, updates: Map<String, Any>, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         val documentReference = db.collection("users").document(playerName)
 
-        documentReference.update(updatedpair)
+        documentReference.update(updates)
             .addOnSuccessListener {
                 Log.i("TAG", "initScore field added to the document.")
                 onSuccess()
@@ -186,6 +187,36 @@ class FirestoreManager(private val db: FirebaseFirestore) {
         }
     }
 
+    fun setStartPlaying(playerName: String, startPlaying: Boolean, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+        val documentReference = db.collection("users").document(playerName)
+
+        documentReference.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val document = task.result
+                if (document != null && document.exists()) {
+                    val updateMap = hashMapOf("startPlaying" to startPlaying)
+
+                    documentReference.update(updateMap as Map<String, Any>)
+                        .addOnSuccessListener {
+                            val status = if (startPlaying) "started" else "stopped"
+                            Log.i("TAG", "Player $playerName $status playing.")
+                            onSuccess()
+                        }
+                        .addOnFailureListener { e ->
+                            Log.i("TAG", "Error updating startPlaying status", e)
+                            onFailure(e)
+                        }
+                } else {
+                    Log.i("TAG", "Document with playerName $playerName does not exist")
+                    onFailure(Exception("Document with playerName $playerName does not exist"))
+                }
+            } else {
+                Log.i("TAG", "Error checking document existence", task.exception)
+                onFailure(task.exception!!)
+            }
+        }
+    }
+
     fun setCountDownToHundred(playerName: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         val documentReference = db.collection("users").document(playerName)
 
@@ -254,6 +285,25 @@ class FirestoreManager(private val db: FirebaseFirestore) {
         countDownListeners[playerName] = countDownListener
     }
 
+    fun listenToStartPlayingChanges(playerName: String, listener: (Boolean) -> Unit) {
+        val documentReference = db.collection("users").document(playerName)
+
+        val startPlayingListener = documentReference.addSnapshotListener { documentSnapshot, e ->
+            if (e != null) {
+                Log.e("TAG", "Error listening to changes", e)
+                return@addSnapshotListener
+            }
+
+            if (documentSnapshot != null && documentSnapshot.exists()) {
+                val startPlaying = documentSnapshot.getBoolean("startPlaying") ?: false
+                listener(startPlaying)
+            }
+        }
+
+        startPlayingListeners[playerName] = startPlayingListener
+    }
+
+
     fun readScore(playerName: String, onSuccess: (Int) -> Unit, onFailure: (Exception) -> Unit) {
         val documentReference = db.collection("users").document(playerName)
 
@@ -282,6 +332,11 @@ class FirestoreManager(private val db: FirebaseFirestore) {
     fun removeAllCountDownListeners() {
         for (listener in countDownListeners.values) { listener.remove() }
         countDownListeners.clear()
+    }
+
+    fun removeAllStartPlayingListeners() {
+        for (listener in startPlayingListeners.values) { listener.remove() }
+        startPlayingListeners.clear()
     }
 
 }

@@ -23,7 +23,7 @@
             app:argType="string"
             android:defaultValue="hundredSec" />
         <action
-            android:id="@+id/navigateToMultiplierFragment"
+            android:id="@+id/navigateToMultiplayerFragment"
             app:destination="@id/multiplierFragment" />
     </fragment>
 
@@ -123,9 +123,9 @@
         android:id="@+id/multiplierFragment"
         android:name="com.example.colorgame.ui.multiplayerMode.MultiplayerSetupFragment"
         android:label="fragment_multiplier"
-        tools:layout="@layout/fragment_multiplier" >
+        tools:layout="@layout/fragment_multiplier">
         <action
-            android:id="@+id/navigateToMultiplayerGamePlay"
+            android:id="@+id/navigateToMultiplayerGamePlayFragment"
             app:destination="@id/multiplayerGamePlayFragment"
             app:popUpTo="@id/introFragment">
             <argument
@@ -135,6 +135,18 @@
                 android:name="myFriendName"
                 app:argType="string" />
         </action>
+        <action
+            android:id="@+id/navigateToProgressFragment"
+            app:destination="@id/progressFragment"
+            app:popUpTo="@id/multiplierFragment">
+            <argument
+                android:name="userName"
+                app:argType="string" />
+            <argument
+                android:name="friendName"
+                app:argType="string" />
+        </action>
+
     </fragment>
     <fragment
         android:id="@+id/multiplayerGamePlayFragment"
@@ -187,10 +199,26 @@
             app:argType="integer"
             android:defaultValue="0" />
         <action
-            android:id="@+id/returnToMultiPlayerGamePlayFragment"
-            app:destination="@id/multiplayerGamePlayFragment" />
-        <action
             android:id="@+id/returnToIntroFragment"
             app:destination="@id/introFragment" />
+        <action
+            android:id="@+id/returnToProgressFragment"
+            app:destination="@id/progressFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/progressFragment"
+        android:name="com.example.colorgame.ui.multiplayerMode.ProgressFragment"
+        android:label="fragment_progress"
+        tools:layout="@layout/fragment_progress" >
+        <argument
+            android:name="userName"
+            app:argType="string" />
+        <argument
+            android:name="friendName"
+            app:argType="string" />
+        <action
+            android:id="@+id/navigateToMultiplayerGamePlay"
+            app:destination="@id/multiplayerGamePlayFragment" />
+    </fragment>
+
 </navigation>

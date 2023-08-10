@@ -10,7 +10,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.example.colorgame.R
 import com.example.colorgame.databinding.FragmentMultiplayerResultsBinding
-import com.example.colorgame.firebaseFireStore.FirestoreManager
+import com.example.colorgame.cloudFirestore.FirestoreManager
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -22,8 +22,8 @@ class MultiplayerResultsFragment : Fragment() {
 
         loadUI(binding,args.myUserName,args.myFriendName,args.myScore)
 
-        binding.playAgain.setOnClickListener { resetScores();  goToMultiplayerGamePlayFragment(binding,args.myUserName,args.myFriendName) }
-        binding.returnToMainPage.setOnClickListener { goToIntroFragment(binding) }
+        binding.playAgain.setOnClickListener {  resetScore();   setStartPlaying();      fireProgressFragment(binding,args.myUserName,args.myFriendName) }
+        binding.returnToMainPage.setOnClickListener {           resetStartPlaying();    goToIntroFragment(binding) }
 
         return binding.root
     }
@@ -53,8 +53,8 @@ class MultiplayerResultsFragment : Fragment() {
         Navigation.findNavController(binding.root).navigate(MultiplayerResultsFragmentDirections.returnToIntroFragment())
     }
 
-    private fun goToMultiplayerGamePlayFragment(binding: FragmentMultiplayerResultsBinding,myName: String,myFriendName:String){
-        Navigation.findNavController(binding.root).navigate(MultiplayerResultsFragmentDirections.returnToMultiPlayerGamePlayFragment(myName,myFriendName))
+    private fun fireProgressFragment(binding: FragmentMultiplayerResultsBinding, userName:String, friendName:String){
+        Navigation.findNavController(binding.root).navigate(MultiplayerResultsFragmentDirections.returnToProgressFragment(userName,friendName))
     }
 
     private fun updateBannerText(binding: FragmentMultiplayerResultsBinding, myScore: Int, myFriendScore: Int){
@@ -71,9 +71,20 @@ class MultiplayerResultsFragment : Fragment() {
         binding.myFriendScoreTv.text=myFriendName
     }
 
-    private fun resetScores(){
+    private fun resetScore(){
         val fireStoreManager = FirestoreManager(Firebase.firestore)
         fireStoreManager.setScoreToZero(args.myUserName, onSuccess = {}, onFailure = {})
     }
+
+    private fun resetStartPlaying(){
+        val fireStoreManager = FirestoreManager(Firebase.firestore)
+        fireStoreManager.setStartPlaying(args.myUserName,false, onSuccess = {}, onFailure = {})
+    }
+
+    private fun setStartPlaying(){
+        val fireStoreManager= FirestoreManager(Firebase.firestore)
+        fireStoreManager.setStartPlaying(args.myUserName,true, onSuccess = {}, onFailure = {})
+    }
+
 
 }

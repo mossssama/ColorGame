@@ -5,10 +5,10 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import com.example.colorgame.R
-import com.example.colorgame.jetPackDataStore.DataStoreManager
+import com.example.colorgame.dataStore.DataStoreManager
 import com.example.colorgame.databinding.FragmentGamePlayBinding
 import com.example.colorgame.databinding.FragmentMultiplayerGamePlayBinding
-import com.example.colorgame.firebaseFireStore.FirestoreManager
+import com.example.colorgame.cloudFirestore.FirestoreManager
 import com.example.colorgame.room.pojo.Score
 import com.example.colorgame.room.ScoreDatabase
 import com.example.colorgame.utils.DateUtils
@@ -515,7 +515,10 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         countdownTimer = object : CountDownTimer(seconds * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val remainingSeconds = millisUntilFinished / 1000
-                if(remainingSeconds.toInt()==0) fireStoreManager.updateCountDown(playerName,0, onSuccess = {}, onFailure = {})
+                if(remainingSeconds.toInt()==0) {
+                    fireStoreManager.updateCountDown(playerName,0, onSuccess = {}, onFailure = {})
+                    fireStoreManager.setStartPlaying(playerName,false, onSuccess = {}, onFailure = {})
+                }
                 binding.countdownTextView.text = remainingSeconds.toString()        // Update the TextView with the remaining seconds
             }
             override fun onFinish() {

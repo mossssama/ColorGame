@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.colorgame.R
-import com.example.colorgame.jetPackDataStore.DataStoreManager
+import com.example.colorgame.dataStore.DataStoreManager
 import com.example.colorgame.databinding.FragmentIntroBinding
 import com.example.colorgame.domain.AdsManager
 import com.example.colorgame.domain.GamePlay.Companion.CONTINUOUS_RIGHT_MODE
@@ -50,7 +50,7 @@ class IntroFragment : Fragment() {
     }
 
     private fun goToMultiplierFragment(binding: FragmentIntroBinding){
-        Navigation.findNavController(binding.root).navigate(IntroFragmentDirections.navigateToMultiplierFragment())
+        Navigation.findNavController(binding.root).navigate(IntroFragmentDirections.navigateToMultiplayerFragment())
     }
 
 }
