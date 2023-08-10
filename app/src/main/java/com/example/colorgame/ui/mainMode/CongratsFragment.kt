@@ -1,4 +1,4 @@
-package com.example.colorgame.ui.results
+package com.example.colorgame.ui.mainMode
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,16 +9,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.navArgs
 import com.example.colorgame.domain.AdsManager
 import com.example.colorgame.R
-import com.example.colorgame.databinding.FragmentTryAgainBinding
+import com.example.colorgame.databinding.FragmentCongratsBinding
 import com.example.colorgame.ui.mainMode.GamePlayFragmentArgs
 import com.google.android.gms.ads.*
 
-class TryAgainFragment : Fragment() {
+class CongratsFragment : Fragment() {
     private val args: GamePlayFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding: FragmentTryAgainBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_try_again,container,false)
-        val adsManager = AdsManager(requireContext(),"TryAgainFragment")
+        val binding: FragmentCongratsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_congrats,container,false)
+        val adsManager = AdsManager(requireContext(),"CongratsFragment")
 
         MobileAds.initialize(requireContext()) { adsManager.loadInterstitialAds() }
 

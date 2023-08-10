@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/ui_background"
-        tools:context=".ui.results.ResultsFragment">
+        tools:context=".ui.mainMode.results.view.ResultsFragment">
 
         <TextView
             android:id="@+id/score_tv"

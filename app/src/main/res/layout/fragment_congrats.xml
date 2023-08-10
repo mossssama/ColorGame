@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/ui_background"
-        tools:context=".ui.results.CongratsFragment">
+        tools:context=".ui.mainMode.CongratsFragment">
 
         <TextView
             android:id="@+id/congratulations_tv"

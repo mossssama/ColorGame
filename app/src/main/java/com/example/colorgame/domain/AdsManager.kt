@@ -6,9 +6,9 @@ import android.util.Log
 import androidx.navigation.Navigation
 import com.example.colorgame.R
 import com.example.colorgame.databinding.*
+import com.example.colorgame.ui.mainMode.CongratsFragmentDirections
+import com.example.colorgame.ui.mainMode.TryAgainFragmentDirections
 import com.example.colorgame.ui.multiplayerMode.MultiplayerGamePlayFragmentDirections
-import com.example.colorgame.ui.results.CongratsFragmentDirections
-import com.example.colorgame.ui.results.TryAgainFragmentDirections
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
