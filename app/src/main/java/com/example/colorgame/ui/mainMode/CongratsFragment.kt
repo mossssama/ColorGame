@@ -10,7 +10,6 @@ import androidx.navigation.fragment.navArgs
 import com.example.colorgame.domain.AdsManager
 import com.example.colorgame.R
 import com.example.colorgame.databinding.FragmentCongratsBinding
-import com.example.colorgame.ui.mainMode.GamePlayFragmentArgs
 import com.google.android.gms.ads.*
 
 class CongratsFragment : Fragment() {
@@ -20,12 +19,24 @@ class CongratsFragment : Fragment() {
         val binding: FragmentCongratsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_congrats,container,false)
         val adsManager = AdsManager(requireContext(),"CongratsFragment")
 
-        MobileAds.initialize(requireContext()) { adsManager.loadInterstitialAds() }
+        MobileAds.initialize(requireContext()) { loadInterstitialAds(adsManager) }
 
-        binding.scoreIsTv.text=args.score.toString()
-        binding.showResults.setOnClickListener { adsManager.showInterstitialAds(binding,args.gameMode) }
+        setScoreTextView(binding,args.score)
+
+        binding.showResults.setOnClickListener { showInterstitialAds(adsManager,binding,args.gameMode) }
 
         return binding.root
+    }
+
+    private fun setScoreTextView(binding: FragmentCongratsBinding, scoreValue:Int){
+        binding.scoreIsTv.text=scoreValue.toString()
+    }
+
+    private fun loadInterstitialAds(adsManager: AdsManager){
+        adsManager.loadInterstitialAds()
+    }
+    private fun showInterstitialAds(adsManager: AdsManager, binding: FragmentCongratsBinding, gameMode:String){
+        adsManager.showInterstitialAds(binding,gameMode)
     }
 
 }

@@ -25,16 +25,17 @@ class MultiplayerGamePlayFragment : Fragment() {
 
     private lateinit var fireStoreManager: FirestoreManager
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: FragmentMultiplayerGamePlayBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplayer_game_play,container,false)
         val adsManager = AdsManager(requireContext(),"MultiplayerGamePlayFragment")             /* AdsManager instance */
         val dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)   /* DataStore instance */
         fireStoreManager = FirestoreManager(Firebase.firestore)
 
-        MobileAds.initialize(requireContext()) { adsManager.loadBannerAds(binding); adsManager.loadInterstitialAds() }     /* Load ads */
+        MobileAds.initialize(requireContext()) { loadBannerAds(adsManager,binding); loadInterstitialAds(adsManager) }     /* Load ads */
 
-        resetValues()
-        loadUI(binding,args.myUserName,args.myFriendName,0,0)             /* Set names */
+        setCountDownToHundred()
+        setScoreToZero()
+        loadUI(binding,args.myUserName,args.myFriendName)             /* Set names */
 
         /* update scores*/
         fireStoreManager.listenToScoreChanges(args.myUserName) { score -> binding.myScore.text=score.toString() }
@@ -51,7 +52,7 @@ class MultiplayerGamePlayFragment : Fragment() {
                 if(isGameOver){
                     fireStoreManager.readScore(args.myUserName, onSuccess = { myScore ->
                         fireStoreManager.readScore(args.myFriendName, onSuccess = { myFriendScore ->
-                            adsManager.showInterstitialAds(binding,args.myUserName,args.myFriendName,myScore,myFriendScore)
+                            showInterstitialAds(adsManager,binding,args.myUserName,args.myFriendName,myScore,myFriendScore)
                             setGameOverToFalse(dataStoreManager)
                         }, onFailure = {})
                     }, onFailure = {})
@@ -68,16 +69,28 @@ class MultiplayerGamePlayFragment : Fragment() {
         fireStoreManager.removeAllCountDownListeners()
     }
 
-    private fun loadUI(binding:FragmentMultiplayerGamePlayBinding, myName:String, myFriendName:String, myScore: Int, myFriendScore: Int){
+    private fun loadUI(binding:FragmentMultiplayerGamePlayBinding, myName:String, myFriendName:String){
         binding.me.text=myName
         binding.myFriend.text=myFriendName
-        binding.myScore.text=myScore.toString()
-        binding.myFriendScore.text=myFriendScore.toString()
+        binding.myScore.text="0"
+        binding.myFriendScore.text="0"
     }
 
-    private fun resetValues(){
+    private fun setCountDownToHundred(){
         fireStoreManager.updateCountDown(args.myUserName,100, onSuccess = {}, onFailure = {})
+    }
+    private fun setScoreToZero(){
         fireStoreManager.setScoreToZero(args.myUserName, onSuccess = {}, onFailure = {})
+    }
+
+    private fun loadBannerAds(adsManager: AdsManager,binding: FragmentMultiplayerGamePlayBinding){
+        adsManager.loadBannerAds(binding)
+    }
+    private fun loadInterstitialAds(adsManager: AdsManager){
+        adsManager.loadInterstitialAds()
+    }
+    private fun showInterstitialAds(adsManager: AdsManager,binding: FragmentMultiplayerGamePlayBinding,myName: String,myFriendName: String,myScore: Int,myFriendScore:Int){
+        adsManager.showInterstitialAds(binding,myName,myFriendName,myScore,myFriendScore)
     }
 
     private fun setGameOverToFalse(dataStoreManager: DataStoreManager) {

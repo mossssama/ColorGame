@@ -19,6 +19,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 class AdsManager(private val context: Context,private val tAG: String) {
     private var mInterstitialAd: InterstitialAd? = null
 
+    /* load Banner methods */
     fun loadBannerAds(binding: FragmentMultiplayerGamePlayBinding){
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
@@ -41,6 +42,7 @@ class AdsManager(private val context: Context,private val tAG: String) {
             override fun onAdLoaded(interstitialAd: InterstitialAd) { mInterstitialAd = interstitialAd }
         })
     }
+
 
     fun showInterstitialAds(binding: FragmentMultiplayerGamePlayBinding, myUserName: String, myFriendName: String, myScore: Int, myFriendScore: Int) {
         if (mInterstitialAd != null) {

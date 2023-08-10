@@ -1,4 +1,4 @@
-package com.example.colorgame.room.pojo
+package com.example.colorgame.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

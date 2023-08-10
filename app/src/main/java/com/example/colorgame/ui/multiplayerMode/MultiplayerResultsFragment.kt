@@ -17,35 +17,30 @@ import com.google.firebase.ktx.Firebase
 class MultiplayerResultsFragment : Fragment() {
     private val args: MultiplayerResultsFragmentArgs by navArgs()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: FragmentMultiplayerResultsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplayer_results, container, false)
+        val fireStoreManager = FirestoreManager(Firebase.firestore)
 
-        loadUI(binding,args.myUserName,args.myFriendName,args.myScore)
+        loadUI(binding,fireStoreManager,args.myUserName,args.myFriendName,args.myScore)
 
-        binding.playAgain.setOnClickListener {  resetScore();   setStartPlaying();      fireProgressFragment(binding,args.myUserName,args.myFriendName) }
-        binding.returnToMainPage.setOnClickListener {           resetStartPlaying();    goToIntroFragment(binding) }
+        binding.playAgain.setOnClickListener {         rePlayInit(fireStoreManager);   fireProgressFragment(binding,args.myUserName,args.myFriendName) }
+        binding.returnToMainPage.setOnClickListener {  returnInit(fireStoreManager);   goToIntroFragment(binding)                                      }
 
         return binding.root
     }
 
-    private fun loadUI(binding: FragmentMultiplayerResultsBinding,myName:String,myFriendName:String,myScore:Int){
-        val fireStoreManager = FirestoreManager(Firebase.firestore)
-
-        binding.congratsOrHardLuck.text="Wait till your friend finish"
-
+    private fun loadUI(binding: FragmentMultiplayerResultsBinding,fireStoreManager: FirestoreManager,myName:String,myFriendName:String,myScore:Int){
         fireStoreManager.listenToCountDownChanges(args.myFriendName) { countDown ->
             if(countDown==0){
                 fireStoreManager.readScore(args.myUserName,
                     onSuccess = { score ->
-                        fireStoreManager.readScore(args.myFriendName, onSuccess = { friendScore ->
-                            updateBannerText(binding,score,friendScore)
-                            updateScoresUI(binding,score,friendScore)
-                        }, onFailure = { binding.myScoreIsTv.text=myScore.toString() })
+                        fireStoreManager.readScore(args.myFriendName,
+                            onSuccess = { friendScore -> updateBannerText(binding,score,friendScore);     updateScoresUI(binding,score,friendScore)
+                            }, onFailure = { binding.myScoreIsTv.text=myScore.toString() })
                     }, onFailure = { binding.myScoreIsTv.text=myScore.toString() }
                 )
             }
         }
-
         updateNamesUI(binding,myName,myFriendName)
     }
 
@@ -71,20 +66,21 @@ class MultiplayerResultsFragment : Fragment() {
         binding.myFriendScoreTv.text=myFriendName
     }
 
-    private fun resetScore(){
-        val fireStoreManager = FirestoreManager(Firebase.firestore)
+    private fun rePlayInit(fireStoreManager: FirestoreManager){
+        resetScore(fireStoreManager)
+        setStartPlayingValue(fireStoreManager,true)
+    }
+
+    private fun returnInit(fireStoreManager: FirestoreManager){
+        setStartPlayingValue(fireStoreManager,false)
+    }
+
+    private fun resetScore(fireStoreManager: FirestoreManager){
         fireStoreManager.setScoreToZero(args.myUserName, onSuccess = {}, onFailure = {})
     }
 
-    private fun resetStartPlaying(){
-        val fireStoreManager = FirestoreManager(Firebase.firestore)
-        fireStoreManager.setStartPlaying(args.myUserName,false, onSuccess = {}, onFailure = {})
+    private fun setStartPlayingValue(fireStoreManager: FirestoreManager,value:Boolean){
+        fireStoreManager.setStartPlaying(args.myUserName,value, onSuccess = {}, onFailure = {})
     }
-
-    private fun setStartPlaying(){
-        val fireStoreManager= FirestoreManager(Firebase.firestore)
-        fireStoreManager.setStartPlaying(args.myUserName,true, onSuccess = {}, onFailure = {})
-    }
-
 
 }

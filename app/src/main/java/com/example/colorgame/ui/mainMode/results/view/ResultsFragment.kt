@@ -16,7 +16,7 @@ import com.example.colorgame.R
 import com.example.colorgame.ui.adapters.RecyclerViewAdapter
 import com.example.colorgame.ui.mainMode.results.model.ScoreItem
 import com.example.colorgame.databinding.FragmentResultsBinding
-import com.example.colorgame.room.pojo.Score
+import com.example.colorgame.room.Score
 import com.example.colorgame.room.ScoreDatabase
 import com.example.colorgame.ui.mainMode.CongratsFragmentArgs
 import com.example.colorgame.ui.mainMode.TryAgainFragmentArgs

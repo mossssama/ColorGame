@@ -21,7 +21,7 @@ class MultiplayerSetupFragment : Fragment() {
 
     private lateinit var currentPlayerUserName: String
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: FragmentMultiplierBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplier,container,false)
         val fireStoreManager = FirestoreManager(Firebase.firestore)
         val adsManager = AdsManager(requireContext(),"MultiplayerSetupFragment")

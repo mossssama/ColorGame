@@ -19,7 +19,7 @@ class ProgressFragment : Fragment() {
     private val args: ProgressFragmentArgs by navArgs()
     private lateinit var fireStoreManager: FirestoreManager
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: FragmentProgressBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_progress, container, false)
         fireStoreManager = FirestoreManager(Firebase.firestore)
 

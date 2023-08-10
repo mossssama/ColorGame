@@ -5,4 +5,5 @@
     <string name="app_admob_id">"ca-app-pub-3940256099942544~3347511713</string>
     <string name="intro_banner_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="game_over_interstitial_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="Wait">Wait till your friend finish</string>
 </resources>

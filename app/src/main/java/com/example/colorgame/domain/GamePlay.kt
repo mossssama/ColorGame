@@ -9,7 +9,7 @@ import com.example.colorgame.dataStore.DataStoreManager
 import com.example.colorgame.databinding.FragmentGamePlayBinding
 import com.example.colorgame.databinding.FragmentMultiplayerGamePlayBinding
 import com.example.colorgame.cloudFirestore.FirestoreManager
-import com.example.colorgame.room.pojo.Score
+import com.example.colorgame.room.Score
 import com.example.colorgame.room.ScoreDatabase
 import com.example.colorgame.utils.DateUtils
 import com.google.firebase.firestore.ktx.firestore

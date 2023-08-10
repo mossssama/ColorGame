@@ -19,12 +19,20 @@ class TryAgainFragment : Fragment() {
         val binding: FragmentTryAgainBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_try_again,container,false)
         val adsManager = AdsManager(requireContext(),"TryAgainFragment")
 
-        MobileAds.initialize(requireContext()) { adsManager.loadInterstitialAds() }
+        MobileAds.initialize(requireContext()) { loadInterstitialAds(adsManager) }
 
         binding.scoreIsTv.text=args.score.toString()
-        binding.showResults.setOnClickListener { adsManager.showInterstitialAds(binding,args.gameMode) }
+        binding.showResults.setOnClickListener { showInterstitialAds(adsManager,binding,args.gameMode) }
 
         return binding.root
+    }
+
+
+    private fun loadInterstitialAds(adsManager: AdsManager){
+        adsManager.loadInterstitialAds()
+    }
+    private fun showInterstitialAds(adsManager: AdsManager, binding: FragmentTryAgainBinding, gameMode:String){
+        adsManager.showInterstitialAds(binding,gameMode)
     }
 
 }

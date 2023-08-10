@@ -45,12 +45,12 @@ class GamePlayFragment : Fragment() {
         return binding.root
     }
 
-    private fun goToTryAgainFragment(binding: FragmentGamePlayBinding,score: Int,gameMode: String){
-        Navigation.findNavController(binding.root).navigate(GamePlayFragmentDirections.navigateToTryAgainFragment(score, gameMode))
-    }
-
     private fun goToCongratsFragment(binding: FragmentGamePlayBinding,score: Int,gameMode: String){
         Navigation.findNavController(binding.root).navigate(GamePlayFragmentDirections.navigateToCongratsFragment(score, gameMode))
+    }
+
+    private fun goToTryAgainFragment(binding: FragmentGamePlayBinding,score: Int,gameMode: String){
+        Navigation.findNavController(binding.root).navigate(GamePlayFragmentDirections.navigateToTryAgainFragment(score, gameMode))
     }
 
 }
