@@ -27,10 +27,10 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/addMe"
+            app:layout_constraintBottom_toBottomOf="@+id/addPlayer"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/addMe"
-            app:layout_constraintTop_toTopOf="@+id/addMe" />
+            app:layout_constraintStart_toEndOf="@+id/addPlayer"
+            app:layout_constraintTop_toTopOf="@+id/addPlayer" />
 
         <EditText
             android:id="@+id/etTwo"
@@ -46,13 +46,13 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/addFriend"
-            app:layout_constraintEnd_toStartOf="@+id/addFriend"
+            app:layout_constraintBottom_toBottomOf="@+id/addOpposite"
+            app:layout_constraintEnd_toStartOf="@+id/addOpposite"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/addFriend" />
+            app:layout_constraintTop_toTopOf="@+id/addOpposite" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/addMe"
+            android:id="@+id/addPlayer"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_margin="4dp"
@@ -67,7 +67,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/addFriend"
+            android:id="@+id/addOpposite"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_margin="4dp"

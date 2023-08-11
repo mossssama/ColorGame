@@ -35,7 +35,7 @@ class FirestoreManager(private val db: FirebaseFirestore) {
         }
     }
 
-    fun initPlayerKeyValuePair(playerName: String, updates: Map<String, Any>, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+    fun initPlayerCollection(playerName: String, updates: Map<String, Any>, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         val documentReference = db.collection("users").document(playerName)
 
         documentReference.update(updates)

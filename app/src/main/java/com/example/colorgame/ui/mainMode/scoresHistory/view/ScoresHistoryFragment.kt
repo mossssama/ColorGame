@@ -1,4 +1,4 @@
-package com.example.colorgame.ui.mainMode.results.view
+package com.example.colorgame.ui.mainMode.scoresHistory.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,31 +11,29 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.colorgame.ui.mainMode.results.viewModel.GetResultsViewModel
+import com.example.colorgame.ui.mainMode.scoresHistory.viewModel.GetScoresViewModel
 import com.example.colorgame.R
 import com.example.colorgame.ui.adapters.RecyclerViewAdapter
-import com.example.colorgame.ui.mainMode.results.model.ScoreItem
-import com.example.colorgame.databinding.FragmentResultsBinding
+import com.example.colorgame.ui.mainMode.scoresHistory.model.ScoreItem
+import com.example.colorgame.databinding.FragmentScoresHistoryBinding
 import com.example.colorgame.room.Score
 import com.example.colorgame.room.ScoreDatabase
-import com.example.colorgame.ui.mainMode.CongratsFragmentArgs
-import com.example.colorgame.ui.mainMode.TryAgainFragmentArgs
+import com.example.colorgame.ui.mainMode.ResultFragmentArgs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ResultsFragment : Fragment() {
+class ScoresHistoryFragment : Fragment() {
 
-    private val argsOne: CongratsFragmentArgs by navArgs()
-    private val argsTwo: TryAgainFragmentArgs by navArgs()
+    private val argsOne: ResultFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding: FragmentResultsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_results, container, false)
+        val binding: FragmentScoresHistoryBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_scores_history, container, false)
         val scoreDatabase = ScoreDatabase.getInstance(requireActivity().baseContext)
-        val gameMode = if (argsOne.gameMode == "hundredSec") argsTwo.gameMode else argsOne.gameMode
+        val gameMode = argsOne.gameMode
         val newArrayList: ArrayList<ScoreItem> = ArrayList()
 
-        val getResultsViewModel: GetResultsViewModel by viewModels()
+        val getResultsViewModel: GetScoresViewModel by viewModels()
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -53,8 +51,8 @@ class ResultsFragment : Fragment() {
 
     private suspend fun readResults(scoreDatabase: ScoreDatabase,gameMode: String): List<Score> = withContext(Dispatchers.IO) { scoreDatabase.scoreDao.getAllScoresByGameMode(gameMode) }
 
-    private fun goToIntroFragment(binding: FragmentResultsBinding){
-        Navigation.findNavController(binding.root).navigate(ResultsFragmentDirections.navigateToIntroFragment())
+    private fun goToIntroFragment(binding: FragmentScoresHistoryBinding){
+        Navigation.findNavController(binding.root).navigate(ScoresHistoryFragmentDirections.goToIntroFragment())
     }
 
 }

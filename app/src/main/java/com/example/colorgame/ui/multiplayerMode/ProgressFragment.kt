@@ -37,7 +37,7 @@ class ProgressFragment : Fragment() {
     }
 
     private fun goToMultiplayerGamePlayFragment(view:View,userName:String,friendName:String){
-        Navigation.findNavController(view).navigate(ProgressFragmentDirections.navigateToMultiplayerGamePlay(userName, friendName))
+        Navigation.findNavController(view).navigate(ProgressFragmentDirections.goToMultiplayerGamePlay(userName, friendName))
     }
 
 }

@@ -42,15 +42,15 @@ class IntroFragment : Fragment() {
         binding.correctRun.setOnClickListener {     goToGamePlayFragment(binding, CONTINUOUS_RIGHT_MODE)   }
         binding.hundredSec.setOnClickListener {     goToGamePlayFragment(binding, HUNDRED_SEC_MODE)        }
         binding.threeMistakes.setOnClickListener {  goToGamePlayFragment(binding, THREE_WRONG_MODE)        }
-        binding.multiplier.setOnClickListener {     goToMultiplierFragment(binding)                        }
+        binding.multiplier.setOnClickListener {     goToMultiPlayerFragment(binding)                       }
     }
 
     private fun goToGamePlayFragment(binding: FragmentIntroBinding, gameMode: String){
-        Navigation.findNavController(binding.root).navigate(IntroFragmentDirections.navigateToGamePlayFragment(gameMode))
+        Navigation.findNavController(binding.root).navigate(IntroFragmentDirections.goToGamePlayFragment(gameMode))
     }
 
-    private fun goToMultiplierFragment(binding: FragmentIntroBinding){
-        Navigation.findNavController(binding.root).navigate(IntroFragmentDirections.navigateToMultiplayerFragment())
+    private fun goToMultiPlayerFragment(binding: FragmentIntroBinding){
+        Navigation.findNavController(binding.root).navigate(IntroFragmentDirections.goToMultiplayerFragment())
     }
 
 }

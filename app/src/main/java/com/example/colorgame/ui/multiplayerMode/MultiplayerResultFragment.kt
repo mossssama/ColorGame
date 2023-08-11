@@ -14,8 +14,8 @@ import com.example.colorgame.cloudFirestore.FirestoreManager
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class MultiplayerResultsFragment : Fragment() {
-    private val args: MultiplayerResultsFragmentArgs by navArgs()
+class MultiplayerResultFragment : Fragment() {
+    private val args: MultiplayerResultFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: FragmentMultiplayerResultsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplayer_results, container, false)
@@ -45,11 +45,11 @@ class MultiplayerResultsFragment : Fragment() {
     }
 
     private fun goToIntroFragment(binding: FragmentMultiplayerResultsBinding){
-        Navigation.findNavController(binding.root).navigate(MultiplayerResultsFragmentDirections.returnToIntroFragment())
+        Navigation.findNavController(binding.root).navigate(MultiplayerResultFragmentDirections.returnToIntroFragment())
     }
 
     private fun fireProgressFragment(binding: FragmentMultiplayerResultsBinding, userName:String, friendName:String){
-        Navigation.findNavController(binding.root).navigate(MultiplayerResultsFragmentDirections.returnToProgressFragment(userName,friendName))
+        Navigation.findNavController(binding.root).navigate(MultiplayerResultFragmentDirections.returnToProgressFragment(userName,friendName))
     }
 
     private fun updateBannerText(binding: FragmentMultiplayerResultsBinding, myScore: Int, myFriendScore: Int){
@@ -75,6 +75,7 @@ class MultiplayerResultsFragment : Fragment() {
         setStartPlayingValue(fireStoreManager,false)
     }
 
+    /* Update fireStore */
     private fun resetScore(fireStoreManager: FirestoreManager){
         fireStoreManager.setScoreToZero(args.myUserName, onSuccess = {}, onFailure = {})
     }

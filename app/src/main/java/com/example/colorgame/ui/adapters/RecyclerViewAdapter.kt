@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.colorgame.R
-import com.example.colorgame.ui.mainMode.results.model.ScoreItem
+import com.example.colorgame.ui.mainMode.scoresHistory.model.ScoreItem
 
 class RecyclerViewAdapter(private val scoresList:List<ScoreItem>): RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>() {
 

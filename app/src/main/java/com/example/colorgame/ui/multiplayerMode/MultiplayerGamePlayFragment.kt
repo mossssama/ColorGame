@@ -76,6 +76,7 @@ class MultiplayerGamePlayFragment : Fragment() {
         binding.myFriendScore.text="0"
     }
 
+    /* Update FireStore */
     private fun setCountDownToHundred(){
         fireStoreManager.updateCountDown(args.myUserName,100, onSuccess = {}, onFailure = {})
     }
@@ -83,6 +84,7 @@ class MultiplayerGamePlayFragment : Fragment() {
         fireStoreManager.setScoreToZero(args.myUserName, onSuccess = {}, onFailure = {})
     }
 
+    /* Ads Methods */
     private fun loadBannerAds(adsManager: AdsManager,binding: FragmentMultiplayerGamePlayBinding){
         adsManager.loadBannerAds(binding)
     }
@@ -93,6 +95,7 @@ class MultiplayerGamePlayFragment : Fragment() {
         adsManager.showInterstitialAds(binding,myName,myFriendName,myScore,myFriendScore)
     }
 
+    /* Update DataStore */
     private fun setGameOverToFalse(dataStoreManager: DataStoreManager) {
         GlobalScope.launch { dataStoreManager.saveGameOver(false) }
     }

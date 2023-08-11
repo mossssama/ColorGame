@@ -31,26 +31,19 @@ class GamePlayFragment : Fragment() {
 
         /* Listen to GameOver Value */
         lifecycleScope.launchWhenStarted {
-            dataStoreManager.isGameOver.collect { isGameOver ->
-                if(isGameOver){
-                    when (args.gameMode) {
-                        HUNDRED_SEC_MODE -> {      goToCongratsFragment(binding,gamePlay.continuousRightAnswers,args.gameMode) }        /* 100sec time limit ->  Right Answer +1 | Wrong Answer -1  */
-                        CONTINUOUS_RIGHT_MODE -> { goToTryAgainFragment(binding,gamePlay.continuousRightAnswers,args.gameMode) }        /* One chance  */
-                        THREE_WRONG_MODE -> {      goToTryAgainFragment(binding,gamePlay.totalCorrectAnswers,args.gameMode)    }        /* Three chances */
-                    }
-                }
-            }
+            dataStoreManager.isGameOver.collect { isGameOver -> if(isGameOver){ sendResult(binding,gamePlay) } }
         }
 
         return binding.root
     }
 
-    private fun goToCongratsFragment(binding: FragmentGamePlayBinding,score: Int,gameMode: String){
-        Navigation.findNavController(binding.root).navigate(GamePlayFragmentDirections.navigateToCongratsFragment(score, gameMode))
+    private fun goToResultFragment(binding: FragmentGamePlayBinding, score: Int, gameMode: String){
+        Navigation.findNavController(binding.root).navigate(GamePlayFragmentDirections.goToResultFragment(score,gameMode))
     }
 
-    private fun goToTryAgainFragment(binding: FragmentGamePlayBinding,score: Int,gameMode: String){
-        Navigation.findNavController(binding.root).navigate(GamePlayFragmentDirections.navigateToTryAgainFragment(score, gameMode))
+    private fun sendResult(binding: FragmentGamePlayBinding,gamePlay: GamePlay){
+        if(args.gameMode==THREE_WRONG_MODE) goToResultFragment(binding,gamePlay.totalCorrectAnswers,args.gameMode)
+        else                                goToResultFragment(binding,gamePlay.continuousRightAnswers,args.gameMode)
     }
 
 }

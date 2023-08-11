@@ -10,11 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/ui_background"
-        tools:context=".ui.mainMode.TryAgainFragment">
+        tools:context=".ui.mainMode.ResultFragment">
 
         <TextView
-            android:id="@+id/tryAgain_tv"
-            android:text="Try Again"
+            android:id="@+id/done_tv"
+            android:text="Done"
             android:padding="8dp"
             android:textStyle="bold"
 
@@ -41,13 +41,13 @@
             android:gravity="center"
             android:layout_gravity="center"
 
-            app:layout_constraintBottom_toTopOf="@+id/score_is_tv"
+            app:layout_constraintBottom_toTopOf="@+id/score_result"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
         <TextView
-            android:id="@+id/score_is_tv"
+            android:id="@+id/score_result"
             android:text=""
             android:padding="8dp"
             android:textStyle="italic"
@@ -68,8 +68,7 @@
             android:id="@+id/showResults"
             android:text="Show Results"
             android:layout_marginTop="4dp"
-            android:background="@color/ui_purple"
-            android:textColor="@color/white"
+            android:background="@color/ui_mint_green"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"

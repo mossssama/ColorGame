@@ -11,7 +11,7 @@
         android:label="fragment_intro"
         tools:layout="@layout/fragment_intro" >
         <action
-            android:id="@+id/navigate_to_gamePlayFragment"
+            android:id="@+id/goToGamePlayFragment"
             app:destination="@id/gamePlayFragment">
         <argument
             android:name="gameMode"
@@ -23,8 +23,8 @@
             app:argType="string"
             android:defaultValue="hundredSec" />
         <action
-            android:id="@+id/navigateToMultiplayerFragment"
-            app:destination="@id/multiplierFragment" />
+            android:id="@+id/goToMultiplayerFragment"
+            app:destination="@id/multiplayerFragment" />
     </fragment>
 
     <fragment
@@ -33,22 +33,8 @@
         android:label="fragment_game_play"
         tools:layout="@layout/fragment_game_play" >
         <action
-            android:id="@+id/navigateToCongratsFragment"
-            app:destination="@id/congratsFragment"
-            app:popUpTo="@id/introFragment">
-            <argument
-                android:name="score"
-                android:defaultValue="0"
-                app:argType="integer" />
-            <argument
-                android:name="gameMode"
-                app:argType="string"
-                android:defaultValue="hundredSec" />
-        </action>
-
-        <action
-            android:id="@+id/navigateToTryAgainFragment"
-            app:destination="@id/tryAgainFragment"
+            android:id="@+id/goToResultFragment"
+            app:destination="@id/resultsFragment"
             app:popUpTo="@id/introFragment">
             <argument
                 android:name="score"
@@ -72,33 +58,13 @@
     </fragment>
 
     <fragment
-        android:id="@+id/tryAgainFragment"
-        android:name="com.example.colorgame.ui.mainMode.TryAgainFragment"
-        android:label="fragment_try_again"
-        tools:layout="@layout/fragment_try_again" >
-        <action
-            android:id="@+id/navigateFromTryAgainToResultsFragment"
-            app:destination="@id/resultsFragment"
-            app:popUpTo="@id/introFragment">
-            <argument
-                android:name="gameMode"
-                android:defaultValue="hundredeSec"
-                app:argType="string" />
-        </action>
-        <argument
-            android:name="gameMode"
-            app:argType="string"
-            android:defaultValue="hundredeSec" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/congratsFragment"
-        android:name="com.example.colorgame.ui.mainMode.CongratsFragment"
+        android:id="@+id/resultsFragment"
+        android:name="com.example.colorgame.ui.mainMode.ResultFragment"
         android:label="fragment_congrats"
-        tools:layout="@layout/fragment_congrats" >
+        tools:layout="@layout/fragment_result" >
         <action
-            android:id="@+id/navigateFromCongratsToResultsFragment"
-            app:destination="@id/resultsFragment"
+            android:id="@+id/goToScoresHistoryFragment"
+            app:destination="@id/scoresHistoryFragment"
             app:popUpTo="@id/introFragment">
             <argument
                 android:name="gameMode"
@@ -111,21 +77,21 @@
             android:defaultValue="hundredSec" />
     </fragment>
     <fragment
-        android:id="@+id/resultsFragment"
-        android:name="com.example.colorgame.ui.mainMode.results.view.ResultsFragment"
+        android:id="@+id/scoresHistoryFragment"
+        android:name="com.example.colorgame.ui.mainMode.scoresHistory.view.ScoresHistoryFragment"
         android:label="fragment_results"
-        tools:layout="@layout/fragment_results" >
+        tools:layout="@layout/fragment_scores_history" >
         <action
-            android:id="@+id/navigateToIntroFragment"
+            android:id="@+id/goToIntroFragment"
             app:destination="@id/introFragment" />
     </fragment>
     <fragment
-        android:id="@+id/multiplierFragment"
+        android:id="@+id/multiplayerFragment"
         android:name="com.example.colorgame.ui.multiplayerMode.MultiplayerSetupFragment"
         android:label="fragment_multiplier"
         tools:layout="@layout/fragment_multiplier">
         <action
-            android:id="@+id/navigateToMultiplayerGamePlayFragment"
+            android:id="@+id/goToMultiplayerGamePlayFragment"
             app:destination="@id/multiplayerGamePlayFragment"
             app:popUpTo="@id/introFragment">
             <argument
@@ -136,9 +102,9 @@
                 app:argType="string" />
         </action>
         <action
-            android:id="@+id/navigateToProgressFragment"
+            android:id="@+id/goToProgressFragment"
             app:destination="@id/progressFragment"
-            app:popUpTo="@id/multiplierFragment">
+            app:popUpTo="@id/multiplayerFragment">
             <argument
                 android:name="userName"
                 app:argType="string" />
@@ -160,7 +126,7 @@
             android:name="myFriendName"
             app:argType="string" />
         <action
-            android:id="@+id/navigateToMultiplayerResultsFragment"
+            android:id="@+id/goToMultiplayerResultsFragment"
             app:destination="@id/multiplayerResultsFragment"
             app:popUpTo="@id/introFragment">
             <argument
@@ -181,7 +147,7 @@
     </fragment>
     <fragment
         android:id="@+id/multiplayerResultsFragment"
-        android:name="com.example.colorgame.ui.multiplayerMode.MultiplayerResultsFragment"
+        android:name="com.example.colorgame.ui.multiplayerMode.MultiplayerResultFragment"
         android:label="fragment_multiplayer_results"
         tools:layout="@layout/fragment_multiplayer_results" >
         <argument
@@ -217,7 +183,7 @@
             android:name="friendName"
             app:argType="string" />
         <action
-            android:id="@+id/navigateToMultiplayerGamePlay"
+            android:id="@+id/goToMultiplayerGamePlay"
             app:destination="@id/multiplayerGamePlayFragment" />
     </fragment>
 

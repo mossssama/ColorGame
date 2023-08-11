@@ -6,8 +6,7 @@ import android.util.Log
 import androidx.navigation.Navigation
 import com.example.colorgame.R
 import com.example.colorgame.databinding.*
-import com.example.colorgame.ui.mainMode.CongratsFragmentDirections
-import com.example.colorgame.ui.mainMode.TryAgainFragmentDirections
+import com.example.colorgame.ui.mainMode.ResultFragmentDirections
 import com.example.colorgame.ui.multiplayerMode.MultiplayerGamePlayFragmentDirections
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
@@ -79,11 +78,11 @@ class AdsManager(private val context: Context,private val tAG: String) {
     }
 
     fun goToMultiplayerResultsFragment(binding: FragmentMultiplayerGamePlayBinding,myUserName:String,myFriendName:String,myScore:Int,myFriendScore:Int){
-        Navigation.findNavController(binding.root).navigate(MultiplayerGamePlayFragmentDirections.navigateToMultiplayerResultsFragment(myUserName, myFriendName, myScore, myFriendScore))
+        Navigation.findNavController(binding.root).navigate(MultiplayerGamePlayFragmentDirections.goToMultiplayerResultsFragment(myUserName, myFriendName, myScore, myFriendScore))
     }
 
 
-    fun showInterstitialAds(binding: FragmentCongratsBinding,gameMode: String){
+    fun showInterstitialAds(binding: FragmentResultBinding,gameMode: String){
         if (mInterstitialAd != null) {
             mInterstitialAd?.show(context as Activity)
             mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
@@ -92,7 +91,7 @@ class AdsManager(private val context: Context,private val tAG: String) {
                 override fun onAdClicked() { Log.d(tAG, "Ad was clicked.") }
 
                 // Called when ad is dismissed.
-                override fun onAdDismissedFullScreenContent() { Log.d(tAG, "Ad dismissed fullscreen content."); mInterstitialAd = null; loadInterstitialAds(); goToResultsFragment(binding,gameMode) }
+                override fun onAdDismissedFullScreenContent() { Log.d(tAG, "Ad dismissed fullscreen content."); mInterstitialAd = null; loadInterstitialAds(); goToScoresHistoryFragment(binding,gameMode) }
 
                 override fun onAdFailedToShowFullScreenContent(adError: AdError) { Log.e(tAG, "Ad failed to show fullscreen content.");    mInterstitialAd = null }
 
@@ -103,38 +102,11 @@ class AdsManager(private val context: Context,private val tAG: String) {
                 override fun onAdShowedFullScreenContent() { Log.d(tAG, "Ad showed fullscreen content.") }
             }
         }
-        else { goToResultsFragment(binding,gameMode);   Log.d(tAG, "The interstitial ad wasn't ready yet.") }
+        else { goToScoresHistoryFragment(binding,gameMode);   Log.d(tAG, "The interstitial ad wasn't ready yet.") }
     }
 
-    private fun goToResultsFragment(binding: FragmentCongratsBinding,gameMode: String){
-        Navigation.findNavController(binding.root).navigate(CongratsFragmentDirections.navigateFromCongratsToResultsFragment(gameMode))
-    }
-
-    fun showInterstitialAds(binding: FragmentTryAgainBinding,gameMode: String){
-        if (mInterstitialAd != null) {
-            mInterstitialAd?.show(context as Activity)
-            mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
-
-                // Called when a click is recorded for an ad.
-                override fun onAdClicked() { Log.d(tAG, "Ad was clicked.") }
-
-                // Called when ad is dismissed.
-                override fun onAdDismissedFullScreenContent() { Log.d(tAG, "Ad dismissed fullscreen content."); mInterstitialAd = null; loadInterstitialAds(); goToResultsFragment(binding,gameMode) }
-
-                override fun onAdFailedToShowFullScreenContent(adError: AdError) { Log.e(tAG, "Ad failed to show fullscreen content.");    mInterstitialAd = null }
-
-                // Called when an impression is recorded for an ad.
-                override fun onAdImpression() { Log.d(tAG, "Ad recorded an impression.") }
-
-                // Called when ad is shown.
-                override fun onAdShowedFullScreenContent() { Log.d(tAG, "Ad showed fullscreen content.") }
-            }
-        }
-        else { goToResultsFragment(binding, gameMode);   Log.d(tAG, "The interstitial ad wasn't ready yet.") }
-    }
-
-    private fun goToResultsFragment(binding: FragmentTryAgainBinding,gameMode: String){
-        Navigation.findNavController(binding.root).navigate(TryAgainFragmentDirections.navigateFromTryAgainToResultsFragment(gameMode))
+    private fun goToScoresHistoryFragment(binding: FragmentResultBinding, gameMode: String){
+        Navigation.findNavController(binding.root).navigate(ResultFragmentDirections.goToScoresHistoryFragment(gameMode))
     }
 
 }
