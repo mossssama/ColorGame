@@ -14,7 +14,7 @@
 
         <TextView
             android:id="@+id/score_tv"
-            android:text="Results"
+            android:text="Scores History"
             android:padding="8dp"
             android:textStyle="bold"
 
@@ -34,7 +34,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/back"
+            app:layout_constraintBottom_toTopOf="@+id/playAgain"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/score_tv">
@@ -42,8 +42,8 @@
         </androidx.recyclerview.widget.RecyclerView>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/back"
-            android:text="Back"
+            android:id="@+id/playAgain"
+            android:text="Play Again"
             android:background="@color/ui_mint_green"
             android:textColor="@color/white"
             android:layout_width="0dp"
