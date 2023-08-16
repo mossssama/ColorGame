@@ -15,6 +15,7 @@ import com.example.colorgame.domain.GamePlay.Companion.HUNDRED_SEC_MODE
 import com.example.colorgame.domain.GamePlay.Companion.THREE_WRONG_MODE
 import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class IntroFragment : Fragment() {
 
@@ -22,7 +23,7 @@ class IntroFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: FragmentIntroBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_intro,container,false)
-        val adsManager = AdsManager(requireContext(),"IntroFragment")
+        val adsManager = AdsManager(requireContext())
 
         dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)
 
@@ -36,6 +37,7 @@ class IntroFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         lifecycleScope.launch { dataStoreManager.saveGameOver(false) }
+        Timber.i("onResume")
     }
 
     private fun initOnClickListeners(binding: FragmentIntroBinding){

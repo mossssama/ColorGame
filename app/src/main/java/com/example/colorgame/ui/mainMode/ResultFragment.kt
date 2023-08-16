@@ -12,6 +12,7 @@ import com.example.colorgame.domain.AdsManager
 import com.example.colorgame.R
 import com.example.colorgame.dataStore.DataStoreManager
 import com.example.colorgame.databinding.FragmentResultBinding
+import com.example.colorgame.ui.mainMode.gamePlay.view.GamePlayFragmentArgs
 import com.google.android.gms.ads.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class ResultFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: FragmentResultBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_result,container,false)
-        val adsManager = AdsManager(requireContext(),"ResultFragment")
+        val adsManager = AdsManager(requireContext())
         val dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)
 
         MobileAds.initialize(requireContext()) { loadInterstitialAds(adsManager) }

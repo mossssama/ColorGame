@@ -37,7 +37,7 @@
 
     <fragment
         android:id="@+id/gamePlayFragment"
-        android:name="com.example.colorgame.ui.mainMode.GamePlayFragment"
+        android:name="com.example.colorgame.ui.mainMode.gamePlay.view.GamePlayFragment"
         android:label="Single player Mode"
         tools:layout="@layout/fragment_game_play">
         <action

@@ -47,7 +47,7 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
 
     var continuousRightAnswers: Int = 0
     var totalCorrectAnswers: Int =0
-    private var totalInCorrectAnswers: Int = 0
+    var totalInCorrectAnswers: Int = 0
 
 
     private var blueColor: Int = context.getColor(R.color.blue)
@@ -363,8 +363,8 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         return chosenBox
     }
 
-    fun setGamePlay(gameMode: String,binding: FragmentGamePlayBinding,context: Context){
-        if(gameMode == HUNDRED_SEC_MODE) startCountdown(binding,context,100)
+    fun setGamePlay(gameMode: String,binding: FragmentGamePlayBinding,context: Context,seconds: Long){
+        if(gameMode == HUNDRED_SEC_MODE) startCountdown(binding,context,seconds)
         onBoxesListener(gameMode,binding,context)
     }
 

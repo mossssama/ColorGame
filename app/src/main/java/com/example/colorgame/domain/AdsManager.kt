@@ -15,7 +15,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import timber.log.Timber
 
-class AdsManager(private val context: Context,private val tAG: String) {
+class AdsManager(private val context: Context) {
     private var mInterstitialAd: InterstitialAd? = null
 
     /* load Banner methods */
