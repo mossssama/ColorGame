@@ -2,7 +2,6 @@ package com.example.colorgame.domain
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import androidx.navigation.Navigation
 import com.example.colorgame.R
 import com.example.colorgame.databinding.*
@@ -14,6 +13,7 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import timber.log.Timber
 
 class AdsManager(private val context: Context,private val tAG: String) {
     private var mInterstitialAd: InterstitialAd? = null
@@ -48,32 +48,32 @@ class AdsManager(private val context: Context,private val tAG: String) {
             mInterstitialAd?.show(context as Activity)
             mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdClicked() {
-                    Log.d(tAG, "Ad was clicked.")
+                    Timber.i("Ad was clicked.")
                 }
 
                 override fun onAdDismissedFullScreenContent() {
-                    Log.d(tAG, "Ad dismissed fullscreen content.")
+                    Timber.i("Ad dismissed fullscreen content.")
                     mInterstitialAd = null
                     loadInterstitialAds()
                     goToMultiplayerResultsFragment(binding, myUserName, myFriendName, myScore, myFriendScore)
                 }
 
                 override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                    Log.e(tAG, "Ad failed to show fullscreen content.")
+                    Timber.i("Ad failed to show fullscreen content.")
                     mInterstitialAd = null
                 }
 
                 override fun onAdImpression() {
-                    Log.d(tAG, "Ad recorded an impression.")
+                    Timber.i("Ad recorded an impression.")
                 }
 
                 override fun onAdShowedFullScreenContent() {
-                    Log.d(tAG, "Ad showed fullscreen content.")
+                    Timber.i("Ad showed fullscreen content.")
                 }
             }
         } else {
             goToMultiplayerResultsFragment(binding, myUserName, myFriendName, myScore, myFriendScore)
-            Log.d(tAG, "The interstitial ad wasn't ready yet.")
+            Timber.i("The interstitial ad wasn't ready yet.")
         }
     }
 
@@ -88,21 +88,21 @@ class AdsManager(private val context: Context,private val tAG: String) {
             mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
 
                 // Called when a click is recorded for an ad.
-                override fun onAdClicked() { Log.d(tAG, "Ad was clicked.") }
+                override fun onAdClicked() { Timber.i("Ad was clicked.") }
 
                 // Called when ad is dismissed.
-                override fun onAdDismissedFullScreenContent() { Log.d(tAG, "Ad dismissed fullscreen content."); mInterstitialAd = null; loadInterstitialAds(); goToScoresHistoryFragment(binding,gameMode) }
+                override fun onAdDismissedFullScreenContent() { Timber.i("Ad dismissed fullscreen content."); mInterstitialAd = null; loadInterstitialAds(); goToScoresHistoryFragment(binding,gameMode) }
 
-                override fun onAdFailedToShowFullScreenContent(adError: AdError) { Log.e(tAG, "Ad failed to show fullscreen content.");    mInterstitialAd = null }
+                override fun onAdFailedToShowFullScreenContent(adError: AdError) { Timber.i("Ad failed to show fullscreen content.");  mInterstitialAd = null }
 
                 // Called when an impression is recorded for an ad.
-                override fun onAdImpression() { Log.d(tAG, "Ad recorded an impression.") }
+                override fun onAdImpression() { Timber.i("Ad recorded an impression.") }
 
                 // Called when ad is shown.
-                override fun onAdShowedFullScreenContent() { Log.d(tAG, "Ad showed fullscreen content.") }
+                override fun onAdShowedFullScreenContent() { Timber.i("Ad showed fullscreen content.") }
             }
         }
-        else { goToScoresHistoryFragment(binding,gameMode);   Log.d(tAG, "The interstitial ad wasn't ready yet.") }
+        else { goToScoresHistoryFragment(binding,gameMode); Timber.i("The interstitial ad wasn't ready yet.") }
     }
 
     private fun goToScoresHistoryFragment(binding: FragmentResultBinding, gameMode: String){

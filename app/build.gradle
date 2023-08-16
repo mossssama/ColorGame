@@ -79,5 +79,8 @@ dependencies {
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
+    // Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
 }
 

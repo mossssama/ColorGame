@@ -1,8 +1,8 @@
 package com.example.colorgame.cloudFirestore
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import timber.log.Timber
 
 class FirestoreManager(private val db: FirebaseFirestore) {
 
@@ -14,22 +14,22 @@ class FirestoreManager(private val db: FirebaseFirestore) {
         db.collection("users").document(playerName).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val document = task.result
-                if (document != null && document.exists()) { Log.i("TAG", "Document with playerName $playerName already exists") }
+                if (document != null && document.exists()) { Timber.i("Document with playerName $playerName already exists") }
                 else {
                     // If document doesn't exist, create it with the initial score field
                     db.collection("users").document(playerName)
                         .set(initScore) // Set the initial score map here
                         .addOnSuccessListener {
-                            Log.i("TAG", "Document with playerName $playerName created with initial score.")
+                            Timber.i("Document with playerName $playerName created with initial score.")
                             onSuccess()
                         }
                         .addOnFailureListener { e ->
-                            Log.i("TAG", "Error adding document", e)
+                            Timber.i("Error adding document")
                             onFailure(e)
                         }
                 }
             } else {
-                Log.i("TAG", "Error checking document existence", task.exception)
+                Timber.i("Error checking document existence")
                 onFailure(task.exception!!)
             }
         }
@@ -40,11 +40,11 @@ class FirestoreManager(private val db: FirebaseFirestore) {
 
         documentReference.update(updates)
             .addOnSuccessListener {
-                Log.i("TAG", "initScore field added to the document.")
+                Timber.i("initScore field added to the document.")
                 onSuccess()
             }
             .addOnFailureListener { e ->
-                Log.i("TAG", "Error adding initScore field to the document.", e)
+                Timber.i("Error adding initScore field to the document.")
                 onFailure(e)
             }
     }
@@ -77,19 +77,19 @@ class FirestoreManager(private val db: FirebaseFirestore) {
 
                     documentReference.update(updateMap as Map<String, Any>)
                         .addOnSuccessListener {
-                            Log.i("TAG", "Score for $playerName incremented to: $newScore")
+                            Timber.i("Score for $playerName incremented to: $newScore")
                             onSuccess()
                         }
                         .addOnFailureListener { e ->
-                            Log.i("TAG", "Error updating score", e)
+                            Timber.i("Error updating score")
                             onFailure(e)
                         }
                 } else {
-                    Log.i("TAG", "Document with playerName $playerName does not exist")
+                    Timber.i("Document with playerName $playerName does not exist")
                     onFailure(Exception("Document with playerName $playerName does not exist"))
                 }
             } else {
-                Log.i("TAG", "Error checking document existence", task.exception)
+                Timber.i("Error checking document existence")
                 onFailure(task.exception!!)
             }
         }
@@ -107,19 +107,19 @@ class FirestoreManager(private val db: FirebaseFirestore) {
 
                     documentReference.update(updateMap as Map<String, Any>)
                         .addOnSuccessListener {
-                            Log.i("TAG", "CountDown for $playerName updated to: $newCountDownValue")
+                            Timber.i("CountDown for $playerName updated to: $newCountDownValue")
                             onSuccess()
                         }
                         .addOnFailureListener { e ->
-                            Log.i("TAG", "Error updating countDown", e)
+                            Timber.i("Error updating countDown")
                             onFailure(e)
                         }
                 } else {
-                    Log.i("TAG", "Document with playerName $playerName does not exist")
+                    Timber.i("Document with playerName $playerName does not exist")
                     onFailure(Exception("Document with playerName $playerName does not exist"))
                 }
             } else {
-                Log.i("TAG", "Error checking document existence", task.exception)
+                Timber.i("Error checking document existence")
                 onFailure(task.exception!!)
             }
         }
@@ -140,19 +140,19 @@ class FirestoreManager(private val db: FirebaseFirestore) {
 
                     documentReference.update(updateMap as Map<String, Any>)
                         .addOnSuccessListener {
-                            Log.i("TAG", "Score for $playerName incremented to: $newScore")
+                            Timber.i("Score for $playerName incremented to: $newScore")
                             onSuccess()
                         }
                         .addOnFailureListener { e ->
-                            Log.i("TAG", "Error updating score", e)
+                            Timber.i("Error updating score")
                             onFailure(e)
                         }
                 } else {
-                    Log.i("TAG", "Document with playerName $playerName does not exist")
+                    Timber.i("Document with playerName $playerName does not exist")
                     onFailure(Exception("Document with playerName $playerName does not exist"))
                 }
             } else {
-                Log.i("TAG", "Error checking document existence", task.exception)
+                Timber.i("Error checking document existence")
                 onFailure(task.exception!!)
             }
         }
@@ -169,19 +169,19 @@ class FirestoreManager(private val db: FirebaseFirestore) {
 
                     documentReference.update(updateMap as Map<String, Any>)
                         .addOnSuccessListener {
-                            Log.i("TAG", "Score for $playerName set to zero.")
+                            Timber.i("Score for $playerName set to zero.")
                             onSuccess()
                         }
                         .addOnFailureListener { e ->
-                            Log.i("TAG", "Error updating score", e)
+                            Timber.i("Error updating score")
                             onFailure(e)
                         }
                 } else {
-                    Log.i("TAG", "Document with playerName $playerName does not exist")
+                    Timber.i("Document with playerName $playerName does not exist")
                     onFailure(Exception("Document with playerName $playerName does not exist"))
                 }
             } else {
-                Log.i("TAG", "Error checking document existence", task.exception)
+                Timber.i( "Error checking document existence")
                 onFailure(task.exception!!)
             }
         }
@@ -199,19 +199,19 @@ class FirestoreManager(private val db: FirebaseFirestore) {
                     documentReference.update(updateMap as Map<String, Any>)
                         .addOnSuccessListener {
                             val status = if (startPlaying) "started" else "stopped"
-                            Log.i("TAG", "Player $playerName $status playing.")
+                            Timber.i("Player $playerName $status playing.")
                             onSuccess()
                         }
                         .addOnFailureListener { e ->
-                            Log.i("TAG", "Error updating startPlaying status", e)
+                            Timber.i("Error updating startPlaying status")
                             onFailure(e)
                         }
                 } else {
-                    Log.i("TAG", "Document with playerName $playerName does not exist")
+                    Timber.i("Document with playerName $playerName does not exist")
                     onFailure(Exception("Document with playerName $playerName does not exist"))
                 }
             } else {
-                Log.i("TAG", "Error checking document existence", task.exception)
+                Timber.i("Error checking document existence")
                 onFailure(task.exception!!)
             }
         }
@@ -230,19 +230,19 @@ class FirestoreManager(private val db: FirebaseFirestore) {
 
                     documentReference.update(updateMap as Map<String, Any>)
                         .addOnSuccessListener {
-                            Log.i("TAG", "CountDown for $playerName is: $newCountDown")
+                            Timber.i("CountDown for $playerName is: $newCountDown")
                             onSuccess()
                         }
                         .addOnFailureListener { e ->
-                            Log.i("TAG", "Error updating countDown", e)
+                            Timber.i("Error updating countDown")
                             onFailure(e)
                         }
                 } else {
-                    Log.i("TAG", "Document with playerName $playerName does not exist")
+                    Timber.i("Document with playerName $playerName does not exist")
                     onFailure(Exception("Document with playerName $playerName does not exist"))
                 }
             } else {
-                Log.i("TAG", "Error checking document existence", task.exception)
+                Timber.i("Error checking document existence")
                 onFailure(task.exception!!)
             }
         }
@@ -254,7 +254,7 @@ class FirestoreManager(private val db: FirebaseFirestore) {
 
         val scoreListener = documentReference.addSnapshotListener { documentSnapshot, e ->
             if (e != null) {
-                Log.e("TAG", "Error listening to changes", e)
+                Timber.i("Error listening to changes")
                 return@addSnapshotListener
             }
 
@@ -272,7 +272,7 @@ class FirestoreManager(private val db: FirebaseFirestore) {
 
         val countDownListener = documentReference.addSnapshotListener { documentSnapshot, e ->
             if (e != null) {
-                Log.e("TAG", "Error listening to changes", e)
+                Timber.i("Error listening to changes")
                 return@addSnapshotListener
             }
 
@@ -290,7 +290,7 @@ class FirestoreManager(private val db: FirebaseFirestore) {
 
         val startPlayingListener = documentReference.addSnapshotListener { documentSnapshot, e ->
             if (e != null) {
-                Log.e("TAG", "Error listening to changes", e)
+                Timber.i("Error listening to changes")
                 return@addSnapshotListener
             }
 
@@ -314,11 +314,11 @@ class FirestoreManager(private val db: FirebaseFirestore) {
                     val score = document.getLong("score")?.toInt() ?: 0
                     onSuccess(score)
                 } else {
-                    Log.i("TAG", "Document with playerName $playerName does not exist")
+                    Timber.i("Document with playerName $playerName does not exist")
                     onFailure(Exception("Document with playerName $playerName does not exist"))
                 }
             } else {
-                Log.i("TAG", "Error checking document existence", task.exception)
+                Timber.i("Error checking document existence")
                 onFailure(task.exception!!)
             }
         }

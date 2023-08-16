@@ -2,7 +2,6 @@ package com.example.colorgame.domain
 
 import android.content.Context
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.View
 import com.example.colorgame.R
 import com.example.colorgame.dataStore.DataStoreManager
@@ -18,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
 
@@ -312,10 +312,7 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
     }
 
     private fun debuggingForCheck(chosenBox: String, boxesTextsMap: HashMap<String, String>, boxesColorsMap: HashMap<String, Int>) {
-        Log.i("TAG",chosenBox)
-        Log.i("TAG",boxesTextsMap.toString())
-        Log.i("TAG",convertColorsToNames(boxesColorsMap).toString())
-        Log.i("TAG",areKeyPairsUnique(boxesTextsMap,convertColorsToNames(boxesColorsMap)).toString())
+        Timber.i("$chosenBox|$boxesTextsMap|${convertColorsToNames(boxesColorsMap)}|${areKeyPairsUnique(boxesTextsMap,convertColorsToNames(boxesColorsMap))}")
     }
 
     fun getNewUI(binding: FragmentGamePlayBinding):String {
