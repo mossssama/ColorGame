@@ -9,7 +9,7 @@ import androidx.navigation.Navigation
 import com.example.colorgame.R
 import com.example.colorgame.dataStore.DataStoreManager
 import com.example.colorgame.databinding.FragmentIntroBinding
-import com.example.colorgame.domain.AdsManager
+import com.example.colorgame.ads.AdsManager
 import com.example.colorgame.domain.GamePlay.Companion.CONTINUOUS_RIGHT_MODE
 import com.example.colorgame.domain.GamePlay.Companion.HUNDRED_SEC_MODE
 import com.example.colorgame.domain.GamePlay.Companion.THREE_WRONG_MODE

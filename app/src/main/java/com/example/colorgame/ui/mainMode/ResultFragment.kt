@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import com.example.colorgame.domain.AdsManager
+import com.example.colorgame.ads.AdsManager
 import com.example.colorgame.R
 import com.example.colorgame.dataStore.DataStoreManager
 import com.example.colorgame.databinding.FragmentResultBinding

@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import com.example.colorgame.domain.AdsManager
+import com.example.colorgame.ads.AdsManager
 import com.example.colorgame.R
 import com.example.colorgame.databinding.FragmentMultiplayerGamePlayBinding
 import com.example.colorgame.domain.GamePlay
@@ -23,7 +23,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class MultiplayerGamePlayFragment : Fragment() {
     private val args: MultiplayerGamePlayFragmentArgs by navArgs()
@@ -116,13 +115,13 @@ class MultiplayerGamePlayFragment : Fragment() {
     }
 
     /* Ads Methods */
-    private fun loadBannerAds(adsManager: AdsManager,binding: FragmentMultiplayerGamePlayBinding){
+    private fun loadBannerAds(adsManager: AdsManager, binding: FragmentMultiplayerGamePlayBinding){
         adsManager.loadBannerAds(binding)
     }
     private fun loadInterstitialAds(adsManager: AdsManager){
         adsManager.loadInterstitialAds()
     }
-    private fun showInterstitialAds(adsManager: AdsManager,binding: FragmentMultiplayerGamePlayBinding,myName: String,myFriendName: String,myScore: Int,myFriendScore:Int){
+    private fun showInterstitialAds(adsManager: AdsManager, binding: FragmentMultiplayerGamePlayBinding, myName: String, myFriendName: String, myScore: Int, myFriendScore:Int){
         adsManager.showInterstitialAds(binding,myName,myFriendName,myScore,myFriendScore)
     }
 

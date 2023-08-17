@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import com.example.colorgame.R
 import com.example.colorgame.databinding.FragmentMultiplierBinding
-import com.example.colorgame.domain.AdsManager
+import com.example.colorgame.ads.AdsManager
 import com.example.colorgame.cloudFirestore.FirestoreManager
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.firestore.ktx.firestore

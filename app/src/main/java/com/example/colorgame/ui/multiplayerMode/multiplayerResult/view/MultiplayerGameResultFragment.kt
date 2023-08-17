@@ -11,13 +11,11 @@ import androidx.navigation.fragment.navArgs
 import com.example.colorgame.R
 import com.example.colorgame.databinding.FragmentMultiplayerResultsBinding
 import com.example.colorgame.cloudFirestore.FirestoreManager
-import com.example.colorgame.ui.multiplayerMode.MultiplayerResultFragmentArgs
-import com.example.colorgame.ui.multiplayerMode.MultiplayerResultFragmentDirections
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class MultiplayerGameResultFragment : Fragment() {
-    private val args: MultiplayerResultFragmentArgs by navArgs()
+    private val args: MultiplayerGameResultFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: FragmentMultiplayerResultsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplayer_results, container, false)
@@ -47,11 +45,16 @@ class MultiplayerGameResultFragment : Fragment() {
     }
 
     private fun goToIntroFragment(binding: FragmentMultiplayerResultsBinding){
-        Navigation.findNavController(binding.root).navigate(MultiplayerResultFragmentDirections.returnToIntroFragment())
+        Navigation.findNavController(binding.root).navigate(MultiplayerGameResultFragmentDirections.returnToIntroFragment())
     }
 
     private fun fireProgressFragment(binding: FragmentMultiplayerResultsBinding, userName:String, friendName:String){
-        Navigation.findNavController(binding.root).navigate(MultiplayerResultFragmentDirections.returnToProgressFragment(userName,friendName))
+        Navigation.findNavController(binding.root).navigate(
+            MultiplayerGameResultFragmentDirections.returnToProgressFragment(
+                userName,
+                friendName
+            )
+        )
     }
 
     private fun updateBannerText(binding: FragmentMultiplayerResultsBinding, myScore: Int, myFriendScore: Int){

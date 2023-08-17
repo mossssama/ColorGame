@@ -1,4 +1,4 @@
-package com.example.colorgame.domain
+package com.example.colorgame.ads
 
 import android.app.Activity
 import android.content.Context

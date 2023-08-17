@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/ui_background"
-        tools:context=".ui.multiplayerMode.MultiplayerResultFragment">
+        tools:context=".ui.multiplayerMode.multiplayerResult.view.MultiplayerGameResultFragment">
 
         <TextView
             android:id="@+id/congrats_or_hard_luck"
