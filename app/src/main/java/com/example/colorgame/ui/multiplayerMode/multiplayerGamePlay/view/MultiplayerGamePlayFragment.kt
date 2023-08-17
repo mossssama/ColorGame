@@ -23,6 +23,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MultiplayerGamePlayFragment : Fragment() {
     private val args: MultiplayerGamePlayFragmentArgs by navArgs()
@@ -32,6 +33,8 @@ class MultiplayerGamePlayFragment : Fragment() {
     private lateinit var binding: FragmentMultiplayerGamePlayBinding
     private lateinit var gamePlay: GamePlay
 
+    private var shouldExecuteSetScoreToZero = true
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplayer_game_play,container,false)
         val adsManager = AdsManager(requireContext())                                               /* AdsManager instance */
@@ -40,8 +43,10 @@ class MultiplayerGamePlayFragment : Fragment() {
 
         MobileAds.initialize(requireContext()) { loadBannerAds(adsManager,binding); loadInterstitialAds(adsManager) }     /* Load ads */
 
+        shouldExecuteSetScoreToZero = savedInstanceState?.getBoolean("shouldExecuteSetScoreToZero", true) ?: true
+        if (shouldExecuteSetScoreToZero) { setScoreToZero();    shouldExecuteSetScoreToZero = false }
+
         setCountDownToHundred()
-        setScoreToZero()
         loadUI(binding,args.myUserName,args.myFriendName)             /* Set names */
 
         /* update scores*/
@@ -75,6 +80,7 @@ class MultiplayerGamePlayFragment : Fragment() {
         val countDownValue = binding.countdownTextView.text.toString().toLong()
         val playerScore = gamePlay.continuousRightAnswers
         multiplayerGameStateViewModel.saveGameState(outState, MultiplayerGameState(countDownValue,playerScore))
+        outState.putBoolean("shouldExecuteSetScoreToZero", shouldExecuteSetScoreToZero)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -89,6 +95,7 @@ class MultiplayerGamePlayFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        shouldExecuteSetScoreToZero = true
         fireStoreManager.removeAllScoreListeners()
         fireStoreManager.removeAllCountDownListeners()
     }

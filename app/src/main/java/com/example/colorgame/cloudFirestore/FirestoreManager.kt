@@ -187,6 +187,35 @@ class FirestoreManager(private val db: FirebaseFirestore) {
         }
     }
 
+    fun setScore(playerName: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit,score:Int) {
+        val documentReference = db.collection("users").document(playerName)
+
+        documentReference.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val document = task.result
+                if (document != null && document.exists()) {
+                    val updateMap = hashMapOf("score" to score)
+
+                    documentReference.update(updateMap as Map<String, Any>)
+                        .addOnSuccessListener {
+                            Timber.i("Score for $playerName set to zero.")
+                            onSuccess()
+                        }
+                        .addOnFailureListener { e ->
+                            Timber.i("Error updating score")
+                            onFailure(e)
+                        }
+                } else {
+                    Timber.i("Document with playerName $playerName does not exist")
+                    onFailure(Exception("Document with playerName $playerName does not exist"))
+                }
+            } else {
+                Timber.i( "Error checking document existence")
+                onFailure(task.exception!!)
+            }
+        }
+    }
+
     fun setStartPlaying(playerName: String, startPlaying: Boolean, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         val documentReference = db.collection("users").document(playerName)
 
