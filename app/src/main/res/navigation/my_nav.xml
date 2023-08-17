@@ -169,7 +169,7 @@
     </fragment>
     <fragment
         android:id="@+id/multiplayerGamePlayFragment"
-        android:name="com.example.colorgame.ui.multiplayerMode.MultiplayerGamePlayFragment"
+        android:name="com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.view.MultiplayerGamePlayFragment"
         android:label="Multiplayer Mode"
         tools:layout="@layout/fragment_multiplayer_game_play">
         <argument

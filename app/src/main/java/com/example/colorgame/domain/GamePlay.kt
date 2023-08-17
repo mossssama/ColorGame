@@ -368,8 +368,8 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         onBoxesListener(gameMode,binding,context)
     }
 
-    fun setGamePlay(gameMode: String,playerName: String,binding: FragmentMultiplayerGamePlayBinding,context: Context){
-        if(gameMode == HUNDRED_SEC_MODE) startCountdown(binding,context,100,playerName)
+    fun setGamePlay(gameMode: String,playerName: String,binding: FragmentMultiplayerGamePlayBinding,context: Context,seconds: Long){
+        if(gameMode == HUNDRED_SEC_MODE) startCountdown(binding,context,seconds,playerName)
         onBoxesListener(gameMode,playerName,binding,context)
     }
 

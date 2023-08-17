@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/ui_background"
-        tools:context=".ui.multiplayerMode.MultiplayerGamePlayFragment">
+        tools:context=".ui.multiplayerMode.multiplayerGamePlay.view.MultiplayerGamePlayFragment">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline10"

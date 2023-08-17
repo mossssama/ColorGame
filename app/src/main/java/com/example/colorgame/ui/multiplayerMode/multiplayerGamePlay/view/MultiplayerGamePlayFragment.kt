@@ -1,4 +1,4 @@
-package com.example.colorgame.ui.multiplayerMode
+package com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.example.colorgame.domain.AdsManager
@@ -14,6 +15,9 @@ import com.example.colorgame.databinding.FragmentMultiplayerGamePlayBinding
 import com.example.colorgame.domain.GamePlay
 import com.example.colorgame.cloudFirestore.FirestoreManager
 import com.example.colorgame.dataStore.DataStoreManager
+import com.example.colorgame.domain.GamePlay.Companion.HUNDRED_SEC_MODE
+import com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.model.MultiplayerGameState
+import com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.viewModel.MultiplayerGameStateViewModel
 import com.google.android.gms.ads.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -24,10 +28,13 @@ class MultiplayerGamePlayFragment : Fragment() {
     private val args: MultiplayerGamePlayFragmentArgs by navArgs()
 
     private lateinit var fireStoreManager: FirestoreManager
+    private val multiplayerGameStateViewModel: MultiplayerGameStateViewModel by viewModels()
+    private lateinit var binding: FragmentMultiplayerGamePlayBinding
+    private lateinit var gamePlay: GamePlay
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding: FragmentMultiplayerGamePlayBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplayer_game_play,container,false)
-        val adsManager = AdsManager(requireContext())             /* AdsManager instance */
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplayer_game_play,container,false)
+        val adsManager = AdsManager(requireContext())                                               /* AdsManager instance */
         val dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)   /* DataStore instance */
         fireStoreManager = FirestoreManager(Firebase.firestore)
 
@@ -42,9 +49,9 @@ class MultiplayerGamePlayFragment : Fragment() {
         fireStoreManager.listenToScoreChanges(args.myFriendName) { score -> binding.myFriendScore.text=score.toString() }
 
         /* init game */
-        val gamePlay= GamePlay(lifecycleScope, requireActivity().baseContext)
+        gamePlay= GamePlay(lifecycleScope, requireActivity().baseContext)
         GamePlay.chosenBox = gamePlay.getNewUI(binding)
-        gamePlay.setGamePlay(GamePlay.HUNDRED_SEC_MODE,args.myUserName,binding,requireActivity().baseContext)
+        gamePlay.setGamePlay(HUNDRED_SEC_MODE,args.myUserName,binding,requireActivity().baseContext,100)
 
         /* Listen to GameOver Value */
         lifecycleScope.launchWhenStarted {
@@ -61,6 +68,23 @@ class MultiplayerGamePlayFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val countDownValue = binding.countdownTextView.text.toString().toLong()
+        val playerScore = gamePlay.continuousRightAnswers
+        multiplayerGameStateViewModel.saveGameState(outState, MultiplayerGameState(countDownValue,playerScore))
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null) {
+            multiplayerGameStateViewModel.loadGameState(savedInstanceState).observe(requireActivity()){
+                gamePlay.setGamePlay(HUNDRED_SEC_MODE,args.myUserName,binding,requireActivity().baseContext,it.countDownValue)
+                gamePlay.continuousRightAnswers=it.playerScore
+            }
+        }
     }
 
     override fun onDestroyView() {
