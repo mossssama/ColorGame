@@ -17,27 +17,31 @@ import com.google.firebase.ktx.Firebase
 class ProgressFragment : Fragment() {
 
     private val args: ProgressFragmentArgs by navArgs()
+    private lateinit var binding: FragmentProgressBinding
     private lateinit var fireStoreManager: FirestoreManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding: FragmentProgressBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_progress, container, false)
-        fireStoreManager = FirestoreManager(Firebase.firestore)
-
-        /* Go to MultiPlayer GamePlay when the other player clicks on startPlaying */
-        fireStoreManager.listenToStartPlayingChanges(args.friendName) { startPlaying ->
-            if (startPlaying) { view?.let { goToMultiplayerGamePlayFragment(it,args.userName,args.friendName) } }
-        }
-
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_progress, container, false)
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        /* Go to MultiPlayer GamePlay when the other player clicks on startPlaying */
+        fireStoreManager = FirestoreManager(Firebase.firestore)
+        fireStoreManager.listenToStartPlayingChanges(args.friendName) { startPlaying ->
+            if (startPlaying) { goToMultiplayerGamePlayFragment(args.userName,args.friendName) }
+        }
+
+    }
+
+    private fun goToMultiplayerGamePlayFragment(userName:String,friendName:String){
+        Navigation.findNavController(binding.root).navigate(ProgressFragmentDirections.goToMultiplayerGamePlay(userName, friendName))
+    }
+
+    /* Can be put in ViewModel */
     override fun onDestroyView() {
         super.onDestroyView()
         fireStoreManager.removeAllStartPlayingListeners()
     }
-
-    private fun goToMultiplayerGamePlayFragment(view:View,userName:String,friendName:String){
-        Navigation.findNavController(view).navigate(ProgressFragmentDirections.goToMultiplayerGamePlay(userName, friendName))
-    }
-
 }

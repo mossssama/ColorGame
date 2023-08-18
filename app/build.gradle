@@ -39,6 +39,7 @@ android {
     kotlinOptions{
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+    buildToolsVersion '33.0.0'
 }
 
 def room_version = "2.5.2"

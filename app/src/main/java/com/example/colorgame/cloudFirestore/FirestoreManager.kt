@@ -353,6 +353,26 @@ class FirestoreManager(private val db: FirebaseFirestore) {
         }
     }
 
+    fun readCountDown(playerName: String, onSuccess: (Int) -> Unit, onFailure: (Exception) -> Unit) {
+        val documentReference = db.collection("users").document(playerName)
+
+        documentReference.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val document = task.result
+                if (document != null && document.exists()) {
+                    val countDown = document.getLong("countDown")?.toInt() ?: 0
+                    onSuccess(countDown)
+                } else {
+                    Timber.i("Document with playerName $playerName does not exist")
+                    onFailure(Exception("Document with playerName $playerName does not exist"))
+                }
+            } else {
+                Timber.i("Error checking document existence")
+                onFailure(task.exception!!)
+            }
+        }
+    }
+
     fun removeAllScoreListeners() {
         for (listener in scoreListeners.values) { listener.remove() }
         scoreListeners.clear()

@@ -19,22 +19,27 @@ import com.google.firebase.ktx.Firebase
 
 class MultiplayerSetupFragment : Fragment() {
 
+    private lateinit var binding:FragmentMultiplierBinding
     private lateinit var playerName: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding: FragmentMultiplierBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplier,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplier,container,false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val fireStoreManager = FirestoreManager(Firebase.firestore)
         val adsManager = AdsManager(requireContext())
 
         MobileAds.initialize(requireContext()) { adsManager.loadBannerAds(binding) }     /* Load ads on Banner */
 
-        binding.addPlayer.setOnClickListener { addPlayer(binding,fireStoreManager) }
-        binding.addOpposite.setOnClickListener { addOpposite(binding,fireStoreManager) }
-
-        return binding.root
+        binding.addPlayer.setOnClickListener { addPlayer(fireStoreManager) }
+        binding.addOpposite.setOnClickListener { addOpposite(fireStoreManager) }
     }
 
-    private fun addPlayer(binding: FragmentMultiplierBinding, fireStoreManager: FirestoreManager){
+    private fun addPlayer(fireStoreManager: FirestoreManager){
         playerName = binding.etOne.text.toString()
         val initPlayer = mapOf("score" to 0,"countDown" to 100,"startPlaying" to false)
 
@@ -51,7 +56,7 @@ class MultiplayerSetupFragment : Fragment() {
         } else Toast.makeText(requireContext(), "Can't keep textField empty", Toast.LENGTH_LONG).show()
     }
 
-    private fun addOpposite(binding: FragmentMultiplierBinding, fireStoreManager: FirestoreManager){
+    private fun addOpposite(fireStoreManager: FirestoreManager){
         val oppositeName = binding.etTwo.text.toString()
 
         if (oppositeName.isNotBlank()) {
@@ -61,7 +66,7 @@ class MultiplayerSetupFragment : Fragment() {
                     if (exists){
                         binding.startPlaying.setOnClickListener {
                             setStartPlaying(fireStoreManager)
-                            fireProgressFragment(binding,playerName,oppositeName)
+                            fireProgressFragment(playerName,oppositeName)
                         }
                 }
                     else Toast.makeText(requireContext(), "No Player with this userName", Toast.LENGTH_LONG).show()
@@ -71,15 +76,10 @@ class MultiplayerSetupFragment : Fragment() {
         } else Toast.makeText(requireContext(), "Can't keep textField empty", Toast.LENGTH_LONG).show()
     }
 
-    private fun fireProgressFragment(binding: FragmentMultiplierBinding,userName:String,friendName:String){
+    private fun fireProgressFragment(userName:String,friendName:String){
         Navigation.findNavController(binding.root).navigate(MultiplayerSetupFragmentDirections.goToProgressFragment(userName,friendName))
     }
 
-    private fun setStartPlaying(fireStoreManager: FirestoreManager){
-        fireStoreManager.setStartPlaying(playerName, true, onSuccess = {}, onFailure = {})
-    }
-
-    /* Informative Toasts */
     private fun firePlayerAddedSuccessfullyToast(context: Context){
         Toast.makeText(context,"Player is added successfully",Toast.LENGTH_SHORT).show()
     }
@@ -88,4 +88,8 @@ class MultiplayerSetupFragment : Fragment() {
         Toast.makeText(context,"Check Internet Connection",Toast.LENGTH_LONG).show()
     }
 
+    /* Can be put in viewModel */
+    private fun setStartPlaying(fireStoreManager: FirestoreManager){
+        fireStoreManager.setStartPlaying(playerName, true, onSuccess = {}, onFailure = {})
+    }
 }

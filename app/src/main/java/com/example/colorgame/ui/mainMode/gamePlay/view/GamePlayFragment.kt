@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
@@ -28,44 +28,47 @@ class GamePlayFragment : Fragment() {
     private val argsThree: ResultFragmentArgs by navArgs()
 
     private lateinit var binding: FragmentGamePlayBinding
+    private lateinit var viewModel: GameStateViewModel
     private lateinit var gamePlay: GamePlay
-    private val gameStateViewModel: GameStateViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_play, container, false)
-        val dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)   /* DataStore instance */
-        val currentGameMode = getCurrentGameMode(argsOne.gameMode,argsTwo.gameMode,argsThree.gameMode)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel= ViewModelProvider(this)[GameStateViewModel::class.java]
+
+        val dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)
+        val currentGameMode = viewModel.getCurrentGameMode(argsOne.gameMode,argsTwo.gameMode,argsThree.gameMode)
 
         gamePlay= GamePlay(lifecycleScope, requireActivity().baseContext)
         GamePlay.chosenBox = gamePlay.getNewUI(binding)
         gamePlay.setGamePlay(currentGameMode,binding,requireActivity().baseContext,100)
 
         /* Listen to GameOver Value */
-        lifecycleScope.launchWhenStarted {
-            dataStoreManager.isGameOver.collect { isGameOver -> if(isGameOver){ sendResult(binding,gamePlay) } }
-        }
-
-        return binding.root
+        lifecycleScope.launchWhenStarted { dataStoreManager.isGameOver.collect { isGameOver -> if(isGameOver){ sendResult(binding,gamePlay) } } }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val currentGameMode = getCurrentGameMode(argsOne.gameMode,argsTwo.gameMode,argsThree.gameMode)
+        val currentGameMode = viewModel.getCurrentGameMode(argsOne.gameMode,argsTwo.gameMode,argsThree.gameMode)
 
         val countDownValue = if(currentGameMode==HUNDRED_SEC_MODE) binding.countdownTextView.text.toString().toLong() else 100
         val currentScore = if(currentGameMode==THREE_WRONG_MODE) gamePlay.totalCorrectAnswers else gamePlay.continuousRightAnswers
         val currentWrongAnswers = gamePlay.totalInCorrectAnswers
 
-        gameStateViewModel.saveGameState(outState, GameState(countDownValue,currentScore,currentWrongAnswers))
+        viewModel.saveGameState(outState, GameState(countDownValue,currentScore,currentWrongAnswers))
 
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        val currentGameMode = getCurrentGameMode(argsOne.gameMode,argsTwo.gameMode,argsThree.gameMode)
+        val currentGameMode = viewModel.getCurrentGameMode(argsOne.gameMode,argsTwo.gameMode,argsThree.gameMode)
 
         if (savedInstanceState != null) {
-            gameStateViewModel.loadGameState(savedInstanceState).observe(requireActivity()){
+            viewModel.loadGameState(savedInstanceState).observe(requireActivity()){
 
                 gamePlay.setGamePlay(currentGameMode, binding, requireActivity().baseContext, it.countDownValue)
 
@@ -86,7 +89,7 @@ class GamePlayFragment : Fragment() {
         else                                   goToResultFragment(binding,gamePlay.continuousRightAnswers,argsOne.gameMode)
     }
 
-    private fun getCurrentGameMode(startGameMode: String,returnedGameMode: String,returnedGameModeTwo: String): String = if(startGameMode==""){ if(returnedGameMode=="") returnedGameModeTwo else returnedGameMode } else startGameMode
+
 
 }
 

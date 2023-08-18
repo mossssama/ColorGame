@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.colorgame.ads.AdsManager
 import com.example.colorgame.R
 import com.example.colorgame.dataStore.DataStoreManager
+import com.example.colorgame.databinding.FragmentMultiplierBinding
 import com.example.colorgame.databinding.FragmentResultBinding
 import com.example.colorgame.ui.mainMode.gamePlay.view.GamePlayFragmentArgs
 import com.google.android.gms.ads.*
@@ -19,41 +20,46 @@ import kotlinx.coroutines.launch
 
 class ResultFragment : Fragment() {
     private val args: GamePlayFragmentArgs by navArgs()
+    private lateinit var binding: FragmentResultBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding: FragmentResultBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_result,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_result,container,false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val adsManager = AdsManager(requireContext())
         val dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)
 
         MobileAds.initialize(requireContext()) { loadInterstitialAds(adsManager) }
 
-        setScoreTextView(binding,args.score)
+        setScoreTextView(args.score)
 
-        binding.showResults.setOnClickListener { showInterstitialAds(adsManager,binding,args.gameMode) }
+        binding.showResults.setOnClickListener { showInterstitialAds(adsManager,args.gameMode) }
 
-        binding.playAgain.setOnClickListener{ setGameOverToFalse(dataStoreManager); goToGamePlayFragment(binding) }
-
-        return binding.root
+        binding.playAgain.setOnClickListener{ setGameOverToFalse(dataStoreManager); goToGamePlayFragment() }
     }
 
-    private fun setScoreTextView(binding: FragmentResultBinding, scoreValue:Int){
+    private fun goToGamePlayFragment(){
+        Navigation.findNavController(binding.root).navigate(ResultFragmentDirections.goAgainToGamePlayFragment(args.gameMode))
+    }
+
+    private fun setScoreTextView(scoreValue:Int){
         binding.scoreResult.text=scoreValue.toString()
     }
 
-    private fun loadInterstitialAds(adsManager: AdsManager){
-        adsManager.loadInterstitialAds()
-    }
-
-    private fun showInterstitialAds(adsManager: AdsManager, binding: FragmentResultBinding, gameMode:String){
+    private fun showInterstitialAds(adsManager: AdsManager, gameMode:String){
         adsManager.showInterstitialAds(binding,gameMode)
     }
 
+    /* Can be put in ViewModel */
     private fun setGameOverToFalse(dataStoreManager: DataStoreManager) {
         GlobalScope.launch { dataStoreManager.saveGameOver(false) }
     }
 
-    private fun goToGamePlayFragment(binding: FragmentResultBinding){
-        Navigation.findNavController(binding.root).navigate(ResultFragmentDirections.goAgainToGamePlayFragment(args.gameMode))
+    private fun loadInterstitialAds(adsManager: AdsManager){
+        adsManager.loadInterstitialAds()
     }
 
 }

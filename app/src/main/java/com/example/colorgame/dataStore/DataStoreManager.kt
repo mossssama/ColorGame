@@ -5,12 +5,11 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.colorgame.ui.multiplayerMode.multiplayerResult.model.MultiplayerGameResult
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class DataStoreManager private constructor(private val context: Context) {
@@ -20,7 +19,10 @@ class DataStoreManager private constructor(private val context: Context) {
     private val _isGameOver = MutableStateFlow(false)
     val isGameOver: StateFlow<Boolean> = _isGameOver.asStateFlow()
 
-    init {  
+    private val _multiplayerGameResult = MutableStateFlow(MultiplayerGameResult(0, 0))
+    val multiplayerGameResult: StateFlow<MultiplayerGameResult> = _multiplayerGameResult.asStateFlow()
+
+    init {
         _isGameOver.value = false
         observeDataStore()
     }
@@ -31,12 +33,25 @@ class DataStoreManager private constructor(private val context: Context) {
                 if (exception is Exception) { }
             }.collect { preferences ->
                 _isGameOver.value = preferences[booleanPreferencesKey("gameOver")] ?: false
+                _multiplayerGameResult.value = MultiplayerGameResult(preferences[intPreferencesKey("playerScore")] ?: 0, preferences[intPreferencesKey("oppositeScore")] ?: 0)
             }
         }
     }
 
     suspend fun saveGameOver(isGameOver: Boolean) {
         context.dataStore.edit { preferences -> preferences[booleanPreferencesKey("gameOver")] = isGameOver }
+    }
+
+    suspend fun saveMultiplayerGameResult(multiplayerGameResult: MultiplayerGameResult) {
+        context.dataStore.edit { preferences ->
+            preferences[intPreferencesKey("playerScore")] = multiplayerGameResult.playerScore
+            preferences[intPreferencesKey("oppositeScore")] = multiplayerGameResult.oppositeScore
+        }
+    }
+
+    suspend fun readMultiplayerGameResult(): MultiplayerGameResult {
+        val preferences = context.dataStore.data.first()
+        return MultiplayerGameResult(preferences[intPreferencesKey("playerScore")] ?: 0, preferences[intPreferencesKey("oppositeScore")] ?: 0)
     }
 
     companion object {

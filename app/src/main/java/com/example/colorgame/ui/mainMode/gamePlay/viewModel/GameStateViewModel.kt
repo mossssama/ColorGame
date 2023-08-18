@@ -13,4 +13,6 @@ class GameStateViewModel:ViewModel() {
 
     private val saveGameStateRepo: GameStateRepository = GameStateRepositoryImpl()
     fun saveGameState(savedInstanceState: Bundle,gameState: GameState) = saveGameStateRepo.saveGameState(savedInstanceState,gameState)
+
+    fun getCurrentGameMode(startGameMode: String,returnedGameMode: String,returnedGameModeTwo: String): String = if(startGameMode==""){ if(returnedGameMode=="") returnedGameModeTwo else returnedGameMode } else startGameMode
 }
