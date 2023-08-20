@@ -4,6 +4,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion 33
@@ -42,6 +43,10 @@ android {
     buildToolsVersion '33.0.0'
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 def room_version = "2.5.2"
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -61,6 +66,7 @@ dependencies {
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"            /* Navigation Component */
     implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"                  /* Navigation Component */
+    implementation "androidx.fragment:fragment-ktx:1.5.2"
 
     implementation "androidx.room:room-runtime:$room_version"
     implementation 'com.google.firebase:firebase-firestore-ktx:24.7.0'
@@ -82,6 +88,13 @@ dependencies {
 
     // Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    // Hilt
+//    implementation "com.google.dagger:hilt-android:2.44"
+//    kapt "com.google.dagger:hilt-android-compiler:2.44"
+
+    implementation "com.google.dagger:hilt-android:2.45"
+    kapt "com.google.dagger:hilt-android-compiler:2.45"
 
 }
 

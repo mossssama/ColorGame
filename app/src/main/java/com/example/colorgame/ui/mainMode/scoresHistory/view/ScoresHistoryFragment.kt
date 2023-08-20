@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
@@ -18,35 +18,40 @@ import com.example.colorgame.ui.adapters.RecyclerViewAdapter
 import com.example.colorgame.databinding.FragmentScoresHistoryBinding
 import com.example.colorgame.room.ScoreDatabase
 import com.example.colorgame.ui.mainMode.ResultFragmentArgs
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ScoresHistoryFragment : Fragment() {
     private val args: ResultFragmentArgs by navArgs()
+    private val viewModel: GetScoresViewModel by viewModels()
 
     private lateinit var binding: FragmentScoresHistoryBinding
-    private lateinit var viewModel: GetScoresViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_scores_history, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner // This ensures LiveData updates are observed correctly.
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[GetScoresViewModel::class.java]
         val scoreDatabase = ScoreDatabase.getInstance(requireActivity().baseContext)
         val dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         lifecycleScope.launch {
-            viewModel.getResults(viewModel.readResults(scoreDatabase,args.gameMode)).observe(requireActivity()) {
+            viewModel.getResults(viewModel.readResults(scoreDatabase,args.gameMode)).observe(viewLifecycleOwner) {
                 viewModel.newArrayList.addAll(it)                                          // Add the retrieved results to the list
                 binding.recyclerView.adapter = RecyclerViewAdapter(viewModel.newArrayList) // Set the RecyclerView adapter here
             }
         }
 
-        binding.playAgain.setOnClickListener { viewModel.setGameOverToFalse(dataStoreManager); goToGamePlayFragment() }
+        binding.playAgain.setOnClickListener {
+            viewModel.setGameOverToFalse(dataStoreManager);
+            goToGamePlayFragment()
+        }
     }
 
     private fun goToGamePlayFragment(){

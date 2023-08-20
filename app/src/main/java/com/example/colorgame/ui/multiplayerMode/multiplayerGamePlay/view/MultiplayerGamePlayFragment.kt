@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
@@ -15,26 +16,28 @@ import com.example.colorgame.databinding.FragmentMultiplayerGamePlayBinding
 import com.example.colorgame.domain.GamePlay
 import com.example.colorgame.dataStore.DataStoreManager
 import com.example.colorgame.domain.GamePlay.Companion.HUNDRED_SEC_MODE
+import com.example.colorgame.ui.mainMode.gamePlay.viewModel.GameStateViewModel
 import com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.model.MultiplayerGameState
 import com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.viewModel.MultiplayerGameStateViewModel
 import com.google.android.gms.ads.*
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MultiplayerGamePlayFragment : Fragment() {
     private val args: MultiplayerGamePlayFragmentArgs by navArgs()
+    private val viewModel: MultiplayerGameStateViewModel by viewModels()
 
     private lateinit var binding: FragmentMultiplayerGamePlayBinding
-    private lateinit var viewModel: MultiplayerGameStateViewModel
-
     private lateinit var gamePlay: GamePlay
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplayer_game_play,container,false)
+        binding.lifecycleOwner = viewLifecycleOwner // This ensures LiveData updates are observed correctly.
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel =  ViewModelProvider(this)[MultiplayerGameStateViewModel::class.java]
 
         val adsManager = AdsManager(requireContext())
         val dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)
@@ -71,7 +74,7 @@ class MultiplayerGamePlayFragment : Fragment() {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState != null) {
-            viewModel.loadGameState(savedInstanceState).observe(requireActivity()){
+            viewModel.loadGameState(savedInstanceState).observe(viewLifecycleOwner){
                 gamePlay.setGamePlay(HUNDRED_SEC_MODE,args.myUserName,binding,requireActivity().baseContext,it.countDownValue)
                 gamePlay.continuousRightAnswers=it.playerScore
             }
@@ -84,7 +87,7 @@ class MultiplayerGamePlayFragment : Fragment() {
                 if(isGameOver){
                     viewModel.fireStoreManager.readScore(args.myUserName, onSuccess = { myScore ->
                         viewModel.fireStoreManager.readScore(args.myFriendName, onSuccess = { myFriendScore ->
-                            showInterstitialAds(adsManager,args.myUserName,args.myFriendName,myScore,myFriendScore)
+                            viewModel.showInterstitialAds(requireActivity(),adsManager,args.myUserName,args.myFriendName,myScore,myFriendScore)
                             viewModel.setGameOverToFalse(dataStoreManager)
                         }, onFailure = {})
                     }, onFailure = {})
@@ -100,15 +103,8 @@ class MultiplayerGamePlayFragment : Fragment() {
         binding.myFriendScore.text="0"
     }
 
-
     private fun loadBannerAds(adsManager: AdsManager){
         adsManager.loadBannerAds(binding)
     }
-
-    private fun showInterstitialAds(adsManager: AdsManager, myName: String, myFriendName: String, myScore: Int, myFriendScore:Int){
-        adsManager.showInterstitialAds(binding,myName,myFriendName,myScore,myFriendScore)
-    }
-
-
 
 }

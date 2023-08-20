@@ -261,13 +261,13 @@
 
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="com.example.colorgame.AboutFragment"
+        android:name="com.example.colorgame.ui.drawer.AboutFragment"
         android:label="About"
         tools:layout="@layout/fragment_about" />
 
     <fragment
         android:id="@+id/accountFragment"
-        android:name="com.example.colorgame.AccountFragment"
+        android:name="com.example.colorgame.ui.drawer.AccountFragment"
         android:label="Account"
         tools:layout="@layout/fragment_account" />
 

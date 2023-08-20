@@ -12,7 +12,9 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.example.colorgame.R
 import com.example.colorgame.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -23,7 +25,6 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.fragmentContainer)
 
         setupNavigationDrawer(navController,binding)
-
     }
 
     override fun onSupportNavigateUp(): Boolean = isBackBtnActivated()

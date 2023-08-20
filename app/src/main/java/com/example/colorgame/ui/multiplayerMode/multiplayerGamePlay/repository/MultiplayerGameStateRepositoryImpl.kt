@@ -3,8 +3,9 @@ package com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.repository
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.model.MultiplayerGameState
+import javax.inject.Inject
 
-class MultiplayerGameStateRepositoryImpl:MultiplayerGameStateRepository {
+class MultiplayerGameStateRepositoryImpl @Inject constructor():MultiplayerGameStateRepository {
 
     private val countDown = "countDownValue"
     private val playerScore = "playerScore"

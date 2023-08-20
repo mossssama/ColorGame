@@ -1,6 +1,7 @@
 package com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.viewModel
 
 import android.os.Bundle
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.colorgame.ads.AdsManager
@@ -11,20 +12,19 @@ import com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.repository.M
 import com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.repository.MultiplayerGameStateRepositoryImpl
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MultiplayerGameStateViewModel: ViewModel()  {
+@HiltViewModel
+class MultiplayerGameStateViewModel @Inject constructor(private val gameStateRepo: MultiplayerGameStateRepository): ViewModel()  {
 
     val fireStoreManager = FirestoreManager(Firebase.firestore)
     var shouldExecuteSetScoreToZero = true
 
-    private val loadGameStateRepo: MultiplayerGameStateRepository = MultiplayerGameStateRepositoryImpl()
-    fun loadGameState(savedInstanceState: Bundle?): LiveData<MultiplayerGameState> = loadGameStateRepo.loadGameState(savedInstanceState)
-
-    private val saveGameStateRepo: MultiplayerGameStateRepository = MultiplayerGameStateRepositoryImpl()
-    fun saveGameState(savedInstanceState: Bundle, multiplayerGameState: MultiplayerGameState) = saveGameStateRepo.saveGameState(savedInstanceState,multiplayerGameState)
-
+    fun loadGameState(savedInstanceState: Bundle?): LiveData<MultiplayerGameState> = gameStateRepo.loadGameState(savedInstanceState)
+    fun saveGameState(savedInstanceState: Bundle, multiplayerGameState: MultiplayerGameState) = gameStateRepo.saveGameState(savedInstanceState,multiplayerGameState)
 
     override fun onCleared() {
         super.onCleared()
@@ -37,6 +37,6 @@ class MultiplayerGameStateViewModel: ViewModel()  {
     fun setCountDownToHundred(myUserName: String){ fireStoreManager.updateCountDown(myUserName,100, onSuccess = {}, onFailure = {}) }
     fun setGameOverToFalse(dataStoreManager: DataStoreManager) { GlobalScope.launch { dataStoreManager.saveGameOver(false) } }
     fun loadInterstitialAds(adsManager: AdsManager){ adsManager.loadInterstitialAds() }
-
+    fun showInterstitialAds(activity: FragmentActivity, adsManager: AdsManager, myName: String, myFriendName: String, myScore: Int, myFriendScore:Int){ adsManager.showInterstitialAds(activity,myName,myFriendName,myScore,myFriendScore) }
 
 }

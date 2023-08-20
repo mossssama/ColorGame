@@ -5,14 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.colorgame.ui.mainMode.gamePlay.model.GameState
 import com.example.colorgame.ui.mainMode.gamePlay.repository.GameStateRepository
-import com.example.colorgame.ui.mainMode.gamePlay.repository.GameStateRepositoryImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class GameStateViewModel:ViewModel() {
-    private val loadGameStateRepo: GameStateRepository = GameStateRepositoryImpl()
-    fun loadGameState(savedInstanceState: Bundle?): LiveData<GameState> = loadGameStateRepo.loadGameState(savedInstanceState)
+@HiltViewModel
+class GameStateViewModel @Inject constructor(private val gameStateRepo:GameStateRepository):ViewModel() {
 
-    private val saveGameStateRepo: GameStateRepository = GameStateRepositoryImpl()
-    fun saveGameState(savedInstanceState: Bundle,gameState: GameState) = saveGameStateRepo.saveGameState(savedInstanceState,gameState)
+    fun loadGameState(savedInstanceState: Bundle?): LiveData<GameState> = gameStateRepo.loadGameState(savedInstanceState)
+    fun saveGameState(savedInstanceState: Bundle,gameState: GameState) = gameStateRepo.saveGameState(savedInstanceState,gameState)
 
     fun getCurrentGameMode(startGameMode: String,returnedGameMode: String,returnedGameModeTwo: String): String = if(startGameMode==""){ if(returnedGameMode=="") returnedGameModeTwo else returnedGameMode } else startGameMode
+
 }

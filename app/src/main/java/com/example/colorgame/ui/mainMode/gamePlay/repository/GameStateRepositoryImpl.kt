@@ -3,9 +3,9 @@ package com.example.colorgame.ui.mainMode.gamePlay.repository
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import com.example.colorgame.ui.mainMode.gamePlay.model.GameState
+import javax.inject.Inject
 
-
-class GameStateRepositoryImpl : GameStateRepository {
+class GameStateRepositoryImpl @Inject constructor(): GameStateRepository {
 
     private val countDown = "countDownValue"
     private val correctScore = "correctScore"

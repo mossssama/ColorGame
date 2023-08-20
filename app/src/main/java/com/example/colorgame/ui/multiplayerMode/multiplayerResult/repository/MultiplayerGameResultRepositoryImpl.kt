@@ -8,8 +8,9 @@ import com.example.colorgame.dataStore.DataStoreManager
 import com.example.colorgame.ui.multiplayerMode.multiplayerResult.model.MultiplayerGameResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MultiplayerGameResultRepositoryImpl : MultiplayerGameResultRepository {
+class MultiplayerGameResultRepositoryImpl @Inject constructor(): MultiplayerGameResultRepository {
 
     private val playerScore = "playerScore"
     private val oppositeScore = "oppositeScore"

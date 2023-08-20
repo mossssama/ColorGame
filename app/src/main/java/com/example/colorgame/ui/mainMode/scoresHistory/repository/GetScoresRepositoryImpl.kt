@@ -3,8 +3,10 @@ package com.example.colorgame.ui.mainMode.scoresHistory.repository
 import androidx.lifecycle.MutableLiveData
 import com.example.colorgame.room.Score
 import com.example.colorgame.ui.mainMode.scoresHistory.model.ScoreItem
+import javax.inject.Inject
 
-class GetScoresRepositoryImpl : GetScoresRepository {
+class GetScoresRepositoryImpl @Inject constructor() : GetScoresRepository {
+
     override fun getResults(scores: List<Score>): MutableLiveData<List<ScoreItem>> {
         val infoMutableLiveData = MutableLiveData<List<ScoreItem>>()
         infoMutableLiveData.postValue(convertScoreToScoreItem(scores))

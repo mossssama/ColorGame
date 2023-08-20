@@ -1,9 +1,11 @@
 package com.example.colorgame
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
-class PusherApplication :Application(){
+@HiltAndroidApp
+class MyApp :Application(){
 
     override fun onCreate() {
         super.onCreate()

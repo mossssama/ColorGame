@@ -8,31 +8,35 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.example.colorgame.R
 import com.example.colorgame.databinding.FragmentMultiplayerResultsBinding
+import com.example.colorgame.ui.mainMode.gamePlay.viewModel.GameStateViewModel
 import com.example.colorgame.ui.multiplayerMode.multiplayerResult.model.MultiplayerGameResult
 import com.example.colorgame.ui.multiplayerMode.multiplayerResult.viewModel.MultiplayerGameResultViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MultiplayerGameResultFragment : Fragment() {
     private val args: MultiplayerGameResultFragmentArgs by navArgs()
+    private val viewModel: MultiplayerGameResultViewModel by viewModels()
 
     private lateinit var binding: FragmentMultiplayerResultsBinding
-    private lateinit var viewModel: MultiplayerGameResultViewModel
 
     private var isViewModelInitialized = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_multiplayer_results, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner // This ensures LiveData updates are observed correctly.
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[MultiplayerGameResultViewModel::class.java]
         isViewModelInitialized = true
 
         loadUiNames(args.myUserName,args.myFriendName)
@@ -61,7 +65,7 @@ class MultiplayerGameResultFragment : Fragment() {
         if (savedInstanceState != null && isViewModelInitialized) {
             viewModel.fireStoreManager.readCountDown(args.myFriendName, onSuccess = { it ->
                 if (it == 0) {
-                    viewModel.loadMultiplayerGameResult(savedInstanceState).observe(requireActivity()) {
+                    viewModel.loadMultiplayerGameResult(savedInstanceState).observe(viewLifecycleOwner) {
                         updateBannerText(it.playerScore, it.oppositeScore)
                         updateScoresUI(it.playerScore, it.oppositeScore)
                     }
