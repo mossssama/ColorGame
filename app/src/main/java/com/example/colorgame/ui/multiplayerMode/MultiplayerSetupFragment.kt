@@ -54,7 +54,7 @@ class MultiplayerSetupFragment : Fragment() {
                 },
                 onFailure = { checkInternetConnectionToast(requireContext()) }
             )
-        } else Toast.makeText(requireContext(), getString(R.string.cannotKeepTextFieldEmpty), Toast.LENGTH_LONG).show()
+        } else cannotKeepTextFieldEmptyToast(requireContext())
     }
 
     private fun addOpposite(fireStoreManager: FirestoreManager){
@@ -69,12 +69,13 @@ class MultiplayerSetupFragment : Fragment() {
                             setStartPlaying(fireStoreManager)
                             fireProgressFragment(playerName,oppositeName)
                         }
-                }
+                    }
                     else Toast.makeText(requireContext(), getString(R.string.NoPlayerWithThisUserName), Toast.LENGTH_LONG).show()
                 },
                 onFailure = { checkInternetConnectionToast(requireContext()) }
             )
-        } else Toast.makeText(requireContext(), getString(R.string.cannotKeepTextFieldEmpty), Toast.LENGTH_LONG).show()
+        } else cannotKeepTextFieldEmptyToast(requireContext())
+
     }
 
     private fun fireProgressFragment(userName:String,friendName:String){
@@ -87,6 +88,10 @@ class MultiplayerSetupFragment : Fragment() {
 
     private fun checkInternetConnectionToast(context: Context){
         Toast.makeText(context,getString(R.string.checkInternetConnection),Toast.LENGTH_LONG).show()
+    }
+
+    private fun cannotKeepTextFieldEmptyToast(context: Context){
+        Toast.makeText(context,getString(R.string.cannotKeepTextFieldEmpty),Toast.LENGTH_LONG).show()
     }
 
     /* Can be put in viewModel */

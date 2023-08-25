@@ -29,65 +29,168 @@
             app:adUnitId="@string/multiplayerGamePlay_banner_id_mockup"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.06" />
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.20" />
+            app:layout_constraintGuide_percent="0.28" />
 
-        <TextView
-            android:id="@+id/me"
-            style="@style/box_style"
-            android:hint="@string/me"
-            android:textColor="@color/white"
-            android:background="@color/ui_purple"
-            app:layout_constraintBottom_toTopOf="@+id/guideline11"
-            app:layout_constraintEnd_toStartOf="@+id/guideline10"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/myScore"
-            style="@style/box_style"
-            android:hint="0"
-            android:textColor="@color/white"
-            android:background="@color/ui_purple"
-            app:layout_constraintBottom_toTopOf="@+id/adView"
-            app:layout_constraintEnd_toStartOf="@+id/guideline10"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline11" />
-
-        <TextView
-            android:id="@+id/myFriend"
-            style="@style/box_style"
-            android:textColor="@color/white"
-            android:background="@color/ui_purple"
-            android:hint="@string/opponent"
-            app:layout_constraintBottom_toTopOf="@+id/guideline11"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline10"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/myFriendScore"
-            style="@style/box_style"
-            android:hint="0"
-            android:textColor="@color/white"
-            android:background="@color/ui_purple"
+        <GridLayout
+            android:columnCount="2"
+            android:rowCount="2"
             app:layout_constraintBottom_toTopOf="@+id/adView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline10"
-            app:layout_constraintTop_toTopOf="@+id/guideline11" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Top-Left TextView -->
+            <TextView
+                android:id="@+id/me"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="1dp"
+
+                style="@style/field_style"
+                android:hint="@string/me"
+                android:textColor="@color/white"
+                android:background="@color/ui_purple" />
+
+            <!-- Top-Right TextView -->
+            <TextView
+                android:id="@+id/myFriend"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="2dp"
+
+                android:layout_marginLeft="1dp"
+                android:layout_marginBottom="1dp"
+
+                style="@style/field_style"
+                android:textColor="@color/white"
+                android:background="@color/ui_purple"
+                android:hint="@string/opponent"/>
+
+            <!-- Bottom-Left TextView -->
+            <TextView
+                android:id="@+id/myScore"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="1dp"
+
+                android:layout_marginLeft="2dp"
+                android:layout_marginBottom="2dp"
+
+                style="@style/field_style"
+                android:background="@color/ui_purple"
+                android:hint="0"
+                android:textColor="@color/white" />
+
+            <!-- Bottom-Right TextView -->
+            <TextView
+                android:id="@+id/myFriendScore"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="1dp"
+
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="2dp"
+
+                style="@style/field_style"
+                android:background="@color/ui_purple"
+                android:hint="0"
+                android:textColor="@color/white"/>
+
+        </GridLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--        <TextView-->
+<!--            android:id="@+id/me"-->
+<!--            style="@style/box_style"-->
+<!--            android:hint="@string/me"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:background="@color/ui_purple"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/guideline11"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/guideline10"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/myScore"-->
+<!--            style="@style/box_style"-->
+<!--            android:background="@color/ui_purple"-->
+<!--            android:hint="0"-->
+<!--            android:textColor="@color/white"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/adView"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/guideline10"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/guideline11" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/myFriend"-->
+<!--            style="@style/box_style"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:background="@color/ui_purple"-->
+<!--            android:hint="@string/opponent"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/guideline11"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/guideline10"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/myFriendScore"-->
+<!--            style="@style/box_style"-->
+<!--            android:background="@color/ui_purple"-->
+<!--            android:hint="0"-->
+<!--            android:textColor="@color/white"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/adView"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/guideline10"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/guideline11" />-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -95,6 +198,34 @@
             android:background="@color/ui_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guideline">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.75" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.25" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5" />
 
             <TextView
                 android:id="@+id/boxOne"
@@ -175,33 +306,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.5" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.75" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.5" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.25" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
