@@ -19,47 +19,47 @@
             app:layout_constraintBottom_toTopOf="@+id/adView"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView">
+            app:layout_constraintTop_toBottomOf="@+id/textViewQuest">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/correctRun"
 
-                android:textColor="@color/white"
-                android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:autoSizeMaxTextSize="18sp"
-                android:autoSizeMinTextSize="12sp"
-                android:autoSizeStepGranularity="2sp"
-                android:autoSizeTextType="uniform"
-
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="4dp"
                 android:layout_marginBottom="4dp"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="12sp"
+
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
                 android:background="@color/ui_purple"
-                android:text="Correct Run" />
+                android:text="@string/oneChance"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/threeMistakes"
 
-                android:textColor="@color/white"
-                android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:autoSizeMaxTextSize="18sp"
-                android:autoSizeMinTextSize="12sp"
-                android:autoSizeStepGranularity="2sp"
-                android:autoSizeTextType="uniform"
-
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="12sp"
+
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
                 android:background="@color/ui_mint_green"
-                android:text="3 Mistakes" />
+                android:text="@string/threeChances"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -71,52 +71,52 @@
             app:layout_constraintBottom_toTopOf="@+id/adView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/textView">
+            app:layout_constraintTop_toTopOf="@+id/guideline5">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/multiplier"
 
-                android:textColor="@color/white"
-                android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:autoSizeMaxTextSize="18sp"
-                android:autoSizeMinTextSize="12sp"
-                android:autoSizeStepGranularity="2sp"
-                android:autoSizeTextType="uniform"
-
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="4dp"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="12sp"
+
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
                 android:background="@color/ui_baby_blue"
-                android:text="Multiplayer" />
+                android:text="@string/multiplayer"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/hundredSec"
 
-                android:textColor="@color/white"
-                android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:autoSizeMaxTextSize="18sp"
-                android:autoSizeMinTextSize="12sp"
-                android:autoSizeStepGranularity="2sp"
-                android:autoSizeTextType="uniform"
-
+                android:layout_marginLeft="4dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_marginLeft="4dp"
+                android:layout_weight="1"
+                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="12sp"
+
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
                 android:background="@color/ui_rose"
-                android:text="100 sec" />
+                android:text="@string/hundredSec"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textViewColor"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_gravity="center"
@@ -125,10 +125,25 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             app:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toTopOf="@+id/guideline5"
+            app:layout_constraintBottom_toTopOf="@+id/guideline15"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewQuest"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Quest"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@+id/guideline5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline15" />
 
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
@@ -137,7 +152,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             app:adSize="BANNER"
-            app:adUnitId="@string/intro_banner_id"
+            app:adUnitId="@string/intro_banner_id_mockup"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
@@ -155,6 +170,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.5" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.25" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

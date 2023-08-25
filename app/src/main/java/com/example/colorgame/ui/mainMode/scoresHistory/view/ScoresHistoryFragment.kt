@@ -49,7 +49,7 @@ class ScoresHistoryFragment : Fragment() {
         }
 
         binding.playAgain.setOnClickListener {
-            viewModel.setGameOverToFalse(dataStoreManager);
+            viewModel.setGameOverToFalse(dataStoreManager)
             goToGamePlayFragment()
         }
     }

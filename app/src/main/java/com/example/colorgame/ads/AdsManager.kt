@@ -18,104 +18,33 @@ import timber.log.Timber
 class AdsManager(private val context: Context) {
     private var mInterstitialAd: InterstitialAd? = null
 
-    /* load Banner methods */
-    fun loadBannerAds(binding: FragmentMultiplayerGamePlayBinding){
-        val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
-    }
-
+    /* IntroFragment Banner */
     fun loadBannerAds(binding: FragmentIntroBinding){
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
     }
 
+    /* MultiplayerGamePlayFragment Banner */
+    fun loadBannerAds(binding: FragmentMultiplayerGamePlayBinding){
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
+    }
+
+    /* MultiplayerSetupFragment Banner */
     fun loadBannerAds(binding: FragmentMultiplierBinding){
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
     }
 
-    fun loadInterstitialAds(){
+    fun loadInterstitialAds(unitId:String){
         val adRequest = AdRequest.Builder().build()
-        InterstitialAd.load(context,context.getString(R.string.game_over_interstitial_id), adRequest, object : InterstitialAdLoadCallback() {
+        InterstitialAd.load(context,unitId, adRequest, object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) { mInterstitialAd = null }
             override fun onAdLoaded(interstitialAd: InterstitialAd) { mInterstitialAd = interstitialAd }
         })
     }
 
-
-    fun showInterstitialAds(binding: FragmentMultiplayerGamePlayBinding, myUserName: String, myFriendName: String, myScore: Int, myFriendScore: Int) {
-        if (mInterstitialAd != null) {
-            mInterstitialAd?.show(context as Activity)
-            mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-                override fun onAdClicked() {
-                    Timber.i("Ad was clicked.")
-                }
-
-                override fun onAdDismissedFullScreenContent() {
-                    Timber.i("Ad dismissed fullscreen content.")
-                    mInterstitialAd = null
-                    loadInterstitialAds()
-                    goToMultiplayerResultsFragment(binding, myUserName, myFriendName, myScore, myFriendScore)
-                }
-
-                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                    Timber.i("Ad failed to show fullscreen content.")
-                    mInterstitialAd = null
-                }
-
-                override fun onAdImpression() {
-                    Timber.i("Ad recorded an impression.")
-                }
-
-                override fun onAdShowedFullScreenContent() {
-                    Timber.i("Ad showed fullscreen content.")
-                }
-            }
-        } else {
-            goToMultiplayerResultsFragment(binding, myUserName, myFriendName, myScore, myFriendScore)
-            Timber.i("The interstitial ad wasn't ready yet.")
-        }
-    }
-
-    fun goToMultiplayerResultsFragment(binding: FragmentMultiplayerGamePlayBinding,myUserName:String,myFriendName:String,myScore:Int,myFriendScore:Int){
-        Navigation.findNavController(binding.root).navigate(MultiplayerGamePlayFragmentDirections.goToMultiplayerResultsFragment(myUserName, myFriendName, myScore, myFriendScore))
-    }
-
-    fun showInterstitialAds(context: Context, myUserName: String, myFriendName: String, myScore: Int, myFriendScore: Int) {
-        if (mInterstitialAd != null) {
-            mInterstitialAd?.show(context as Activity)
-            mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-                override fun onAdClicked() {
-                    Timber.i("Ad was clicked.")
-                }
-
-                override fun onAdDismissedFullScreenContent() {
-                    Timber.i("Ad dismissed fullscreen content.")
-                    mInterstitialAd = null
-                    loadInterstitialAds()
-                    goToMultiplayerResultsFragment(context, myUserName, myFriendName, myScore, myFriendScore)
-                }
-
-                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                    Timber.i("Ad failed to show fullscreen content.")
-                    mInterstitialAd = null
-                }
-
-                override fun onAdImpression() {
-                    Timber.i("Ad recorded an impression.")
-                }
-
-                override fun onAdShowedFullScreenContent() {
-                    Timber.i("Ad showed fullscreen content.")
-                }
-            }
-        } else {
-            goToMultiplayerResultsFragment(context, myUserName, myFriendName, myScore, myFriendScore)
-            Timber.i("The interstitial ad wasn't ready yet.")
-        }
-    }
-
-    fun showInterstitialAds(activity: Activity, myUserName: String, myFriendName: String, myScore: Int, myFriendScore: Int) {
+    fun showInterstitialAds(activity: Activity, myUserName: String, myFriendName: String, myScore: Int, myFriendScore: Int,unitId:String) {
         if (mInterstitialAd != null) {
             mInterstitialAd?.show(activity)
             mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
@@ -126,7 +55,7 @@ class AdsManager(private val context: Context) {
                 override fun onAdDismissedFullScreenContent() {
                     Timber.i("Ad dismissed fullscreen content.")
                     mInterstitialAd = null
-                    loadInterstitialAds()
+                    loadInterstitialAds(unitId)
                     goToMultiplayerResultsFragment(activity, myUserName, myFriendName, myScore, myFriendScore)
                 }
 
@@ -154,7 +83,7 @@ class AdsManager(private val context: Context) {
         if (context is Activity) Navigation.findNavController(context,R.id.fragmentContainer).navigate(MultiplayerGamePlayFragmentDirections.goToMultiplayerResultsFragment(myUserName, myFriendName, myScore, myFriendScore))
     }
 
-    fun showInterstitialAds(binding: FragmentResultBinding,gameMode: String){
+    fun showInterstitialAds(binding: FragmentResultBinding,gameMode: String,unitId: String){
         if (mInterstitialAd != null) {
             mInterstitialAd?.show(context as Activity)
             mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
@@ -163,7 +92,7 @@ class AdsManager(private val context: Context) {
                 override fun onAdClicked() { Timber.i("Ad was clicked.") }
 
                 // Called when ad is dismissed.
-                override fun onAdDismissedFullScreenContent() { Timber.i("Ad dismissed fullscreen content."); mInterstitialAd = null; loadInterstitialAds(); goToScoresHistoryFragment(binding,gameMode) }
+                override fun onAdDismissedFullScreenContent() { Timber.i("Ad dismissed fullscreen content."); mInterstitialAd = null; loadInterstitialAds(unitId); goToScoresHistoryFragment(binding,gameMode) }
 
                 override fun onAdFailedToShowFullScreenContent(adError: AdError) { Timber.i("Ad failed to show fullscreen content.");  mInterstitialAd = null }
 

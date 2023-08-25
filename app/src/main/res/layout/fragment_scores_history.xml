@@ -14,7 +14,7 @@
 
         <TextView
             android:id="@+id/score_tv"
-            android:text="Scores History"
+            android:text="@string/scoresHistory"
             android:padding="8dp"
             android:textStyle="bold"
 
@@ -43,7 +43,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/playAgain"
-            android:text="Play Again"
+            android:text="@string/playAgain"
             android:background="@color/ui_mint_green"
             android:textColor="@color/white"
             android:layout_width="0dp"

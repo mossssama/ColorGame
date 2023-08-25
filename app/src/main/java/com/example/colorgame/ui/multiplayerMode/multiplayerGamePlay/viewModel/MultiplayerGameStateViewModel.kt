@@ -9,7 +9,6 @@ import com.example.colorgame.cloudFirestore.FirestoreManager
 import com.example.colorgame.dataStore.DataStoreManager
 import com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.model.MultiplayerGameState
 import com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.repository.MultiplayerGameStateRepository
-import com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.repository.MultiplayerGameStateRepositoryImpl
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,7 +35,7 @@ class MultiplayerGameStateViewModel @Inject constructor(private val gameStateRep
     fun setScoreToZero(myUserName: String){ fireStoreManager.setScoreToZero(myUserName, onSuccess = {}, onFailure = {}) }
     fun setCountDownToHundred(myUserName: String){ fireStoreManager.updateCountDown(myUserName,100, onSuccess = {}, onFailure = {}) }
     fun setGameOverToFalse(dataStoreManager: DataStoreManager) { GlobalScope.launch { dataStoreManager.saveGameOver(false) } }
-    fun loadInterstitialAds(adsManager: AdsManager){ adsManager.loadInterstitialAds() }
-    fun showInterstitialAds(activity: FragmentActivity, adsManager: AdsManager, myName: String, myFriendName: String, myScore: Int, myFriendScore:Int){ adsManager.showInterstitialAds(activity,myName,myFriendName,myScore,myFriendScore) }
+    fun loadInterstitialAds(adsManager: AdsManager,unitId:String){ adsManager.loadInterstitialAds(unitId) }
+    fun showInterstitialAds(activity: FragmentActivity, adsManager: AdsManager, myName: String, myFriendName: String, myScore: Int, myFriendScore:Int,unitId: String){ adsManager.showInterstitialAds(activity,myName,myFriendName,myScore,myFriendScore,unitId) }
 
 }

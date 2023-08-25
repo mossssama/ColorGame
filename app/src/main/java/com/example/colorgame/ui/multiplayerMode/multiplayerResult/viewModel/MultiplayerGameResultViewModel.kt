@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.colorgame.R
 import com.example.colorgame.cloudFirestore.FirestoreManager
 import com.example.colorgame.dataStore.DataStoreManager
 import com.example.colorgame.ui.multiplayerMode.multiplayerResult.model.MultiplayerGameResult
@@ -44,7 +45,7 @@ class MultiplayerGameResultViewModel @Inject constructor(private val multiplayer
 
     fun rePlayInit(myUserName: String){ resetScore(myUserName); setStartPlayingValue(myUserName,true) }
     fun returnInit(myUserName: String){ setStartPlayingValue(myUserName,false) }
-    fun getBannerText(myScore: Int,myFriendScore: Int):String = if (myScore >= myFriendScore) "Winner" else "Loser"
+    fun getBannerText(context:Context,myScore: Int,myFriendScore: Int):String = if (myScore >= myFriendScore) context.getString(R.string.winner) else context.getString(R.string.loser)
     private fun resetScore(myUserName: String){ fireStoreManager.setScoreToZero(myUserName, onSuccess = {}, onFailure = {}) }
     private fun setStartPlayingValue(myUserName: String,value:Boolean){ fireStoreManager.setStartPlaying(myUserName,value, onSuccess = {}, onFailure = {}) }
 

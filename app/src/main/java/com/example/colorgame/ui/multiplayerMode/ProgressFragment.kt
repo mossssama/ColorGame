@@ -6,11 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.colorgame.R
 import com.example.colorgame.cloudFirestore.FirestoreManager
 import com.example.colorgame.databinding.FragmentProgressBinding
+import com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.view.MultiplayerGamePlayFragmentDirections
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -30,13 +33,22 @@ class ProgressFragment : Fragment() {
         /* Go to MultiPlayer GamePlay when the other player clicks on startPlaying */
         fireStoreManager = FirestoreManager(Firebase.firestore)
         fireStoreManager.listenToStartPlayingChanges(args.friendName) { startPlaying ->
-            if (startPlaying) { goToMultiplayerGamePlayFragment(args.userName,args.friendName) }
+            if (startPlaying) { navigation(args.userName,args.friendName) }
         }
 
     }
 
     private fun goToMultiplayerGamePlayFragment(userName:String,friendName:String){
         Navigation.findNavController(binding.root).navigate(ProgressFragmentDirections.goToMultiplayerGamePlay(userName, friendName))
+    }
+
+    private fun reMultiplayerGamePlayFragment(userName:String,friendName:String){
+        findNavController().navigate(MultiplayerGamePlayFragmentDirections.reMultiplayerGamePlay(userName,friendName))
+    }
+
+    private fun navigation(userName: String, friendName: String) {
+        try { goToMultiplayerGamePlayFragment(userName,friendName) }
+        catch (e: IllegalArgumentException) { reMultiplayerGamePlayFragment(userName, friendName) }
     }
 
     /* Can be put in ViewModel */

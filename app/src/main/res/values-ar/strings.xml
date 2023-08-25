@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ColorQuest</string>
+
+    <string name="app_admob_id_mockup">"ca-app-pub-3940256099942544~3347511713</string>
+
+    <string name="intro_banner_id_mockup">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="multiplayerGamePlay_banner_id_mockup">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="multiplayerSetup_banner_id_mockup">ca-app-pub-3940256099942544/6300978111</string>
+
+    <string name="singlePlayer_interstitial_id_mockup">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="multiPlayer_interstitial_id_mockup">ca-app-pub-3940256099942544/1033173712</string>
+
+
+
+
+    <string name="Wait">يرجي الانتظار حتي ينهي صديقك اللعب</string>
+    <string name="waitForAcceptance">يرجي الانتظار حتي يقبل صديقك اللعب...</string>
+
+    <string name="blue">أزرق</string>
+    <string name="orange">برتقالي</string>
+    <string name="red">أحمر</string>
+    <string name="yellow">أصفر</string>
+    <string name="green">أخضر</string>
+    <string name="purple">بنفسجي</string>
+    <string name="black">أسود</string>
+
+    <string name="goToHome">العودة</string>
+    <string name="playAgain">اللعب مرة أخري</string>
+
+    <string name="search">بحث</string>
+    <string name="add">اضافة</string>
+    <string name="startPlaying">بدأ اللعب</string>
+
+    <string name="scoresHistory">قائمة النتائج</string>
+
+    <string name="multiplayer">متعدد اللاعبين</string>
+    <string name="hundredSec">100 ثانية</string>
+    <string name="oneChance">فرصة واحدة</string>
+    <string name="threeChances">ثلاثة فرص</string>
+
+    <string name="playerNickName">اكتب اسم فريد للعب به</string>
+    <string name="oppositeNickName">اكتب اسم صديقك</string>
+
+    <string name="about">عن اللعبة</string>
+    <string name="account">الحساب</string>
+
+    <string name="showResults">اظهر النتائج</string>
+
+    <string name="me">أنا</string>
+    <string name="opponent">المنافس</string>
+
+    <string name="stayTuned">قريبا</string>
+
+    <string name="score">سكور</string>
+    <string name="done">انتهي الدور</string>
+
+    <string name="winner">فائز</string>
+    <string name="loser">خاسر</string>
+
+    <string name="cannotKeepTextFieldEmpty">لا يمكن ترك المربع فاعلا دون ادخال اسم</string>
+    <string name="checkInternetConnection">يرجي تفقد جودة الانترنت</string>
+    <string name="playerIsAddedSuccessfully">تمت الاضافة بنجاح</string>
+    <string name="playerAdditionFailedCheckInternetConnection">الاضافة فضلت، يرجي نفقد جودة الانترنت</string>
+    <string name="NoPlayerWithThisUserName">لا يوجد لاعب بهذا الاسم</string>
+
+    <string name="gameLogo">شعار اللعبة</string>
+    <string name="singlePlayerMode">نظام اللاعب الواحد</string>
+    <string name="main">الرئيسية</string>
+    <string name="multiplayerMode">نظام متعدد اللاعبين</string>
+
+</resources>

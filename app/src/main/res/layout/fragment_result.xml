@@ -14,7 +14,7 @@
 
         <TextView
             android:id="@+id/done_tv"
-            android:text="Done"
+            android:text="@string/done"
             android:padding="8dp"
             android:textStyle="bold"
 
@@ -32,7 +32,7 @@
 
         <TextView
             android:id="@+id/score_tv"
-            android:text="Score"
+            android:text="@string/score"
 
             android:textColor="@color/white"
             android:layout_width="0dp"
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@color/ui_mint_green"
-            android:text="Show Results"
+            android:text="@string/showResults"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline9"
             app:layout_constraintStart_toStartOf="parent" />
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@color/ui_mint_green"
-            android:text="Play Again"
+            android:text="@string/playAgain"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline9" />

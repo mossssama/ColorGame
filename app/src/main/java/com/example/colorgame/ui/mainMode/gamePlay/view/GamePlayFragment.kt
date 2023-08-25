@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.example.colorgame.dataStore.DataStoreManager
@@ -50,7 +51,11 @@ class GamePlayFragment : Fragment() {
         gamePlay.setGamePlay(currentGameMode,binding,requireActivity().baseContext,100)
 
         /* Listen to GameOver Value */
-        lifecycleScope.launchWhenStarted { dataStoreManager.isGameOver.collect { isGameOver -> if(isGameOver){ sendResult(gamePlay) } } }
+        lifecycleScope.launchWhenStarted { dataStoreManager.isGameOver.collect { isGameOver ->
+                if(isGameOver){ sendResult(gamePlay) }
+            }
+        }
+        
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -71,12 +76,11 @@ class GamePlayFragment : Fragment() {
         if (savedInstanceState != null) {
             viewModel.loadGameState(savedInstanceState).observe(viewLifecycleOwner){
                 gamePlay.setGamePlay(currentGameMode, binding, requireActivity().baseContext, it.countDownValue)
-
                 if(currentGameMode== THREE_WRONG_MODE) { gamePlay.totalCorrectAnswers = it.correctScore; gamePlay.totalInCorrectAnswers = it.inCorrectScore }
                 else gamePlay.continuousRightAnswers = it.correctScore
             }
-        }
 
+        }
     }
 
     private fun goToResultFragment(score: Int, gameMode: String){

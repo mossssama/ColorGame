@@ -50,16 +50,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return if (actionBarDrawerToggle.onOptionsItemSelected(item)) true else super.onOptionsItemSelected(item)
-//    }
-
-
-//        val actionBarDrawerToggle = ActionBarDrawerToggle(this, binding.drawer,R.string.app_name, R.string.Wait)
-//        binding.drawer.addDrawerListener(actionBarDrawerToggle)
-//        actionBarDrawerToggle.syncState()
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
 }
 

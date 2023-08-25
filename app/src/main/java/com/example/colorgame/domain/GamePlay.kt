@@ -29,13 +29,13 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         const val BOX_FIVE = "boxFive"
         const val BOX_SIX = "boxSix"
         const val BOX_SEVEN = "boxSeven"
-        const val BLUE = "BLUE"
-        const val ORANGE = "ORANGE"
-        const val RED = "RED"
-        const val YELLOW = "YELLOW"
-        const val GREEN = "GREEN"
-        const val PURPLE = "PURPLE"
-        const val BLACK = "BLACK"
+//        val blue = "BLUE"
+//        val orange = "ORANGE"
+//        val red = "RED"
+//        val yellow = "YELLOW"
+//        val green = "GREEN"
+//        val purple = "PURPLE"
+//        val black = "BLACK"
 
         const val HUNDRED_SEC_MODE = "hundredSecondMode"
         const val CONTINUOUS_RIGHT_MODE = "continuousRightMode"
@@ -44,6 +44,14 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
 
         private var countdownTimer: CountDownTimer? = null
     }
+
+    private val blue = context.getString(R.string.blue)
+    private val orange = context.getString(R.string.orange)
+    private val red = context.getString(R.string.red)
+    private val yellow = context.getString(R.string.yellow)
+    private val green = context.getString(R.string.green)
+    private val purple = context.getString(R.string.purple)
+    private val black = context.getString(R.string.black)
 
     var continuousRightAnswers: Int = 0
     var totalCorrectAnswers: Int =0
@@ -72,13 +80,13 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
     )
 
     private var colors: HashMap<String, Boolean> = hashMapOf(
-        BLUE to false,
-        ORANGE to false,
-        RED to false,
-        YELLOW to false,
-        GREEN to false,
-        PURPLE to false,
-        BLACK to false
+        blue to false,
+        orange to false,
+        red to false,
+        yellow to false,
+        green to false,
+        purple to false,
+        black to false
     )
 
     init { lifecycleScope.launch { dataStoreManager.saveGameOver(false) } }
@@ -88,26 +96,26 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
 
     private fun getColorForColorName(color: String): Int {
         return when (color) {
-            BLUE -> blueColor
-            ORANGE -> orangeColor
-            RED -> redColor
-            YELLOW -> yellowColor
-            GREEN -> greenColor
-            PURPLE -> purpleColor
-            BLACK -> blackColor
+            blue -> blueColor
+            orange -> orangeColor
+            red -> redColor
+            yellow -> yellowColor
+            green -> greenColor
+            purple -> purpleColor
+            black -> blackColor
             else -> blueColor
         }
     }
 
     private fun getColorNameForColorInt(color: Int): String {
         return when (color) {
-            blueColor -> BLUE
-            orangeColor -> ORANGE
-            redColor -> RED
-            yellowColor -> YELLOW
-            greenColor -> GREEN
-            purpleColor -> PURPLE
-            blackColor -> BLACK
+            blueColor -> blue
+            orangeColor -> orange
+            redColor -> red
+            yellowColor -> yellow
+            greenColor -> green
+            purpleColor -> purple
+            blackColor -> black
             else -> ""
         }
     }
@@ -126,13 +134,13 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
     private fun getColorText(correctColor: Int): String {
         var correctText=""
         when (correctColor) {
-            blueColor -> { correctText = BLUE; colors[BLUE] = true; }
-            orangeColor -> { correctText = ORANGE; colors[ORANGE] = true; }
-            redColor -> { correctText = RED; colors[RED] = true; }
-            yellowColor -> { correctText = YELLOW; colors[YELLOW] = true; }
-            greenColor -> { correctText = GREEN; colors[GREEN] = true; }
-            purpleColor -> { correctText = PURPLE; colors[PURPLE] = true; }
-            blackColor -> { correctText = BLACK; colors[BLACK] = true; }
+            blueColor -> { correctText = blue; colors[blue] = true; }
+            orangeColor -> { correctText = orange; colors[orange] = true; }
+            redColor -> { correctText = red; colors[red] = true; }
+            yellowColor -> { correctText = yellow; colors[yellow] = true; }
+            greenColor -> { correctText = green; colors[green] = true; }
+            purpleColor -> { correctText = purple; colors[purple] = true; }
+            blackColor -> { correctText = black; colors[black] = true; }
         }
         return correctText
     }

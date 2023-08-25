@@ -46,14 +46,15 @@ class MultiplayerSetupFragment : Fragment() {
         if (playerName.isNotBlank()) {
             fireStoreManager.addUserIfDoesNotExist(playerName, initPlayer,
                 onSuccess = {
+                    firePlayerAddedSuccessfullyToast(requireContext())
                     fireStoreManager.initPlayerCollection(playerName, initPlayer,
-                        onSuccess = {  firePlayerAddedSuccessfullyToast(requireContext()) },
-                        onFailure = { Toast.makeText(requireContext(),"Player addition failed; Check Internet Connection",Toast.LENGTH_LONG).show() }
+                        onSuccess = {  },
+                        onFailure = { Toast.makeText(requireContext(),getString(R.string.playerAdditionFailedCheckInternetConnection),Toast.LENGTH_LONG).show() }
                     )
                 },
                 onFailure = { checkInternetConnectionToast(requireContext()) }
             )
-        } else Toast.makeText(requireContext(), "Can't keep textField empty", Toast.LENGTH_LONG).show()
+        } else Toast.makeText(requireContext(), getString(R.string.cannotKeepTextFieldEmpty), Toast.LENGTH_LONG).show()
     }
 
     private fun addOpposite(fireStoreManager: FirestoreManager){
@@ -69,11 +70,11 @@ class MultiplayerSetupFragment : Fragment() {
                             fireProgressFragment(playerName,oppositeName)
                         }
                 }
-                    else Toast.makeText(requireContext(), "No Player with this userName", Toast.LENGTH_LONG).show()
+                    else Toast.makeText(requireContext(), getString(R.string.NoPlayerWithThisUserName), Toast.LENGTH_LONG).show()
                 },
                 onFailure = { checkInternetConnectionToast(requireContext()) }
             )
-        } else Toast.makeText(requireContext(), "Can't keep textField empty", Toast.LENGTH_LONG).show()
+        } else Toast.makeText(requireContext(), getString(R.string.cannotKeepTextFieldEmpty), Toast.LENGTH_LONG).show()
     }
 
     private fun fireProgressFragment(userName:String,friendName:String){
@@ -81,11 +82,11 @@ class MultiplayerSetupFragment : Fragment() {
     }
 
     private fun firePlayerAddedSuccessfullyToast(context: Context){
-        Toast.makeText(context,"Player is added successfully",Toast.LENGTH_SHORT).show()
+        Toast.makeText(context,getString(R.string.playerIsAddedSuccessfully),Toast.LENGTH_SHORT).show()
     }
 
     private fun checkInternetConnectionToast(context: Context){
-        Toast.makeText(context,"Check Internet Connection",Toast.LENGTH_LONG).show()
+        Toast.makeText(context,getString(R.string.checkInternetConnection),Toast.LENGTH_LONG).show()
     }
 
     /* Can be put in viewModel */

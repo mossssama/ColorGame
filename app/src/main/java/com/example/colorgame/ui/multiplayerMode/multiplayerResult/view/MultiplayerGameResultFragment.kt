@@ -9,13 +9,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.example.colorgame.R
 import com.example.colorgame.databinding.FragmentMultiplayerResultsBinding
-import com.example.colorgame.ui.mainMode.gamePlay.viewModel.GameStateViewModel
 import com.example.colorgame.ui.multiplayerMode.multiplayerResult.model.MultiplayerGameResult
 import com.example.colorgame.ui.multiplayerMode.multiplayerResult.viewModel.MultiplayerGameResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -66,7 +64,7 @@ class MultiplayerGameResultFragment : Fragment() {
             viewModel.fireStoreManager.readCountDown(args.myFriendName, onSuccess = { it ->
                 if (it == 0) {
                     viewModel.loadMultiplayerGameResult(savedInstanceState).observe(viewLifecycleOwner) {
-                        updateBannerText(it.playerScore, it.oppositeScore)
+                        updateBannerText(requireContext(),it.playerScore, it.oppositeScore)
                         updateScoresUI(it.playerScore, it.oppositeScore)
                     }
                 }
@@ -79,7 +77,7 @@ class MultiplayerGameResultFragment : Fragment() {
         viewModel.fireStoreManager.listenToCountDownChanges(args.myFriendName) { countDown ->
             if(countDown==0) {
                 viewModel.getMultiplayerGameResult(viewModel.fireStoreManager,args.myUserName,args.myFriendName,context,lifecycleScope,activity).observe(activity){
-                    updateBannerText(it.playerScore, it.oppositeScore)
+                    updateBannerText(context,it.playerScore, it.oppositeScore)
                     updateScoresUI(it.playerScore, it.oppositeScore)
                 }
             }
@@ -94,8 +92,8 @@ class MultiplayerGameResultFragment : Fragment() {
         Navigation.findNavController(binding.root).navigate(MultiplayerGameResultFragmentDirections.returnToProgressFragment(userName, friendName))
     }
 
-    private fun updateBannerText(myScore: Int, myFriendScore: Int){
-        binding.congratsOrHardLuck.text=viewModel.getBannerText(myScore,myFriendScore)
+    private fun updateBannerText(context: Context,myScore: Int, myFriendScore: Int){
+        binding.congratsOrHardLuck.text=viewModel.getBannerText(context,myScore,myFriendScore)
     }
 
     private fun updateScoresUI(myScore: Int, myFriendScore: Int){

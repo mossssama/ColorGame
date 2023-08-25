@@ -11,7 +11,6 @@ import androidx.navigation.fragment.navArgs
 import com.example.colorgame.ads.AdsManager
 import com.example.colorgame.R
 import com.example.colorgame.dataStore.DataStoreManager
-import com.example.colorgame.databinding.FragmentMultiplierBinding
 import com.example.colorgame.databinding.FragmentResultBinding
 import com.example.colorgame.ui.mainMode.gamePlay.view.GamePlayFragmentArgs
 import com.google.android.gms.ads.*
@@ -32,11 +31,11 @@ class ResultFragment : Fragment() {
         val adsManager = AdsManager(requireContext())
         val dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)
 
-        MobileAds.initialize(requireContext()) { loadInterstitialAds(adsManager) }
+        MobileAds.initialize(requireContext()) { loadInterstitialAds(adsManager,getString(R.string.singlePlayer_interstitial_id_mockup)) }
 
         setScoreTextView(args.score)
 
-        binding.showResults.setOnClickListener { showInterstitialAds(adsManager,args.gameMode) }
+        binding.showResults.setOnClickListener { showInterstitialAds(adsManager,args.gameMode,getString(R.string.singlePlayer_interstitial_id_mockup)) }
 
         binding.playAgain.setOnClickListener{ setGameOverToFalse(dataStoreManager); goToGamePlayFragment() }
     }
@@ -49,8 +48,8 @@ class ResultFragment : Fragment() {
         binding.scoreResult.text=scoreValue.toString()
     }
 
-    private fun showInterstitialAds(adsManager: AdsManager, gameMode:String){
-        adsManager.showInterstitialAds(binding,gameMode)
+    private fun showInterstitialAds(adsManager: AdsManager, gameMode:String,unitId:String){
+        adsManager.showInterstitialAds(binding,gameMode, unitId)
     }
 
     /* Can be put in ViewModel */
@@ -58,8 +57,8 @@ class ResultFragment : Fragment() {
         GlobalScope.launch { dataStoreManager.saveGameOver(false) }
     }
 
-    private fun loadInterstitialAds(adsManager: AdsManager){
-        adsManager.loadInterstitialAds()
+    private fun loadInterstitialAds(adsManager: AdsManager,unitId: String){
+        adsManager.loadInterstitialAds(unitId)
     }
 
 }

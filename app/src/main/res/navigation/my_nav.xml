@@ -8,15 +8,13 @@
     <fragment
         android:id="@+id/introFragment"
         android:name="com.example.colorgame.ui.intro.IntroFragment"
-        android:label="Main"
+        android:label="@string/main"
         tools:layout="@layout/fragment_intro">
         <action
             android:id="@+id/goToGamePlayFragment"
             app:destination="@id/gamePlayFragment"
             app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_in_right">
+            app:exitAnim="@anim/fade_out">
             <argument
                 android:name="gameMode"
                 android:defaultValue="hundredSec"
@@ -30,23 +28,19 @@
             android:id="@+id/goToMultiplayerFragment"
             app:destination="@id/multiplayerFragment"
             app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_in_right" />
+            app:exitAnim="@anim/fade_out" />
     </fragment>
 
     <fragment
         android:id="@+id/gamePlayFragment"
         android:name="com.example.colorgame.ui.mainMode.gamePlay.view.GamePlayFragment"
-        android:label="Single player Mode"
+        android:label="@string/singlePlayerMode"
         tools:layout="@layout/fragment_game_play">
         <action
             android:id="@+id/goToResultFragment"
             app:destination="@id/resultsFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_in_right"
             app:popUpTo="@id/introFragment">
             <argument
                 android:name="score"
@@ -78,8 +72,6 @@
             app:destination="@id/scoresHistoryFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_in_right"
             app:popUpTo="@id/introFragment">
             <argument
                 android:name="gameMode"
@@ -88,7 +80,10 @@
         </action>
         <action
             android:id="@+id/goAgainToGamePlayFragment"
-            app:destination="@id/gamePlayFragment" >
+            app:destination="@id/gamePlayFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popUpTo="@id/introFragment">
             <argument
                 android:name="gameMode"
                 android:defaultValue="hundredSec"
@@ -108,16 +103,12 @@
             android:id="@+id/goToIntroFragment"
             app:destination="@id/introFragment"
             app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_in_left" />
+            app:exitAnim="@anim/fade_out" />
         <action
             android:id="@+id/returnToGamePlayFragment"
             app:destination="@id/gamePlayFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_in_right"
             app:popUpTo="@id/introFragment"
             app:popUpToInclusive="false">
             <argument
@@ -133,15 +124,13 @@
     <fragment
         android:id="@+id/multiplayerFragment"
         android:name="com.example.colorgame.ui.multiplayerMode.MultiplayerSetupFragment"
-        android:label="Multiplayer Mode"
+        android:label="@string/multiplayerMode"
         tools:layout="@layout/fragment_multiplier">
         <action
             android:id="@+id/goToMultiplayerGamePlayFragment"
             app:destination="@id/multiplayerGamePlayFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_in_right"
             app:popUpTo="@id/introFragment">
             <argument
                 android:name="myUserName"
@@ -155,8 +144,6 @@
             app:destination="@id/progressFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_in_right"
             app:popUpTo="@id/multiplayerFragment">
             <argument
                 android:name="userName"
@@ -179,12 +166,15 @@
             android:name="myFriendName"
             app:argType="string" />
         <action
+            android:id="@+id/reMultiplayerGamePlay"
+            app:destination="@id/multiplayerGamePlayFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
+        <action
             android:id="@+id/goToMultiplayerResultsFragment"
             app:destination="@id/multiplayerResultsFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_in_right"
             app:popUpTo="@id/introFragment">
             <argument
                 android:name="myUserName"
@@ -225,16 +215,12 @@
             android:id="@+id/returnToIntroFragment"
             app:destination="@id/introFragment"
             app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_in_right" />
+            app:exitAnim="@anim/fade_out" />
         <action
             android:id="@+id/returnToProgressFragment"
             app:destination="@id/progressFragment"
             app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_in_right" />
+            app:exitAnim="@anim/fade_out" />
     </fragment>
 
     <fragment
@@ -246,10 +232,7 @@
             android:id="@+id/goToMultiplayerGamePlay"
             app:destination="@id/multiplayerGamePlayFragment"
             app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_in_right">
-        </action>
+            app:exitAnim="@anim/fade_out"/>
         <argument
             android:name="userName"
             app:argType="string" />

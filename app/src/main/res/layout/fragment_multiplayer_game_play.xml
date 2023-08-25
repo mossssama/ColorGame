@@ -26,7 +26,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             app:adSize="BANNER"
-            app:adUnitId="@string/intro_banner_id"
+            app:adUnitId="@string/multiplayerGamePlay_banner_id_mockup"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
@@ -48,7 +48,7 @@
         <TextView
             android:id="@+id/me"
             style="@style/box_style"
-            android:hint="You"
+            android:hint="@string/me"
             android:textColor="@color/white"
             android:background="@color/ui_purple"
             app:layout_constraintBottom_toTopOf="@+id/guideline11"
@@ -72,7 +72,7 @@
             style="@style/box_style"
             android:textColor="@color/white"
             android:background="@color/ui_purple"
-            android:hint="Your Friend"
+            android:hint="@string/opponent"
             app:layout_constraintBottom_toTopOf="@+id/guideline11"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline10"
