@@ -70,4 +70,6 @@
     <string name="main">الرئيسية</string>
     <string name="multiplayerMode">نظام متعدد اللاعبين</string>
 
+    <string name="CheckYouAddedYourselfAndYourFriend">تأكد أنك قمت بإضافة نفسك ومنافسك</string>
+
 </resources>

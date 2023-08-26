@@ -62,5 +62,6 @@
     <string name="singlePlayerMode">Single Player Mode</string>
     <string name="main">Main</string>
     <string name="multiplayerMode">Multiplayer Mode</string>
+    <string name="CheckYouAddedYourselfAndYourFriend">Check You added yourself and your friend</string>
 
 </resources>

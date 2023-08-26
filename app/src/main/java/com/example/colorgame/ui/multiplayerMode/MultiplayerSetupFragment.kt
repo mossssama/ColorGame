@@ -37,6 +37,8 @@ class MultiplayerSetupFragment : Fragment() {
 
         binding.addPlayer.setOnClickListener { addPlayer(fireStoreManager) }
         binding.addOpposite.setOnClickListener { addOpposite(fireStoreManager) }
+
+        binding.startPlaying.setOnClickListener{ checkYouAddedYourselfAndYourFriend(requireContext()) }
     }
 
     private fun addPlayer(fireStoreManager: FirestoreManager){
@@ -94,6 +96,9 @@ class MultiplayerSetupFragment : Fragment() {
         Toast.makeText(context,getString(R.string.cannotKeepTextFieldEmpty),Toast.LENGTH_LONG).show()
     }
 
+    private fun checkYouAddedYourselfAndYourFriend(context: Context){
+        Toast.makeText(context,getString(R.string.CheckYouAddedYourselfAndYourFriend),Toast.LENGTH_LONG).show()
+    }
     /* Can be put in viewModel */
     private fun setStartPlaying(fireStoreManager: FirestoreManager){
         fireStoreManager.setStartPlaying(playerName, true, onSuccess = {}, onFailure = {})
