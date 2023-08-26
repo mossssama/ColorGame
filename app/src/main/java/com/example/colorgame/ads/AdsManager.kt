@@ -25,10 +25,10 @@ class AdsManager(private val context: Context) {
     }
 
     /* MultiplayerGamePlayFragment Banner */
-    fun loadBannerAds(binding: FragmentMultiplayerGamePlayBinding){
-        val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
-    }
+//    fun loadBannerAds(binding: FragmentMultiplayerGamePlayBinding){
+//        val adRequest = AdRequest.Builder().build()
+//        binding.adView.loadAd(adRequest)
+//    }
 
     /* MultiplayerSetupFragment Banner */
     fun loadBannerAds(binding: FragmentMultiplierBinding){

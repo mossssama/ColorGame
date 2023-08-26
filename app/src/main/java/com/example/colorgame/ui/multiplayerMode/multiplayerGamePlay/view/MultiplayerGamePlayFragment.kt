@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.colorgame.ads.AdsManager
 import com.example.colorgame.R
@@ -17,11 +15,8 @@ import com.example.colorgame.databinding.FragmentMultiplayerGamePlayBinding
 import com.example.colorgame.domain.GamePlay
 import com.example.colorgame.dataStore.DataStoreManager
 import com.example.colorgame.domain.GamePlay.Companion.HUNDRED_SEC_MODE
-import com.example.colorgame.ui.multiplayerMode.ProgressFragmentDirections
 import com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.model.MultiplayerGameState
-import com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.view.MultiplayerGamePlayFragmentDirections.Companion.reMultiplayerGamePlay
 import com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.viewModel.MultiplayerGameStateViewModel
-import com.google.android.gms.ads.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,7 +39,7 @@ class MultiplayerGamePlayFragment : Fragment() {
         val adsManager = AdsManager(requireContext())
         val dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)
 
-        MobileAds.initialize(requireContext()) { loadBannerAds(adsManager); viewModel.loadInterstitialAds(adsManager,getString(R.string.multiPlayer_interstitial_id_mockup)) }     /* Load ads */
+//        MobileAds.initialize(requireContext()) { loadBannerAds(adsManager); viewModel.loadInterstitialAds(adsManager,getString(R.string.multiPlayer_interstitial_id_mockup)) }     /* Load ads */
 
         viewModel.shouldExecuteSetScoreToZero = savedInstanceState?.getBoolean("shouldExecuteSetScoreToZero", true) ?: true
         if (viewModel.shouldExecuteSetScoreToZero) { viewModel.setScoreToZero(args.myUserName);    viewModel.shouldExecuteSetScoreToZero = false }
@@ -104,10 +99,10 @@ class MultiplayerGamePlayFragment : Fragment() {
         binding.myScore.text="0"
         binding.myFriendScore.text="0"
     }
-
-    private fun loadBannerAds(adsManager: AdsManager){
-        adsManager.loadBannerAds(binding)
-    }
+//
+//    private fun loadBannerAds(adsManager: AdsManager){
+//        adsManager.loadBannerAds(binding)
+//    }
 
 
 }

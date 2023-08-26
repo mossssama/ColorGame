@@ -60,7 +60,7 @@
             android:background="@color/ui_mint_green"
             android:layout_marginRight="4dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="2dp"
 
             android:textColor="@color/white"
             android:textStyle="italic"
@@ -82,7 +82,7 @@
             android:background="@color/ui_rose"
             android:layout_marginRight="4dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
 
             android:textColor="@color/white"
             android:textStyle="bold"

@@ -4,7 +4,7 @@
     <string name="app_admob_id_mockup">"ca-app-pub-3940256099942544~3347511713</string>
 
     <string name="intro_banner_id_mockup">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="multiplayerGamePlay_banner_id_mockup">ca-app-pub-3940256099942544/6300978111</string>
+<!--    <string name="multiplayerGamePlay_banner_id_mockup">ca-app-pub-3940256099942544/6300978111</string>-->
     <string name="multiplayerSetup_banner_id_mockup">ca-app-pub-3940256099942544/6300978111</string>
 
     <string name="singlePlayer_interstitial_id_mockup">ca-app-pub-3940256099942544/1033173712</string>
@@ -35,7 +35,7 @@
     <string name="oneChance">One Chance</string>
     <string name="threeChances">Three Chances</string>
 
-    <string name="playerNickName">Enter a unique username to play with</string>
+    <string name="playerNickName">Enter a unique username for you</string>
     <string name="oppositeNickName">Enter your friends username</string>
 
     <string name="stayTuned">Stay Tuned</string>
