@@ -72,4 +72,7 @@
 
     <string name="CheckYouAddedYourselfAndYourFriend">تأكد أنك قمت بإضافة نفسك ومنافسك</string>
 
+    <string name="WeCurrentlyAddYouAsPlayer">جاري الاضافة كلاعب</string>
+    <string name="playerAlreadyExists">اللاعب مضاف بالفعل</string>
+
 </resources>

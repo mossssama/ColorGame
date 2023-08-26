@@ -64,4 +64,7 @@
     <string name="multiplayerMode">Multiplayer Mode</string>
     <string name="CheckYouAddedYourselfAndYourFriend">Check You added yourself and your friend</string>
 
+    <string name="WeCurrentlyAddYouAsPlayer">We currently add this as player</string>
+    <string name="playerAlreadyExists">Player already exists</string>
+
 </resources>

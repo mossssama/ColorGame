@@ -1,5 +1,8 @@
 package com.example.colorgame.cloudFirestore
 
+import android.content.Context
+import android.widget.Toast
+import com.example.colorgame.R
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import timber.log.Timber
@@ -10,11 +13,14 @@ class FirestoreManager(private val db: FirebaseFirestore) {
     private val countDownListeners: MutableMap<String, ListenerRegistration> = mutableMapOf()
     private val startPlayingListeners: MutableMap<String, ListenerRegistration> = mutableMapOf()
 
-    fun addUserIfDoesNotExist(playerName: String, initScore: Map<String, Any>, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+    fun addUserIfDoesNotExist(context: Context, playerName: String, initScore: Map<String, Any>, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         db.collection("users").document(playerName).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val document = task.result
-                if (document != null && document.exists()) { Timber.i("Document with playerName $playerName already exists") }
+                if (document != null && document.exists()) { 
+                    Toast.makeText(context,context.getString(R.string.playerAlreadyExists),Toast.LENGTH_LONG).show()
+                    Timber.i("Document with playerName $playerName already exists")
+                }
                 else {
                     // If document doesn't exist, create it with the initial score field
                     db.collection("users").document(playerName)

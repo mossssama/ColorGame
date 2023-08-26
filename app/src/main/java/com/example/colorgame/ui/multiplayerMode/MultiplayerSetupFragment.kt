@@ -37,7 +37,6 @@ class MultiplayerSetupFragment : Fragment() {
 
         binding.addPlayer.setOnClickListener { addPlayer(fireStoreManager) }
         binding.addOpposite.setOnClickListener { addOpposite(fireStoreManager) }
-
         binding.startPlaying.setOnClickListener{ checkYouAddedYourselfAndYourFriend(requireContext()) }
     }
 
@@ -46,11 +45,11 @@ class MultiplayerSetupFragment : Fragment() {
         val initPlayer = mapOf("score" to 0,"countDown" to 100,"startPlaying" to false)
 
         if (playerName.isNotBlank()) {
-            fireStoreManager.addUserIfDoesNotExist(playerName, initPlayer,
+            fireStoreManager.addUserIfDoesNotExist(requireContext(),playerName, initPlayer,
                 onSuccess = {
-                    firePlayerAddedSuccessfullyToast(requireContext())
+                    currentlyAddingYouToast(requireContext())
                     fireStoreManager.initPlayerCollection(playerName, initPlayer,
-                        onSuccess = {  },
+                        onSuccess = { firePlayerAddedSuccessfullyToast(requireContext()) },
                         onFailure = { Toast.makeText(requireContext(),getString(R.string.playerAdditionFailedCheckInternetConnection),Toast.LENGTH_LONG).show() }
                     )
                 },
@@ -65,8 +64,8 @@ class MultiplayerSetupFragment : Fragment() {
         if (oppositeName.isNotBlank()) {
             fireStoreManager.checkIfUserExists(oppositeName,
                 onSuccess = { exists ->
-                    firePlayerAddedSuccessfullyToast(requireContext())
                     if (exists){
+                        firePlayerAddedSuccessfullyToast(requireContext())
                         binding.startPlaying.setOnClickListener {
                             setStartPlaying(fireStoreManager)
                             fireProgressFragment(playerName,oppositeName)
@@ -88,6 +87,10 @@ class MultiplayerSetupFragment : Fragment() {
         Toast.makeText(context,getString(R.string.playerIsAddedSuccessfully),Toast.LENGTH_SHORT).show()
     }
 
+    private fun currentlyAddingYouToast(context: Context){
+        Toast.makeText(context,getString(R.string.WeCurrentlyAddYouAsPlayer),Toast.LENGTH_SHORT).show()
+    }
+
     private fun checkInternetConnectionToast(context: Context){
         Toast.makeText(context,getString(R.string.checkInternetConnection),Toast.LENGTH_LONG).show()
     }
@@ -103,4 +106,5 @@ class MultiplayerSetupFragment : Fragment() {
     private fun setStartPlaying(fireStoreManager: FirestoreManager){
         fireStoreManager.setStartPlaying(playerName, true, onSuccess = {}, onFailure = {})
     }
+
 }
