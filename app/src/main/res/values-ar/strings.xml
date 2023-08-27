@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ColorQuest</string>
+    <string name="app_name">ColorCraze</string>
 
     <string name="app_admob_id_mockup">"ca-app-pub-3940256099942544~3347511713</string>
 
@@ -74,5 +74,9 @@
 
     <string name="WeCurrentlyAddYouAsPlayer">جاري الاضافة كلاعب</string>
     <string name="playerAlreadyExists">اللاعب مضاف بالفعل</string>
+
+    <string name="result">النتبجة</string>
+
+    <string name="multiplayerResults">نتيجة المنافسة</string>
 
 </resources>

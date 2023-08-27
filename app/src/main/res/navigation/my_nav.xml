@@ -65,7 +65,7 @@
     <fragment
         android:id="@+id/resultsFragment"
         android:name="com.example.colorgame.ui.mainMode.ResultFragment"
-        android:label="Result"
+        android:label="@string/result"
         tools:layout="@layout/fragment_result">
         <action
             android:id="@+id/goToScoresHistoryFragment"
@@ -97,7 +97,7 @@
     <fragment
         android:id="@+id/scoresHistoryFragment"
         android:name="com.example.colorgame.ui.mainMode.scoresHistory.view.ScoresHistoryFragment"
-        android:label="Scores History"
+        android:label="@string/scoresHistory"
         tools:layout="@layout/fragment_scores_history">
         <action
             android:id="@+id/goToIntroFragment"
@@ -157,7 +157,7 @@
     <fragment
         android:id="@+id/multiplayerGamePlayFragment"
         android:name="com.example.colorgame.ui.multiplayerMode.multiplayerGamePlay.view.MultiplayerGamePlayFragment"
-        android:label="Multiplayer Mode"
+        android:label="@string/multiplayerMode"
         tools:layout="@layout/fragment_multiplayer_game_play">
         <argument
             android:name="myUserName"
@@ -195,7 +195,7 @@
     <fragment
         android:id="@+id/multiplayerResultsFragment"
         android:name="com.example.colorgame.ui.multiplayerMode.multiplayerResult.view.MultiplayerGameResultFragment"
-        android:label="Multiplayer Results"
+        android:label="@string/multiplayerResults"
         tools:layout="@layout/fragment_multiplayer_results">
         <argument
             android:name="myUserName"
@@ -226,7 +226,7 @@
     <fragment
         android:id="@+id/progressFragment"
         android:name="com.example.colorgame.ui.multiplayerMode.ProgressFragment"
-        android:label="Multiplayer Mode"
+        android:label="@string/multiplayerMode"
         tools:layout="@layout/fragment_progress">
         <action
             android:id="@+id/goToMultiplayerGamePlay"
@@ -245,13 +245,13 @@
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.example.colorgame.ui.drawer.AboutFragment"
-        android:label="About"
+        android:label="@string/about"
         tools:layout="@layout/fragment_about" />
 
     <fragment
         android:id="@+id/accountFragment"
         android:name="com.example.colorgame.ui.drawer.AccountFragment"
-        android:label="Account"
+        android:label="@string/account"
         tools:layout="@layout/fragment_account" />
 
 </navigation>
