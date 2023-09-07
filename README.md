@@ -33,3 +33,4 @@ Technologies used in the project: CodeBase is in **Kotlin** & UI is build in **X
 *   6- **JetPack DataStore**: for storing simple states we want to observe
 *   7- **Navigation Component**: to manage navigation between screens(fragments)
 *   8- **Timber**: to achieve better logging
+*   9- **Google Ads**: to preview ads like _banners_ in UIs & _interstitial_ between UIs
