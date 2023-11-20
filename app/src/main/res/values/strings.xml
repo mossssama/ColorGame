@@ -1,12 +1,9 @@
 <resources>
     <string name="app_name">ColorCraze</string>
 
-    <string name="app_admob_id_mockup">"ca-app-pub-3940256099942544~3347511713</string>
-
+    <string name="app_admob_id_mockup">ca-app-pub-5010416152081582~7887647858</string>
     <string name="intro_banner_id_mockup">ca-app-pub-3940256099942544/6300978111</string>
-<!--    <string name="multiplayerGamePlay_banner_id_mockup">ca-app-pub-3940256099942544/6300978111</string>-->
     <string name="multiplayerSetup_banner_id_mockup">ca-app-pub-3940256099942544/6300978111</string>
-
     <string name="singlePlayer_interstitial_id_mockup">ca-app-pub-3940256099942544/1033173712</string>
     <string name="multiPlayer_interstitial_id_mockup">ca-app-pub-3940256099942544/1033173712</string>
 

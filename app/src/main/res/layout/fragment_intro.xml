@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/ui_background"
-        tools:context=".ui.intro.IntroFragment">
+        tools:context=".ui.intro.HomeFrag">
 
         <LinearLayout
             android:id="@+id/button_containerOne"

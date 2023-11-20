@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "771686035605",
+    "firebase_url": "https://colorquest-d5b73-default-rtdb.firebaseio.com",
     "project_id": "colorquest-d5b73",
     "storage_bucket": "colorquest-d5b73.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:771686035605:android:0c8698ba067482f6926b9c",
+        "mobilesdk_app_id": "1:771686035605:android:94fbf5e3b2413cc6926b9c",
         "android_client_info": {
-          "package_name": "com.example.colorgame"
+          "package_name": "com.newOs.colorCraze"
         }
       },
       "oauth_client": [
