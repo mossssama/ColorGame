@@ -13,7 +13,6 @@ class GameStateViewModel @Inject constructor(private val gameStateRepo: GameStat
 
     fun loadGameState(savedInstanceState: Bundle?): LiveData<GameState> = gameStateRepo.loadGameState(savedInstanceState)
     fun saveGameState(savedInstanceState: Bundle,gameState: GameState) = gameStateRepo.saveGameState(savedInstanceState,gameState)
-
     fun getCurrentGameMode(startGameMode: String,returnedGameMode: String,returnedGameModeTwo: String): String = if(startGameMode==""){ if(returnedGameMode=="") returnedGameModeTwo else returnedGameMode } else startGameMode
 
 }

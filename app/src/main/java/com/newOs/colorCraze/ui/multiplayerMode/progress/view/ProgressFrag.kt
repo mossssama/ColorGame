@@ -1,4 +1,4 @@
-package com.newOs.colorCraze.ui.multiplayerMode
+package com.newOs.colorCraze.ui.multiplayerMode.progress.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -38,7 +38,12 @@ class ProgressFrag : Fragment() {
     }
 
     private fun goToMultiplayerGamePlayFragment(userName:String,friendName:String){
-        Navigation.findNavController(binding.root).navigate(ProgressFragDirections.goToMultiplayerGamePlay(userName, friendName))
+        Navigation.findNavController(binding.root).navigate(
+            ProgressFragDirections.goToMultiplayerGamePlay(
+                userName,
+                friendName
+            )
+        )
     }
 
     private fun reMultiplayerGamePlayFragment(userName:String,friendName:String){

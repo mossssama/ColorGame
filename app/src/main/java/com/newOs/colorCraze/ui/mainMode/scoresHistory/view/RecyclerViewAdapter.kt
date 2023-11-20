@@ -1,4 +1,4 @@
-package com.newOs.colorCraze.ui.adapters
+package com.newOs.colorCraze.ui.mainMode.scoresHistory.view
 
 import android.view.LayoutInflater
 import android.view.View

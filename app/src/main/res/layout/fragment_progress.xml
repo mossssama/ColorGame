@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/ui_background"
-        tools:context=".ui.multiplayerMode.ProgressFrag">
+        tools:context=".ui.multiplayerMode.progress.view.ProgressFrag">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineHorizontal"

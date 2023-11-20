@@ -14,12 +14,12 @@ import com.newOs.colorCraze.R
 import com.newOs.colorCraze.dataStore.DataStoreManager
 import com.newOs.colorCraze.databinding.FragmentGamePlayBinding
 import com.newOs.colorCraze.domain.GamePlay
-import com.newOs.colorCraze.domain.GamePlay.Companion.HUNDRED_SEC_MODE
-import com.newOs.colorCraze.domain.GamePlay.Companion.THREE_WRONG_MODE
+import com.newOs.colorCraze.helpers.Constants.HUNDRED_SEC_MODE
+import com.newOs.colorCraze.helpers.Constants.THREE_WRONG_MODE
 import com.newOs.colorCraze.ui.intro.HomeFragArgs
-import com.newOs.colorCraze.ui.mainMode.ResultFragmentArgs
 import com.newOs.colorCraze.ui.mainMode.gamePlay.model.GameState
 import com.newOs.colorCraze.ui.mainMode.gamePlay.viewModel.GameStateViewModel
+import com.newOs.colorCraze.ui.mainMode.result.view.ResultFragArgs
 import com.newOs.colorCraze.ui.mainMode.scoresHistory.view.ScoresHistoryFragArgs
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class GamePlayFrag : Fragment() {
     private val argsOne: HomeFragArgs by navArgs()
     private val argsTwo: ScoresHistoryFragArgs by navArgs()
-    private val argsThree: ResultFragmentArgs by navArgs()
+    private val argsThree: ResultFragArgs by navArgs()
 
     private lateinit var binding: FragmentGamePlayBinding
     private val viewModel: GameStateViewModel by viewModels()

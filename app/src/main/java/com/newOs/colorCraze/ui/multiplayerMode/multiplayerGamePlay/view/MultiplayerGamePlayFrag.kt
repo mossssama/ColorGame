@@ -13,7 +13,7 @@ import com.newOs.colorCraze.R
 import com.newOs.colorCraze.dataStore.DataStoreManager
 import com.newOs.colorCraze.databinding.FragmentMultiplayerGamePlayBinding
 import com.newOs.colorCraze.domain.GamePlay
-import com.newOs.colorCraze.domain.GamePlay.Companion.HUNDRED_SEC_MODE
+import com.newOs.colorCraze.helpers.Constants.HUNDRED_SEC_MODE
 import com.newOs.colorCraze.ui.multiplayerMode.multiplayerGamePlay.model.MultiplayerGameState
 import com.newOs.colorCraze.ui.multiplayerMode.multiplayerGamePlay.viewModel.MultiplayerGameStateViewModel
 import dagger.hilt.android.AndroidEntryPoint

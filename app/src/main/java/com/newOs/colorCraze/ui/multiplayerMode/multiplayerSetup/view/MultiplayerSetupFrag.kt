@@ -1,4 +1,4 @@
-package com.newOs.colorCraze.ui.multiplayerMode
+package com.newOs.colorCraze.ui.multiplayerMode.multiplayerSetup.view
 
 import android.content.Context
 import android.os.Bundle
@@ -79,7 +79,12 @@ class MultiplayerSetupFrag : Fragment() {
     }
 
     private fun fireProgressFragment(userName:String,friendName:String){
-        Navigation.findNavController(binding.root).navigate(MultiplayerSetupFragDirections.goToProgressFragment(userName,friendName))
+        Navigation.findNavController(binding.root).navigate(
+            MultiplayerSetupFragDirections.goToProgressFragment(
+                userName,
+                friendName
+            )
+        )
     }
 
     private fun firePlayerAddedSuccessfullyToast(context: Context){

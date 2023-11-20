@@ -15,15 +15,14 @@ import com.newOs.colorCraze.R
 import com.newOs.colorCraze.dataStore.DataStoreManager
 import com.newOs.colorCraze.databinding.FragmentScoresHistoryBinding
 import com.newOs.colorCraze.room.ScoreDatabase
-import com.newOs.colorCraze.ui.adapters.RecyclerViewAdapter
-import com.newOs.colorCraze.ui.mainMode.ResultFragmentArgs
+import com.newOs.colorCraze.ui.mainMode.result.view.ResultFragArgs
 import com.newOs.colorCraze.ui.mainMode.scoresHistory.viewModel.GetScoresViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ScoresHistoryFrag : Fragment() {
-    private val args: ResultFragmentArgs by navArgs()
+    private val args: ResultFragArgs by navArgs()
     private val viewModel: GetScoresViewModel by viewModels()
 
     private lateinit var binding: FragmentScoresHistoryBinding
@@ -57,12 +56,6 @@ class ScoresHistoryFrag : Fragment() {
     private fun goToGamePlayFragment(){
         Navigation.findNavController(binding.root).navigate(ScoresHistoryFragDirections.returnToGamePlayFragment(args.gameMode))
     }
-
-//    private fun goToIntroFragment(binding: FragmentScoresHistoryBinding){
-//        Navigation.findNavController(binding.root).navigate(ScoresHistoryFragmentDirections.goToIntroFragment())
-//    }
-
-
 
 }
 

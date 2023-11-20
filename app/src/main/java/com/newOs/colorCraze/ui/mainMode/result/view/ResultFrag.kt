@@ -1,4 +1,4 @@
-package com.newOs.colorCraze.ui.mainMode
+package com.newOs.colorCraze.ui.mainMode.result.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import com.newOs.colorCraze.R
 import com.newOs.colorCraze.ui.mainMode.gamePlay.view.GamePlayFragArgs
 
-class ResultFragment : Fragment() {
+class ResultFrag : Fragment() {
     private val args: GamePlayFragArgs by navArgs()
     private lateinit var binding: FragmentResultBinding
 
@@ -40,7 +40,9 @@ class ResultFragment : Fragment() {
     }
 
     private fun goToGamePlayFragment(){
-        Navigation.findNavController(binding.root).navigate(ResultFragmentDirections.goAgainToGamePlayFragment(args.gameMode))
+        Navigation.findNavController(binding.root).navigate(
+            ResultFragDirections.goAgainToGamePlayFragment(args.gameMode)
+        )
     }
 
     private fun setScoreTextView(scoreValue:Int){

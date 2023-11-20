@@ -10,9 +10,9 @@ import com.google.android.gms.ads.MobileAds
 import com.newOs.colorCraze.R
 import com.newOs.colorCraze.dataStore.DataStoreManager
 import com.newOs.colorCraze.databinding.FragmentIntroBinding
-import com.newOs.colorCraze.domain.GamePlay.Companion.CONTINUOUS_RIGHT_MODE
-import com.newOs.colorCraze.domain.GamePlay.Companion.HUNDRED_SEC_MODE
-import com.newOs.colorCraze.domain.GamePlay.Companion.THREE_WRONG_MODE
+import com.newOs.colorCraze.helpers.Constants.CONTINUOUS_RIGHT_MODE
+import com.newOs.colorCraze.helpers.Constants.HUNDRED_SEC_MODE
+import com.newOs.colorCraze.helpers.Constants.THREE_WRONG_MODE
 import kotlinx.coroutines.launch
 import timber.log.Timber
 

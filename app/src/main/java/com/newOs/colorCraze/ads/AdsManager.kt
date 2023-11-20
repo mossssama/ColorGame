@@ -13,7 +13,7 @@ import com.newOs.colorCraze.R
 import com.newOs.colorCraze.databinding.FragmentIntroBinding
 import com.newOs.colorCraze.databinding.FragmentMultiplierBinding
 import com.newOs.colorCraze.databinding.FragmentResultBinding
-import com.newOs.colorCraze.ui.mainMode.ResultFragmentDirections
+import com.newOs.colorCraze.ui.mainMode.result.view.ResultFragDirections
 import com.newOs.colorCraze.ui.multiplayerMode.multiplayerGamePlay.view.MultiplayerGamePlayFragDirections
 import timber.log.Timber
 
@@ -25,12 +25,6 @@ class AdsManager(private val context: Context) {
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
     }
-
-    /* MultiplayerGamePlayFrag Banner */
-//    fun loadBannerAds(binding: FragmentMultiplayerGamePlayBinding){
-//        val adRequest = AdRequest.Builder().build()
-//        binding.adView.loadAd(adRequest)
-//    }
 
     /* MultiplayerSetupFrag Banner */
     fun loadBannerAds(binding: FragmentMultiplierBinding){
@@ -110,7 +104,7 @@ class AdsManager(private val context: Context) {
     }
 
     private fun goToScoresHistoryFragment(binding: FragmentResultBinding, gameMode: String){
-        Navigation.findNavController(binding.root).navigate(ResultFragmentDirections.goToScoresHistoryFragment(gameMode))
+        Navigation.findNavController(binding.root).navigate(ResultFragDirections.goToScoresHistoryFragment(gameMode))
     }
 
 }

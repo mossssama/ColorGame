@@ -64,7 +64,7 @@
 
     <fragment
         android:id="@+id/resultsFrag"
-        android:name="com.newOs.colorCraze.ui.mainMode.ResultFragment"
+        android:name="com.newOs.colorCraze.ui.mainMode.result.view.ResultFrag"
         android:label="@string/result"
         tools:layout="@layout/fragment_result">
         <action
@@ -123,7 +123,7 @@
     </fragment>
     <fragment
         android:id="@+id/multiplayerFrag"
-        android:name="com.newOs.colorCraze.ui.multiplayerMode.MultiplayerSetupFrag"
+        android:name="com.newOs.colorCraze.ui.multiplayerMode.multiplayerSetup.view.MultiplayerSetupFrag"
         android:label="@string/multiplayerMode"
         tools:layout="@layout/fragment_multiplier">
         <action
@@ -225,7 +225,7 @@
 
     <fragment
         android:id="@+id/progressFrag"
-        android:name="com.newOs.colorCraze.ui.multiplayerMode.ProgressFrag"
+        android:name="com.newOs.colorCraze.ui.multiplayerMode.progress.view.ProgressFrag"
         android:label="@string/multiplayerMode"
         tools:layout="@layout/fragment_progress">
         <action

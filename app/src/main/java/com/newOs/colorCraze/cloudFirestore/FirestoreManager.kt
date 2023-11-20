@@ -101,7 +101,6 @@ class FirestoreManager(private val db: FirebaseFirestore) {
         }
     }
 
-
     fun updateCountDown(playerName: String, newCountDownValue: Int, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         val documentReference = db.collection("users").document(playerName)
 
@@ -130,7 +129,6 @@ class FirestoreManager(private val db: FirebaseFirestore) {
             }
         }
     }
-
 
     fun decrementScore(playerName: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         val documentReference = db.collection("users").document(playerName)
@@ -254,7 +252,6 @@ class FirestoreManager(private val db: FirebaseFirestore) {
         }
     }
 
-
     fun listenToScoreChanges(playerName: String, listener: (Int) -> Unit) {
         val documentReference = db.collection("users").document(playerName)
 
@@ -308,7 +305,6 @@ class FirestoreManager(private val db: FirebaseFirestore) {
 
         startPlayingListeners[playerName] = startPlayingListener
     }
-
 
     fun readScore(playerName: String, onSuccess: (Int) -> Unit, onFailure: (Exception) -> Unit) {
         val documentReference = db.collection("users").document(playerName)
