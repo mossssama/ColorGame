@@ -10,8 +10,4 @@ object Colors {
     val blueColor: Int = Color.parseColor("#1E88E5")
     val yellowColor: Int = Color.parseColor("#FDD835")
     val blackColor: Int = Color.parseColor("#FF000000")
-    val whiteColor: Int = Color.parseColor("#FFFFFFFF")
-    val pinkColor: Int = Color.parseColor("#C69999")
-    val brownColor: Int = Color.parseColor("#350202")
-    val greyColor: Int = Color.parseColor("#8E8B93")
 }
