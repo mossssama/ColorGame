@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 
 class DataStoreManager private constructor(private val context: Context) {
 
+    /** Ask ChatGPT about removing the context */
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("user_settings")
 
     private val _isGameOver = MutableStateFlow(false)

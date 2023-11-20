@@ -52,8 +52,8 @@ class MultiplayerGamePlayFrag : Fragment() {
 
         /* init game */
         gamePlay= GamePlay(lifecycleScope, requireActivity().baseContext)
-        GamePlay.chosenBox = gamePlay.getNewUI(binding)
-        gamePlay.setGamePlay(HUNDRED_SEC_MODE,args.myUserName,binding,requireActivity().baseContext,100)
+        GamePlay.chosenBox = gamePlay.getNewUI(binding.root)
+        gamePlay.setMultiplayerGamePlay(HUNDRED_SEC_MODE,args.myUserName,binding.root,requireActivity().baseContext,100)
 
         /* Listen to GameOver Value */
         listenToGameOverChanges(dataStoreManager,adsManager)
@@ -71,7 +71,7 @@ class MultiplayerGamePlayFrag : Fragment() {
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState != null) {
             viewModel.loadGameState(savedInstanceState).observe(viewLifecycleOwner){
-                gamePlay.setGamePlay(HUNDRED_SEC_MODE,args.myUserName,binding,requireActivity().baseContext,it.countDownValue)
+                gamePlay.setMultiplayerGamePlay(HUNDRED_SEC_MODE,args.myUserName,binding.root,requireActivity().baseContext,it.countDownValue)
                 gamePlay.continuousRightAnswers=it.playerScore
             }
         }

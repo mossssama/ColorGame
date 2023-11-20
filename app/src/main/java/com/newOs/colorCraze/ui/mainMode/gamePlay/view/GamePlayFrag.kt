@@ -46,8 +46,8 @@ class GamePlayFrag : Fragment() {
         val currentGameMode = viewModel.getCurrentGameMode(argsOne.gameMode,argsTwo.gameMode,argsThree.gameMode)
 
         gamePlay= GamePlay(lifecycleScope, requireActivity().baseContext)
-        GamePlay.chosenBox = gamePlay.getNewUI(binding)
-        gamePlay.setGamePlay(currentGameMode,binding,requireActivity().baseContext,100)
+        GamePlay.chosenBox = gamePlay.getNewUI(binding.root)
+        gamePlay.setSinglePlayerGamePlay(currentGameMode,binding.root,requireActivity().baseContext,100)
 
         /* Listen to GameOver Value */
         lifecycleScope.launchWhenStarted { dataStoreManager.isGameOver.collect { isGameOver ->
@@ -74,7 +74,7 @@ class GamePlayFrag : Fragment() {
 
         if (savedInstanceState != null) {
             viewModel.loadGameState(savedInstanceState).observe(viewLifecycleOwner){
-                gamePlay.setGamePlay(currentGameMode, binding, requireActivity().baseContext, it.countDownValue)
+                gamePlay.setSinglePlayerGamePlay(currentGameMode, binding.root,requireActivity().baseContext, it.countDownValue)
                 if(currentGameMode== THREE_WRONG_MODE) { gamePlay.totalCorrectAnswers = it.correctScore; gamePlay.totalInCorrectAnswers = it.inCorrectScore }
                 else gamePlay.continuousRightAnswers = it.correctScore
             }

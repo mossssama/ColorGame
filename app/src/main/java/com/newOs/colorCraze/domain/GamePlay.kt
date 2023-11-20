@@ -7,8 +7,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.newOs.colorCraze.R
 import com.newOs.colorCraze.dataStore.DataStoreManager
-import com.newOs.colorCraze.databinding.FragmentGamePlayBinding
-import com.newOs.colorCraze.databinding.FragmentMultiplayerGamePlayBinding
 import com.newOs.colorCraze.helpers.Colors.blackColor
 import com.newOs.colorCraze.helpers.Colors.blueColor
 import com.newOs.colorCraze.helpers.Colors.greenColor
@@ -35,6 +33,7 @@ import com.newOs.colorCraze.helpers.Functions.insertScoreToDatabase
 import com.newOs.colorCraze.helpers.Functions.resetBoxesToFalse
 import com.newOs.colorCraze.helpers.Functions.resetColorsToFalse
 import com.newOs.colorCraze.room.Score
+import kotlinx.android.synthetic.main.fragment_game_play.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -120,32 +119,6 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         return correctText
     }
 
-    private fun getMapOfBoxesAndColors(
-        boxes: HashMap<String, Boolean>,
-        colors: HashMap<String, Boolean>,
-        currentColor: Int
-    ): HashMap<String, Int> {
-        val boxesAndColorsMap: HashMap<String, Int> = HashMap()
-        val shuffledBoxes = boxes.filterValues { !it }.keys.toList().shuffled()
-
-        // Filter out the color assigned to the true box and currentColor from available colors
-        val shuffledAvailableColors = colors.filterValues { !it }
-            .filterKeys { getColorForColorName(it) != currentColor }
-            .keys.toList().shuffled()
-
-        val pairsCount = minOf(shuffledBoxes.size, shuffledAvailableColors.size)
-
-        for (i in 0 until pairsCount) {
-            val box = shuffledBoxes[i]
-            val color = getColorForColorName(shuffledAvailableColors[i])
-
-            boxesAndColorsMap[box] = color
-            boxes[box] = true
-        }
-
-        return boxesAndColorsMap
-    }
-
     private fun convertColorsToNames(colorMap: HashMap<String, Int>): HashMap<String, String> {
         val colorNameMap: HashMap<String, String> = HashMap()
 
@@ -169,55 +142,17 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
     }
 
 
-    /** Used in GamePlayFrag */
-    fun getNewUI(binding: FragmentGamePlayBinding):String {
-        val correctColor = chooseRandomColor()                                     /* Choose Random Color to be the Right Color */
-        val correctText = getColorText(correctColor)                               /* Return the Color as Text */
-        val chosenBox = chooseRandomBox()                                          /* Choose Random box to put in it the text Colored with the same color of the written word */
-        assignTextAndColorToRightBox(chosenBox,correctColor,correctText,binding)   /* Assign text Colored to the chosenBox */
-
-        /* Write a text to each box */
-        val boxesTextsMap = getMapOfBoxesAndTexts(boxes,colors)
-        assignTextsToBoxes(boxesTextsMap,binding)
-
-        /* Choose a color to text that is different from the text word */
-        val boxesColorsMap = assureEveryBoxHasTextAndDifferentColor(chosenBox,correctColor, correctText, boxesTextsMap,binding)
-
-        /* Apply a color to each box */
-        assignColorsToBoxes(boxesColorsMap,binding)
-
-        resetBoxesAndColors()
-
-        /* For debugging only */
-        debuggingForCheck(chosenBox,boxesTextsMap,boxesColorsMap)
-
-        return chosenBox
+    /** Used in SinglePlayerGamePlayFrag */
+    fun setSinglePlayerGamePlay(gameMode: String,binding: View,context: Context,seconds: Long){
+        if(gameMode == HUNDRED_SEC_MODE) startSinglePlayerCountDown(binding,context,seconds)
+        singlePlayerModeBoxesOnClickListener(gameMode,binding,context)
     }
-    fun setGamePlay(gameMode: String,binding: FragmentGamePlayBinding,context: Context,seconds: Long){
-        if(gameMode == HUNDRED_SEC_MODE) startCountdown(binding,context,seconds)
-        onBoxesListener(gameMode,binding,context)
-    }
-
-    private fun hundredSecondGamePlay(boxId: String,binding: FragmentGamePlayBinding){
+    private fun hundredSecondSinglePlayerGamePlay(boxId: String,binding: View){
         if(chosenBox ==boxId) { continuousRightAnswers++; }
         else { continuousRightAnswers--; }
         chosenBox = getNewUI(binding)
     }
-    /* write in DataStore & room */
-    private fun threeWrongGamePlay(boxId: String, binding: FragmentGamePlayBinding, context: Context) {
-        if(chosenBox !=boxId) { totalInCorrectAnswers++}
-
-        if(totalInCorrectAnswers>2) {
-            lifecycleScope.launch { insertScoreToDatabase(context, Score(THREE_WRONG_MODE, totalCorrectAnswers, getCurrentDate())) }
-            lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
-        }
-        else{
-            if(chosenBox ==boxId) totalCorrectAnswers++
-            chosenBox =getNewUI(binding)
-        }
-    }
-    /* write in DataStore & Room */
-    private fun startCountdown(binding:FragmentGamePlayBinding,context: Context,seconds: Long) {
+    private fun startSinglePlayerCountDown(binding:View,context: Context,seconds: Long) {
         countdownTimer?.cancel() // Cancel any existing timers
         countdownTimer = object : CountDownTimer(seconds * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
@@ -230,27 +165,27 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
                 lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
             }    // Countdown has finished, you can perform any action here
         }.start()
-    }
+    }   /* write in DataStore & Room */
+    private fun threeWrongGamePlay(boxId: String, binding: View, context: Context) {
+        if(chosenBox !=boxId) { totalInCorrectAnswers++}
 
-    private fun continuousRightModeGamePlay(boxId: String,binding: FragmentGamePlayBinding,context: Context){
+        if(totalInCorrectAnswers>2) {
+            lifecycleScope.launch { insertScoreToDatabase(context, Score(THREE_WRONG_MODE, totalCorrectAnswers, getCurrentDate())) }
+            lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
+        }
+        else{
+            if(chosenBox ==boxId) totalCorrectAnswers++
+            chosenBox =getNewUI(binding)
+        }
+    }        /* write in DataStore & Room */
+    private fun continuousRightModeGamePlay(boxId: String,binding: View,context: Context){
         if(chosenBox ==boxId) { continuousRightAnswers++; chosenBox = getNewUI(binding) }
         else {
             lifecycleScope.launch { insertScoreToDatabase(context, Score(CONTINUOUS_RIGHT_MODE, continuousRightAnswers, getCurrentDate())) }
             lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
         }
     }
-
-    private fun onBoxesListener(gameMode: String,binding: FragmentGamePlayBinding,context: Context) {
-        boxOnClickListener(binding.boxOne,gameMode,binding,context)
-        boxOnClickListener(binding.boxTwo,gameMode,binding,context)
-        boxOnClickListener(binding.boxThree,gameMode,binding,context)
-        boxOnClickListener(binding.boxFour,gameMode,binding,context)
-        boxOnClickListener(binding.boxFive,gameMode,binding,context)
-        boxOnClickListener(binding.boxSix,gameMode,binding,context)
-        boxOnClickListener(binding.boxSeven,gameMode,binding,context)
-    }
-
-    private fun boxOnClickListener(boxView: View, gameMode: String,binding: FragmentGamePlayBinding, context: Context) {
+    private fun singlePlayerBoxOnClickListener(boxView: View, gameMode: String,binding: View, context: Context) {
         boxView.setOnClickListener {
             val boxId = when (boxView.id) {
                 R.id.boxOne -> BOX_ONE
@@ -265,86 +200,34 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
 
             when (gameMode){
                 CONTINUOUS_RIGHT_MODE -> continuousRightModeGamePlay(boxId,binding,context)
-                HUNDRED_SEC_MODE -> hundredSecondGamePlay(boxId,binding)
+                HUNDRED_SEC_MODE -> hundredSecondSinglePlayerGamePlay(boxId,binding)
                 THREE_WRONG_MODE -> threeWrongGamePlay(boxId,binding,context)
             }
 
         }
     }
-
-    private fun assureEveryBoxHasTextAndDifferentColor(chosenBox:String, correctColor:Int, correctText:String, boxesTextsMap:HashMap<String,String>, binding: FragmentGamePlayBinding): HashMap<String, Int> {
-        var boxesColorsMap:HashMap<String,Int>
-        do{
-            resetBoxesAndColors()
-            assignTextAndColorToRightBox(chosenBox,correctColor,correctText,binding)
-            boxesColorsMap = getMapOfBoxesAndColors(boxes, colors, correctColor)
-        }while(!areKeyPairsUnique(boxesTextsMap,convertColorsToNames(boxesColorsMap)))
-        return boxesColorsMap
-    }
-
-    private fun assignTextAndColorToRightBox(chosenBox: String, correctColor:Int, correctText:String, binding: FragmentGamePlayBinding) {
-        when (chosenBox) {
-            BOX_ONE -> { binding.boxOne.setTextColor(correctColor);     binding.boxOne.text = correctText;      boxes[BOX_ONE] = true }
-            BOX_TWO -> { binding.boxTwo.setTextColor(correctColor);     binding.boxTwo.text = correctText;      boxes[BOX_TWO] = true }
-            BOX_THREE -> { binding.boxThree.setTextColor(correctColor); binding.boxThree.text = correctText;    boxes[BOX_THREE] = true }
-            BOX_FOUR -> { binding.boxFour.setTextColor(correctColor);   binding.boxFour.text = correctText;     boxes[BOX_FOUR] = true }
-            BOX_FIVE -> { binding.boxFive.setTextColor(correctColor);   binding.boxFive.text = correctText;     boxes[BOX_FIVE] = true }
-            BOX_SIX -> { binding.boxSix.setTextColor(correctColor);     binding.boxSix.text = correctText;      boxes[BOX_SIX] = true }
-            BOX_SEVEN -> { binding.boxSeven.setTextColor(correctColor); binding.boxSeven.text = correctText;    boxes[BOX_SEVEN] = true }
-        }
+    private fun singlePlayerModeBoxesOnClickListener(gameMode: String, binding: View, context: Context) {
+        singlePlayerBoxOnClickListener(binding.boxOne,gameMode,binding,context)
+        singlePlayerBoxOnClickListener(binding.boxTwo,gameMode,binding,context)
+        singlePlayerBoxOnClickListener(binding.boxThree,gameMode,binding,context)
+        singlePlayerBoxOnClickListener(binding.boxFour,gameMode,binding,context)
+        singlePlayerBoxOnClickListener(binding.boxFive,gameMode,binding,context)
+        singlePlayerBoxOnClickListener(binding.boxSix,gameMode,binding,context)
+        singlePlayerBoxOnClickListener(binding.boxSeven,gameMode,binding,context)
     }
 
 
-    /** Used in MultiplayerGamePlayFrag */
-    fun getNewUI(binding: FragmentMultiplayerGamePlayBinding):String {
-        val correctColor = chooseRandomColor()                                     /* Choose Random Color to be the Right Color */
-        val correctText = getColorText(correctColor)                               /* Return the Color as Text */
-        val chosenBox = chooseRandomBox()                                          /* Choose Random box to put in it the text Colored with the same color of the written word */
-        assignTextAndColorToRightBox(chosenBox,correctColor,correctText,binding)   /* Assign text Colored to the chosenBox */
-
-        /* Write a text to each box */
-        val boxesTextsMap = getMapOfBoxesAndTexts(boxes,colors)
-        assignTextsToBoxes(boxesTextsMap,binding)
-
-        /* Choose a color to text that is different from the text word */
-        val boxesColorsMap = assureEveryBoxHasTextAndDifferentColor(chosenBox,correctColor, correctText, boxesTextsMap,binding)
-
-        /* Apply a color to each box */
-        assignColorsToBoxes(boxesColorsMap,binding)
-
-        resetBoxesAndColors()
-
-        /* For debugging only */
-        debuggingForCheck(chosenBox,boxesTextsMap,boxesColorsMap)
-
-        return chosenBox
+    /** Used in MultiPlayerGamePlayFrag */
+    fun setMultiplayerGamePlay(gameMode: String,playerName: String,binding: View,context: Context?,seconds: Long){
+        if(gameMode == HUNDRED_SEC_MODE) startMultiplayerCountDown(binding,context!!,seconds,playerName)
+        multiPlayerModeBoxesOnClickListener(gameMode,playerName,binding,context!!)
     }
-    fun setGamePlay(gameMode: String,playerName: String,binding: FragmentMultiplayerGamePlayBinding,context: Context,seconds: Long){
-        if(gameMode == HUNDRED_SEC_MODE) startCountdown(binding,context,seconds,playerName)
-        onBoxesListener(gameMode,playerName,binding,context)
-    }
-
-    /* write in FireStore */
-    private fun hundredSecondGamePlay(playerName: String, boxId: String,binding: FragmentMultiplayerGamePlayBinding){
+    private fun hundredSecondMultiPlayerGamePlay(playerName: String, boxId: String,binding: View){
         if(chosenBox ==boxId) { fireStoreManager.incrementScore(playerName, onSuccess = {}, onFailure = {});  continuousRightAnswers++; }
         else { fireStoreManager.decrementScore(playerName, onSuccess = {}, onFailure = {}); continuousRightAnswers--; }
         chosenBox = getNewUI(binding)
-    }
-    /* write in DataStore & Room */
-    private fun threeWrongGamePlay(boxId: String, binding: FragmentMultiplayerGamePlayBinding, context: Context) {
-        if(chosenBox !=boxId) { totalInCorrectAnswers++}
-
-        if(totalInCorrectAnswers>2) {
-            lifecycleScope.launch { insertScoreToDatabase(context, Score(THREE_WRONG_MODE, totalCorrectAnswers, getCurrentDate())) }
-            lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
-        }
-        else{
-            if(chosenBox ==boxId) totalCorrectAnswers++
-            chosenBox =getNewUI(binding)
-        }
-    }
-    /* write in FireStore & DataStore & Room */
-    private fun startCountdown(binding:FragmentMultiplayerGamePlayBinding,context: Context,seconds: Long,playerName: String) {
+    }   /* write in FireStore */
+    private fun startMultiplayerCountDown(binding:View,context: Context,seconds: Long,playerName: String) {
         countdownTimer?.cancel() // Cancel any existing timers
         fireStoreManager.setCountDownToHundred(playerName, onSuccess = {}, onFailure = {})
         countdownTimer = object : CountDownTimer(seconds * 1000, 1000) {
@@ -362,27 +245,8 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
                 lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
             }    // Countdown has finished, you can perform any action here
         }.start()
-    }
-
-    private fun continuousRightModeGamePlay(boxId: String,binding: FragmentMultiplayerGamePlayBinding,context: Context){
-        if(chosenBox ==boxId) { continuousRightAnswers++; chosenBox = getNewUI(binding) }
-        else {
-            lifecycleScope.launch { insertScoreToDatabase(context, Score(CONTINUOUS_RIGHT_MODE, continuousRightAnswers, getCurrentDate())) }
-            lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
-        }
-    }
-
-    private fun onBoxesListener(gameMode: String,playerName: String,binding: FragmentMultiplayerGamePlayBinding,context: Context) {
-        boxOnClickListener(binding.boxOne,gameMode,playerName,binding,context)
-        boxOnClickListener(binding.boxTwo,gameMode,playerName,binding,context)
-        boxOnClickListener(binding.boxThree,gameMode,playerName,binding,context)
-        boxOnClickListener(binding.boxFour,gameMode,playerName,binding,context)
-        boxOnClickListener(binding.boxFive,gameMode,playerName,binding,context)
-        boxOnClickListener(binding.boxSix,gameMode,playerName,binding,context)
-        boxOnClickListener(binding.boxSeven,gameMode,playerName,binding,context)
-    }
-
-    private fun boxOnClickListener(boxView: View, gameMode: String,playerName: String,binding: FragmentMultiplayerGamePlayBinding, context: Context) {
+    }   /* write in FireStore & DataStore & Room */
+    private fun multiPlayerBoxOnClickListener(boxView: View, gameMode: String, playerName: String, binding: View, context: Context) {
         boxView.setOnClickListener {
             val boxId = when (boxView.id) {
                 R.id.boxOne -> BOX_ONE
@@ -397,24 +261,48 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
 
             when (gameMode){
                 CONTINUOUS_RIGHT_MODE -> continuousRightModeGamePlay(boxId,binding,context)
-                HUNDRED_SEC_MODE -> hundredSecondGamePlay(playerName,boxId,binding)
+                HUNDRED_SEC_MODE -> hundredSecondMultiPlayerGamePlay(playerName,boxId,binding)
                 THREE_WRONG_MODE -> threeWrongGamePlay(boxId,binding,context)
             }
 
         }
     }
-
-    private fun assureEveryBoxHasTextAndDifferentColor(chosenBox:String, correctColor:Int, correctText:String, boxesTextsMap:HashMap<String,String>, binding: FragmentMultiplayerGamePlayBinding): HashMap<String, Int> {
-        var boxesColorsMap:HashMap<String,Int>
-        do{
-            resetBoxesAndColors()
-            assignTextAndColorToRightBox(chosenBox,correctColor,correctText,binding)
-            boxesColorsMap = getMapOfBoxesAndColors(boxes, colors, correctColor)
-        }while(!areKeyPairsUnique(boxesTextsMap,convertColorsToNames(boxesColorsMap)))
-        return boxesColorsMap
+    private fun multiPlayerModeBoxesOnClickListener(gameMode: String, playerName: String, binding: View, context: Context) {
+        multiPlayerBoxOnClickListener(binding.boxOne,gameMode,playerName,binding,context)
+        multiPlayerBoxOnClickListener(binding.boxTwo,gameMode,playerName,binding,context)
+        multiPlayerBoxOnClickListener(binding.boxThree,gameMode,playerName,binding,context)
+        multiPlayerBoxOnClickListener(binding.boxFour,gameMode,playerName,binding,context)
+        multiPlayerBoxOnClickListener(binding.boxFive,gameMode,playerName,binding,context)
+        multiPlayerBoxOnClickListener(binding.boxSix,gameMode,playerName,binding,context)
+        multiPlayerBoxOnClickListener(binding.boxSeven,gameMode,playerName,binding,context)
     }
 
-    private fun assignTextsToBoxes(linkedBoxesAndTexts:HashMap<String,String>, binding:FragmentMultiplayerGamePlayBinding){
+
+    /** Shared Logic */
+    fun getNewUI(binding: View):String {
+        val correctColor = chooseRandomColor()                                     /* Choose Random Color to be the Right Color */
+        val correctText = getColorText(correctColor)                               /* Return the Color as Text */
+        val chosenBox = chooseRandomBox()                                          /* Choose Random box to put in it the text Colored with the same color of the written word */
+        assignTextAndColorToRightBox(chosenBox,correctColor,correctText,binding)   /* Assign text Colored to the chosenBox */
+
+        /* Write a text to each box */
+        val boxesTextsMap = getMapOfBoxesAndTexts(boxes,colors)
+        assignTextsToBoxes(boxesTextsMap,binding)
+
+        /* Choose a color to text that is different from the text word */
+        val boxesColorsMap = assureEveryBoxHasTextAndDifferentColor(chosenBox,correctColor, correctText, boxesTextsMap,binding)
+
+        /* Apply a color to each box */
+        assignColorsToBoxes(boxesColorsMap,binding)
+
+        resetBoxesAndColors()
+
+        /* For debugging only */
+        debuggingForCheck(chosenBox,boxesTextsMap,boxesColorsMap)
+
+        return chosenBox
+    }
+    private fun assignTextsToBoxes(linkedBoxesAndTexts:HashMap<String,String>, binding:View){
         for ((box, color) in linkedBoxesAndTexts) {
             when (box) {
                 BOX_ONE ->  binding.boxOne.text = color
@@ -427,8 +315,7 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
             }
         }
     }
-
-    private fun assignColorsToBoxes(linkedBoxesAndColors: HashMap<String, Int>, binding: FragmentMultiplayerGamePlayBinding) {
+    private fun assignColorsToBoxes(linkedBoxesAndColors: HashMap<String, Int>, binding: View) {
         for ((box, color) in linkedBoxesAndColors) {
             when (box) {
                 BOX_ONE ->  binding.boxOne.setTextColor(color)
@@ -441,36 +328,7 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
             }
         }
     }
-
-    private fun assignColorsToBoxes(linkedBoxesAndColors: HashMap<String, Int>, binding: FragmentGamePlayBinding) {
-        for ((box, color) in linkedBoxesAndColors) {
-            when (box) {
-                BOX_ONE ->  binding.boxOne.setTextColor(color)
-                BOX_TWO ->  binding.boxTwo.setTextColor(color)
-                BOX_THREE -> binding.boxThree.setTextColor(color)
-                BOX_FOUR -> binding.boxFour.setTextColor(color)
-                BOX_FIVE -> binding.boxFive.setTextColor(color)
-                BOX_SIX -> binding.boxSix.setTextColor(color)
-                BOX_SEVEN -> binding.boxSeven.setTextColor(color)
-            }
-        }
-    }
-
-    private fun assignTextsToBoxes(linkedBoxesAndTexts:HashMap<String,String>, binding:FragmentGamePlayBinding){
-        for ((box, color) in linkedBoxesAndTexts) {
-            when (box) {
-                BOX_ONE ->  binding.boxOne.text = color
-                BOX_TWO ->  binding.boxTwo.text = color
-                BOX_THREE -> binding.boxThree.text = color
-                BOX_FOUR -> binding.boxFour.text = color
-                BOX_FIVE -> binding.boxFive.text = color
-                BOX_SIX -> binding.boxSix.text = color
-                BOX_SEVEN -> binding.boxSeven.text = color
-            }
-        }
-    }
-
-    private fun assignTextAndColorToRightBox(chosenBox: String, correctColor:Int, correctText:String, binding: FragmentMultiplayerGamePlayBinding) {
+    private fun assignTextAndColorToRightBox(chosenBox: String, correctColor:Int, correctText:String, binding: View) {
         when (chosenBox) {
             BOX_ONE -> { binding.boxOne.setTextColor(correctColor);     binding.boxOne.text = correctText;      boxes[BOX_ONE] = true }
             BOX_TWO -> { binding.boxTwo.setTextColor(correctColor);     binding.boxTwo.text = correctText;      boxes[BOX_TWO] = true }
@@ -481,5 +339,34 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
             BOX_SEVEN -> { binding.boxSeven.setTextColor(correctColor); binding.boxSeven.text = correctText;    boxes[BOX_SEVEN] = true }
         }
     }
+    private fun assureEveryBoxHasTextAndDifferentColor(chosenBox:String, correctColor:Int, correctText:String, boxesTextsMap:HashMap<String,String>, binding: View): HashMap<String, Int> {
+        var boxesColorsMap:HashMap<String,Int>
+        do{
+            resetBoxesAndColors()
+            assignTextAndColorToRightBox(chosenBox,correctColor,correctText,binding)
+            boxesColorsMap = getMapOfBoxesAndColors(boxes, colors, correctColor)
+        }while(!areKeyPairsUnique(boxesTextsMap,convertColorsToNames(boxesColorsMap)))
+        return boxesColorsMap
+    }
+    private fun getMapOfBoxesAndColors(boxes: HashMap<String, Boolean>, colors: HashMap<String, Boolean>, currentColor: Int): HashMap<String, Int> {
+        val boxesAndColorsMap: HashMap<String, Int> = HashMap()
+        val shuffledBoxes = boxes.filterValues { !it }.keys.toList().shuffled()
 
+        // Filter out the color assigned to the true box and currentColor from available colors
+        val shuffledAvailableColors = colors.filterValues { !it }
+            .filterKeys { getColorForColorName(it) != currentColor }
+            .keys.toList().shuffled()
+
+        val pairsCount = minOf(shuffledBoxes.size, shuffledAvailableColors.size)
+
+        for (i in 0 until pairsCount) {
+            val box = shuffledBoxes[i]
+            val color = getColorForColorName(shuffledAvailableColors[i])
+
+            boxesAndColorsMap[box] = color
+            boxes[box] = true
+        }
+
+        return boxesAndColorsMap
+    }
 }
