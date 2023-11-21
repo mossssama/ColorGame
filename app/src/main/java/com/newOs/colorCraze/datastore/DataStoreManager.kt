@@ -1,4 +1,4 @@
-package com.newOs.colorCraze.dataStore
+package com.newOs.colorCraze.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore

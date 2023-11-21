@@ -29,7 +29,7 @@ class MultiplayerSetupFrag : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val fireStoreManager =
-            com.newOs.colorCraze.cloudFirestore.FirestoreManager(Firebase.firestore)
+            com.newOs.colorCraze.firebase.FirestoreManager(Firebase.firestore)
         val adsManager = com.newOs.colorCraze.ads.AdsManager(requireContext())
 
         MobileAds.initialize(requireContext()) { adsManager.loadBannerAds(binding) }     /* Load ads on Banner */
@@ -39,7 +39,7 @@ class MultiplayerSetupFrag : Fragment() {
         binding.startPlaying.setOnClickListener{ checkYouAddedYourselfAndYourFriend(requireContext()) }
     }
 
-    private fun addPlayer(fireStoreManager: com.newOs.colorCraze.cloudFirestore.FirestoreManager){
+    private fun addPlayer(fireStoreManager: com.newOs.colorCraze.firebase.FirestoreManager){
         playerName = binding.etOne.text.toString()
         val initPlayer = mapOf("score" to 0,"countDown" to 100,"startPlaying" to false)
 
@@ -57,7 +57,7 @@ class MultiplayerSetupFrag : Fragment() {
         } else cannotKeepTextFieldEmptyToast(requireContext())
     }
 
-    private fun addOpposite(fireStoreManager: com.newOs.colorCraze.cloudFirestore.FirestoreManager){
+    private fun addOpposite(fireStoreManager: com.newOs.colorCraze.firebase.FirestoreManager){
         val oppositeName = binding.etTwo.text.toString()
 
         if (oppositeName.isNotBlank()) {
@@ -107,7 +107,7 @@ class MultiplayerSetupFrag : Fragment() {
         Toast.makeText(context,getString(R.string.CheckYouAddedYourselfAndYourFriend),Toast.LENGTH_LONG).show()
     }
     /* Can be put in viewModel */
-    private fun setStartPlaying(fireStoreManager: com.newOs.colorCraze.cloudFirestore.FirestoreManager){
+    private fun setStartPlaying(fireStoreManager: com.newOs.colorCraze.firebase.FirestoreManager){
         fireStoreManager.setStartPlaying(playerName, true, onSuccess = {}, onFailure = {})
     }
 

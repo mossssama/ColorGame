@@ -3,7 +3,7 @@ package com.newOs.colorCraze.ui.multiplayerMode.multiplayerResult.repository
 import android.content.Context
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
-import com.newOs.colorCraze.dataStore.DataStoreManager
+import com.newOs.colorCraze.datastore.DataStoreManager
 import com.newOs.colorCraze.ui.multiplayerMode.multiplayerResult.model.MultiplayerGameResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -41,7 +41,7 @@ class MultiplayerGameResultRepositoryImpl @Inject constructor(): MultiplayerGame
         return infoMutableLiveData
     }
 
-    override fun getMultiplayerGameResultFromFirebase(fireStoreManager: com.newOs.colorCraze.cloudFirestore.FirestoreManager, myUserName: String, myFriendName: String): MutableLiveData<MultiplayerGameResult> {
+    override fun getMultiplayerGameResultFromFirebase(fireStoreManager: com.newOs.colorCraze.firebase.FirestoreManager, myUserName: String, myFriendName: String): MutableLiveData<MultiplayerGameResult> {
         val infoMutableLiveData = MutableLiveData<MultiplayerGameResult>()
 
         fireStoreManager.readScore(myUserName, onSuccess = { myScore ->

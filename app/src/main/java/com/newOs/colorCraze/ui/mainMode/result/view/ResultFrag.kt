@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.google.android.gms.ads.*
-import com.newOs.colorCraze.dataStore.DataStoreManager
+import com.newOs.colorCraze.datastore.DataStoreManager
 import com.newOs.colorCraze.databinding.FragmentResultBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

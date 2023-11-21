@@ -1,4 +1,4 @@
-package com.newOs.colorCraze.cloudFirestore
+package com.newOs.colorCraze.firebase
 
 import android.content.Context
 import android.widget.Toast

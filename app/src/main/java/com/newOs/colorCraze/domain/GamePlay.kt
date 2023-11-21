@@ -3,10 +3,8 @@ package com.newOs.colorCraze.domain
 import android.content.Context
 import android.os.CountDownTimer
 import android.view.View
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.newOs.colorCraze.R
-import com.newOs.colorCraze.dataStore.DataStoreManager
+import com.newOs.colorCraze.datastore.DataStoreManager
 import com.newOs.colorCraze.helpers.Colors.blackColor
 import com.newOs.colorCraze.helpers.Colors.blueColor
 import com.newOs.colorCraze.helpers.Colors.greenColor
@@ -22,7 +20,6 @@ import com.newOs.colorCraze.helpers.Constants.BOX_SIX
 import com.newOs.colorCraze.helpers.Constants.BOX_THREE
 import com.newOs.colorCraze.helpers.Constants.BOX_TWO
 import com.newOs.colorCraze.helpers.Constants.CONTINUOUS_RIGHT_MODE
-import com.newOs.colorCraze.helpers.Constants.HUNDRED_SEC_MODE
 import com.newOs.colorCraze.helpers.Constants.THREE_WRONG_MODE
 import com.newOs.colorCraze.helpers.Functions.areKeyPairsUnique
 import com.newOs.colorCraze.helpers.Functions.chooseRandomBox
@@ -38,11 +35,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
+open class GamePlay(var lifecycleScope: CoroutineScope,var context: Context) {
 
     companion object{
         lateinit var chosenBox: String
-        private var countdownTimer: CountDownTimer? = null
+        var countdownTimer: CountDownTimer? = null
     }
 
     var continuousRightAnswers: Int = 0
@@ -50,7 +47,6 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
     var totalInCorrectAnswers: Int = 0
 
     private val dataStoreManager = DataStoreManager.getInstance(context)
-    private val fireStoreManager = com.newOs.colorCraze.cloudFirestore.FirestoreManager(Firebase.firestore)
 
     init { lifecycleScope.launch { dataStoreManager.saveGameOver(false) } }
 
@@ -140,143 +136,6 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
     private fun debuggingForCheck(chosenBox: String, boxesTextsMap: HashMap<String, String>, boxesColorsMap: HashMap<String, Int>) {
         Timber.i("$chosenBox|$boxesTextsMap|${convertColorsToNames(boxesColorsMap)}|${areKeyPairsUnique(boxesTextsMap,convertColorsToNames(boxesColorsMap))}")
     }
-
-
-    /** Used in SinglePlayerGamePlayFrag */
-    fun setSinglePlayerGamePlay(gameMode: String,binding: View,context: Context,seconds: Long){
-        if(gameMode == HUNDRED_SEC_MODE) startSinglePlayerCountDown(binding,context,seconds)
-        singlePlayerModeBoxesOnClickListener(gameMode,binding,context)
-    }
-    private fun hundredSecondSinglePlayerGamePlay(boxId: String,binding: View){
-        if(chosenBox ==boxId) { continuousRightAnswers++; }
-        else { continuousRightAnswers--; }
-        chosenBox = getNewUI(binding)
-    }
-    private fun startSinglePlayerCountDown(binding:View,context: Context,seconds: Long) {
-        countdownTimer?.cancel() // Cancel any existing timers
-        countdownTimer = object : CountDownTimer(seconds * 1000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                val remainingSeconds = millisUntilFinished / 1000
-                binding.countdownTextView.text = remainingSeconds.toString()        // Update the TextView with the remaining seconds
-            }
-            override fun onFinish() {
-                binding.countdownTextView.text = "0"
-                lifecycleScope.launch { insertScoreToDatabase(context, Score(HUNDRED_SEC_MODE, continuousRightAnswers, getCurrentDate())) }
-                lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
-            }    // Countdown has finished, you can perform any action here
-        }.start()
-    }   /* write in DataStore & Room */
-    private fun threeWrongGamePlay(boxId: String, binding: View, context: Context) {
-        if(chosenBox !=boxId) { totalInCorrectAnswers++}
-
-        if(totalInCorrectAnswers>2) {
-            lifecycleScope.launch { insertScoreToDatabase(context, Score(THREE_WRONG_MODE, totalCorrectAnswers, getCurrentDate())) }
-            lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
-        }
-        else{
-            if(chosenBox ==boxId) totalCorrectAnswers++
-            chosenBox =getNewUI(binding)
-        }
-    }        /* write in DataStore & Room */
-    private fun continuousRightModeGamePlay(boxId: String,binding: View,context: Context){
-        if(chosenBox ==boxId) { continuousRightAnswers++; chosenBox = getNewUI(binding) }
-        else {
-            lifecycleScope.launch { insertScoreToDatabase(context, Score(CONTINUOUS_RIGHT_MODE, continuousRightAnswers, getCurrentDate())) }
-            lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
-        }
-    }
-    private fun singlePlayerBoxOnClickListener(boxView: View, gameMode: String,binding: View, context: Context) {
-        boxView.setOnClickListener {
-            val boxId = when (boxView.id) {
-                R.id.boxOne -> BOX_ONE
-                R.id.boxTwo -> BOX_TWO
-                R.id.boxThree -> BOX_THREE
-                R.id.boxFour -> BOX_FOUR
-                R.id.boxFive -> BOX_FIVE
-                R.id.boxSix -> BOX_SIX
-                R.id.boxSeven -> BOX_SEVEN
-                else -> return@setOnClickListener
-            }
-
-            when (gameMode){
-                CONTINUOUS_RIGHT_MODE -> continuousRightModeGamePlay(boxId,binding,context)
-                HUNDRED_SEC_MODE -> hundredSecondSinglePlayerGamePlay(boxId,binding)
-                THREE_WRONG_MODE -> threeWrongGamePlay(boxId,binding,context)
-            }
-
-        }
-    }
-    private fun singlePlayerModeBoxesOnClickListener(gameMode: String, binding: View, context: Context) {
-        singlePlayerBoxOnClickListener(binding.boxOne,gameMode,binding,context)
-        singlePlayerBoxOnClickListener(binding.boxTwo,gameMode,binding,context)
-        singlePlayerBoxOnClickListener(binding.boxThree,gameMode,binding,context)
-        singlePlayerBoxOnClickListener(binding.boxFour,gameMode,binding,context)
-        singlePlayerBoxOnClickListener(binding.boxFive,gameMode,binding,context)
-        singlePlayerBoxOnClickListener(binding.boxSix,gameMode,binding,context)
-        singlePlayerBoxOnClickListener(binding.boxSeven,gameMode,binding,context)
-    }
-
-
-    /** Used in MultiPlayerGamePlayFrag */
-    fun setMultiplayerGamePlay(gameMode: String,playerName: String,binding: View,context: Context?,seconds: Long){
-        if(gameMode == HUNDRED_SEC_MODE) startMultiplayerCountDown(binding,context!!,seconds,playerName)
-        multiPlayerModeBoxesOnClickListener(gameMode,playerName,binding,context!!)
-    }
-    private fun hundredSecondMultiPlayerGamePlay(playerName: String, boxId: String,binding: View){
-        if(chosenBox ==boxId) { fireStoreManager.incrementScore(playerName, onSuccess = {}, onFailure = {});  continuousRightAnswers++; }
-        else { fireStoreManager.decrementScore(playerName, onSuccess = {}, onFailure = {}); continuousRightAnswers--; }
-        chosenBox = getNewUI(binding)
-    }   /* write in FireStore */
-    private fun startMultiplayerCountDown(binding:View,context: Context,seconds: Long,playerName: String) {
-        countdownTimer?.cancel() // Cancel any existing timers
-        fireStoreManager.setCountDownToHundred(playerName, onSuccess = {}, onFailure = {})
-        countdownTimer = object : CountDownTimer(seconds * 1000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                val remainingSeconds = millisUntilFinished / 1000
-                if(remainingSeconds.toInt()==0) {
-                    fireStoreManager.updateCountDown(playerName,0, onSuccess = {}, onFailure = {})
-                    fireStoreManager.setStartPlaying(playerName,false, onSuccess = {}, onFailure = {})
-                }
-                binding.countdownTextView.text = remainingSeconds.toString()        // Update the TextView with the remaining seconds
-            }
-            override fun onFinish() {
-                binding.countdownTextView.text = "0"
-                lifecycleScope.launch { insertScoreToDatabase(context, Score(HUNDRED_SEC_MODE, continuousRightAnswers, getCurrentDate())) }
-                lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
-            }    // Countdown has finished, you can perform any action here
-        }.start()
-    }   /* write in FireStore & DataStore & Room */
-    private fun multiPlayerBoxOnClickListener(boxView: View, gameMode: String, playerName: String, binding: View, context: Context) {
-        boxView.setOnClickListener {
-            val boxId = when (boxView.id) {
-                R.id.boxOne -> BOX_ONE
-                R.id.boxTwo -> BOX_TWO
-                R.id.boxThree -> BOX_THREE
-                R.id.boxFour -> BOX_FOUR
-                R.id.boxFive -> BOX_FIVE
-                R.id.boxSix -> BOX_SIX
-                R.id.boxSeven -> BOX_SEVEN
-                else -> return@setOnClickListener
-            }
-
-            when (gameMode){
-                CONTINUOUS_RIGHT_MODE -> continuousRightModeGamePlay(boxId,binding,context)
-                HUNDRED_SEC_MODE -> hundredSecondMultiPlayerGamePlay(playerName,boxId,binding)
-                THREE_WRONG_MODE -> threeWrongGamePlay(boxId,binding,context)
-            }
-
-        }
-    }
-    private fun multiPlayerModeBoxesOnClickListener(gameMode: String, playerName: String, binding: View, context: Context) {
-        multiPlayerBoxOnClickListener(binding.boxOne,gameMode,playerName,binding,context)
-        multiPlayerBoxOnClickListener(binding.boxTwo,gameMode,playerName,binding,context)
-        multiPlayerBoxOnClickListener(binding.boxThree,gameMode,playerName,binding,context)
-        multiPlayerBoxOnClickListener(binding.boxFour,gameMode,playerName,binding,context)
-        multiPlayerBoxOnClickListener(binding.boxFive,gameMode,playerName,binding,context)
-        multiPlayerBoxOnClickListener(binding.boxSix,gameMode,playerName,binding,context)
-        multiPlayerBoxOnClickListener(binding.boxSeven,gameMode,playerName,binding,context)
-    }
-
 
     /** Shared Logic */
     fun getNewUI(binding: View):String {
@@ -368,5 +227,24 @@ class GamePlay(private val lifecycleScope: CoroutineScope,context: Context) {
         }
 
         return boxesAndColorsMap
+    }
+    fun threeWrongGamePlay(boxId: String, binding: View, context: Context) {
+        if(chosenBox !=boxId) { totalInCorrectAnswers++}
+
+        if(totalInCorrectAnswers>2) {
+            lifecycleScope.launch { insertScoreToDatabase(context, Score(THREE_WRONG_MODE, totalCorrectAnswers, getCurrentDate())) }
+            lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
+        }
+        else{
+            if(chosenBox ==boxId) totalCorrectAnswers++
+            chosenBox =getNewUI(binding)
+        }
+    }        /* write in DataStore & Room */
+    fun continuousRightModeGamePlay(boxId: String,binding: View,context: Context){
+        if(chosenBox ==boxId) { continuousRightAnswers++; chosenBox = getNewUI(binding) }
+        else {
+            lifecycleScope.launch { insertScoreToDatabase(context, Score(CONTINUOUS_RIGHT_MODE, continuousRightAnswers, getCurrentDate())) }
+            lifecycleScope.launch { dataStoreManager.saveGameOver(true) }
+        }
     }
 }

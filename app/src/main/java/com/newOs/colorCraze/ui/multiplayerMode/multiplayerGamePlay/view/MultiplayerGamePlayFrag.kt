@@ -10,10 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.newOs.colorCraze.R
-import com.newOs.colorCraze.dataStore.DataStoreManager
+import com.newOs.colorCraze.datastore.DataStoreManager
 import com.newOs.colorCraze.databinding.FragmentMultiplayerGamePlayBinding
 import com.newOs.colorCraze.domain.GamePlay
 import com.newOs.colorCraze.helpers.Constants.HUNDRED_SEC_MODE
+import com.newOs.colorCraze.ui.multiplayerMode.multiplayerGamePlay.logic.MultiplayerGamePlayLogic
 import com.newOs.colorCraze.ui.multiplayerMode.multiplayerGamePlay.model.MultiplayerGameState
 import com.newOs.colorCraze.ui.multiplayerMode.multiplayerGamePlay.viewModel.MultiplayerGameStateViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +25,7 @@ class MultiplayerGamePlayFrag : Fragment() {
     private val viewModel: MultiplayerGameStateViewModel by viewModels()
 
     private lateinit var binding: FragmentMultiplayerGamePlayBinding
-    private lateinit var gamePlay: GamePlay
+    private lateinit var gamePlay: MultiplayerGamePlayLogic
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_multiplayer_game_play,container,false)
@@ -38,8 +39,6 @@ class MultiplayerGamePlayFrag : Fragment() {
         val adsManager = com.newOs.colorCraze.ads.AdsManager(requireContext())
         val dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)
 
-//        MobileAds.initialize(requireContext()) { loadBannerAds(adsManager); viewModel.loadInterstitialAds(adsManager,getString(R.string.multiPlayer_interstitial_id_mockup)) }     /* Load ads */
-
         viewModel.shouldExecuteSetScoreToZero = savedInstanceState?.getBoolean("shouldExecuteSetScoreToZero", true) ?: true
         if (viewModel.shouldExecuteSetScoreToZero) { viewModel.setScoreToZero(args.myUserName);    viewModel.shouldExecuteSetScoreToZero = false }
 
@@ -51,7 +50,7 @@ class MultiplayerGamePlayFrag : Fragment() {
         viewModel.fireStoreManager.listenToScoreChanges(args.myFriendName) { score -> binding.myFriendScore.text=score.toString() }
 
         /* init game */
-        gamePlay= GamePlay(lifecycleScope, requireActivity().baseContext)
+        gamePlay= MultiplayerGamePlayLogic(lifecycleScope, requireActivity().baseContext)
         GamePlay.chosenBox = gamePlay.getNewUI(binding.root)
         gamePlay.setMultiplayerGamePlay(HUNDRED_SEC_MODE,args.myUserName,binding.root,requireActivity().baseContext,100)
 
@@ -98,10 +97,5 @@ class MultiplayerGamePlayFrag : Fragment() {
         binding.myScore.text="0"
         binding.myFriendScore.text="0"
     }
-//
-//    private fun loadBannerAds(adsManager: AdsManager){
-//        adsManager.loadBannerAds(binding)
-//    }
-
 
 }

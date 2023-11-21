@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.newOs.colorCraze.dataStore.DataStoreManager
+import com.newOs.colorCraze.datastore.DataStoreManager
 import com.newOs.colorCraze.ui.multiplayerMode.multiplayerGamePlay.model.MultiplayerGameState
 import com.newOs.colorCraze.ui.multiplayerMode.multiplayerGamePlay.repository.MultiplayerGameStateRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class MultiplayerGameStateViewModel @Inject constructor(private val gameStateRepo: MultiplayerGameStateRepository): ViewModel()  {
 
     val fireStoreManager =
-        com.newOs.colorCraze.cloudFirestore.FirestoreManager(Firebase.firestore)
+        com.newOs.colorCraze.firebase.FirestoreManager(Firebase.firestore)
     var shouldExecuteSetScoreToZero = true
 
     fun loadGameState(savedInstanceState: Bundle?): LiveData<MultiplayerGameState> = gameStateRepo.loadGameState(savedInstanceState)

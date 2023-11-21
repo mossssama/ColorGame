@@ -11,5 +11,5 @@ interface MultiplayerGameResultRepository {
     fun loadMultiplayerGameResult(savedInstanceState: Bundle?): MutableLiveData<MultiplayerGameResult>
 
     fun getMultiplayerGameResultFromDataStore(context: Context,lifecycleScope: CoroutineScope): MutableLiveData<MultiplayerGameResult>
-    fun getMultiplayerGameResultFromFirebase(fireStoreManager: com.newOs.colorCraze.cloudFirestore.FirestoreManager, myUserName: String, myFriendName: String): MutableLiveData<MultiplayerGameResult>
+    fun getMultiplayerGameResultFromFirebase(fireStoreManager: com.newOs.colorCraze.firebase.FirestoreManager, myUserName: String, myFriendName: String): MutableLiveData<MultiplayerGameResult>
 }

@@ -11,12 +11,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.newOs.colorCraze.R
-import com.newOs.colorCraze.dataStore.DataStoreManager
+import com.newOs.colorCraze.datastore.DataStoreManager
 import com.newOs.colorCraze.databinding.FragmentGamePlayBinding
 import com.newOs.colorCraze.domain.GamePlay
 import com.newOs.colorCraze.helpers.Constants.HUNDRED_SEC_MODE
 import com.newOs.colorCraze.helpers.Constants.THREE_WRONG_MODE
 import com.newOs.colorCraze.ui.intro.HomeFragArgs
+import com.newOs.colorCraze.ui.mainMode.gamePlay.logic.GamePlayLogic
 import com.newOs.colorCraze.ui.mainMode.gamePlay.model.GameState
 import com.newOs.colorCraze.ui.mainMode.gamePlay.viewModel.GameStateViewModel
 import com.newOs.colorCraze.ui.mainMode.result.view.ResultFragArgs
@@ -31,7 +32,7 @@ class GamePlayFrag : Fragment() {
 
     private lateinit var binding: FragmentGamePlayBinding
     private val viewModel: GameStateViewModel by viewModels()
-    private lateinit var gamePlay: GamePlay
+    private lateinit var gamePlay: GamePlayLogic
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_play, container, false)
@@ -45,13 +46,13 @@ class GamePlayFrag : Fragment() {
         val dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)
         val currentGameMode = viewModel.getCurrentGameMode(argsOne.gameMode,argsTwo.gameMode,argsThree.gameMode)
 
-        gamePlay= GamePlay(lifecycleScope, requireActivity().baseContext)
+        gamePlay= GamePlayLogic(lifecycleScope, requireActivity().baseContext)
         GamePlay.chosenBox = gamePlay.getNewUI(binding.root)
         gamePlay.setSinglePlayerGamePlay(currentGameMode,binding.root,requireActivity().baseContext,100)
 
         /* Listen to GameOver Value */
         lifecycleScope.launchWhenStarted { dataStoreManager.isGameOver.collect { isGameOver ->
-                if(isGameOver){ sendResult(gamePlay) }
+                if(isGameOver){ sendResult() }
             }
         }
         
@@ -86,7 +87,7 @@ class GamePlayFrag : Fragment() {
         Navigation.findNavController(binding.root).navigate(GamePlayFragDirections.goToResultFragment(score, gameMode))
     }
 
-    private fun sendResult(gamePlay: GamePlay){
+    private fun sendResult(){
         if(argsOne.gameMode==THREE_WRONG_MODE) goToResultFragment(gamePlay.totalCorrectAnswers,argsOne.gameMode)
         else                                   goToResultFragment(gamePlay.continuousRightAnswers,argsOne.gameMode)
     }

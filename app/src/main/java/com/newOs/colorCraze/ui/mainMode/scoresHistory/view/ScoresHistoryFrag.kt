@@ -12,7 +12,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.newOs.colorCraze.R
-import com.newOs.colorCraze.dataStore.DataStoreManager
+import com.newOs.colorCraze.datastore.DataStoreManager
 import com.newOs.colorCraze.databinding.FragmentScoresHistoryBinding
 import com.newOs.colorCraze.room.ScoreDatabase
 import com.newOs.colorCraze.ui.mainMode.result.view.ResultFragArgs

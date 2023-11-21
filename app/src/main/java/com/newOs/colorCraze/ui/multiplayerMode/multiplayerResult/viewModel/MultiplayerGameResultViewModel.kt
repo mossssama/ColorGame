@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.newOs.colorCraze.R
-import com.newOs.colorCraze.dataStore.DataStoreManager
+import com.newOs.colorCraze.datastore.DataStoreManager
 import com.newOs.colorCraze.ui.multiplayerMode.multiplayerResult.model.MultiplayerGameResult
 import com.newOs.colorCraze.ui.multiplayerMode.multiplayerResult.repository.MultiplayerGameResultRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,9 +20,9 @@ import javax.inject.Inject
 class MultiplayerGameResultViewModel @Inject constructor(private val multiplayerResultRepo: MultiplayerGameResultRepository):ViewModel(){
 
     private var firebaseDataLoaded = false
-    val fireStoreManager = com.newOs.colorCraze.cloudFirestore.FirestoreManager(Firebase.firestore)
+    val fireStoreManager = com.newOs.colorCraze.firebase.FirestoreManager(Firebase.firestore)
 
-    fun getMultiplayerGameResult(fireStoreManager: com.newOs.colorCraze.cloudFirestore.FirestoreManager, myUserName:String, myFriendUserName:String, context: Context, lifecycleScope: CoroutineScope, activity:FragmentActivity): MutableLiveData<MultiplayerGameResult> {
+    fun getMultiplayerGameResult(fireStoreManager: com.newOs.colorCraze.firebase.FirestoreManager, myUserName:String, myFriendUserName:String, context: Context, lifecycleScope: CoroutineScope, activity:FragmentActivity): MutableLiveData<MultiplayerGameResult> {
         return if(firebaseDataLoaded) multiplayerResultRepo.getMultiplayerGameResultFromDataStore(context, lifecycleScope)
         else {
             val infoMutableLiveData = MutableLiveData<MultiplayerGameResult>()

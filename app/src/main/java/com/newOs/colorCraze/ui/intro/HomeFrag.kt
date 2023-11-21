@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.google.android.gms.ads.MobileAds
 import com.newOs.colorCraze.R
-import com.newOs.colorCraze.dataStore.DataStoreManager
+import com.newOs.colorCraze.datastore.DataStoreManager
 import com.newOs.colorCraze.databinding.FragmentIntroBinding
 import com.newOs.colorCraze.helpers.Constants.CONTINUOUS_RIGHT_MODE
 import com.newOs.colorCraze.helpers.Constants.HUNDRED_SEC_MODE

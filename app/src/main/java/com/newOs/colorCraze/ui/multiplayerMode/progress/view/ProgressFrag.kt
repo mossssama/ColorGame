@@ -19,7 +19,7 @@ class ProgressFrag : Fragment() {
 
     private val args: ProgressFragArgs by navArgs()
     private lateinit var binding: FragmentProgressBinding
-    private lateinit var fireStoreManager: com.newOs.colorCraze.cloudFirestore.FirestoreManager
+    private lateinit var fireStoreManager: com.newOs.colorCraze.firebase.FirestoreManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_progress, container, false)
@@ -30,7 +30,7 @@ class ProgressFrag : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         /* Go to MultiPlayer GamePlay when the other player clicks on startPlaying */
         fireStoreManager =
-            com.newOs.colorCraze.cloudFirestore.FirestoreManager(Firebase.firestore)
+            com.newOs.colorCraze.firebase.FirestoreManager(Firebase.firestore)
         fireStoreManager.listenToStartPlayingChanges(args.friendName) { startPlaying ->
             if (startPlaying) { navigation(args.userName,args.friendName) }
         }

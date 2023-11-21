@@ -2,7 +2,7 @@ package com.newOs.colorCraze.ui.mainMode.scoresHistory.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.newOs.colorCraze.dataStore.DataStoreManager
+import com.newOs.colorCraze.datastore.DataStoreManager
 import com.newOs.colorCraze.room.Score
 import com.newOs.colorCraze.room.ScoreDatabase
 import com.newOs.colorCraze.ui.mainMode.scoresHistory.model.ScoreItem
