@@ -2,6 +2,9 @@ package com.newOs.colorCraze.ui.multiplayerMode.multiplayerResult.repository
 
 import android.content.Context
 import android.os.Bundle
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.MutableLiveData
 import com.newOs.colorCraze.datastore.DataStoreManager
 import com.newOs.colorCraze.ui.multiplayerMode.multiplayerResult.model.MultiplayerGameResult
@@ -13,6 +16,8 @@ class MultiplayerGameResultRepositoryImpl @Inject constructor(): MultiplayerGame
 
     private val playerScore = "playerScore"
     private val oppositeScore = "oppositeScore"
+
+    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")        // Create a DataStore instance using preferencesDataStore extension
 
     override fun saveMultiplayerGameResult(savedInstanceState: Bundle, multiplayerGameResult: MultiplayerGameResult) {
         savedInstanceState.putInt(playerScore, multiplayerGameResult.playerScore)
@@ -34,8 +39,7 @@ class MultiplayerGameResultRepositoryImpl @Inject constructor(): MultiplayerGame
 
     override fun getMultiplayerGameResultFromDataStore(context: Context,lifecycleScope: CoroutineScope): MutableLiveData<MultiplayerGameResult> {
         val infoMutableLiveData = MutableLiveData<MultiplayerGameResult>()
-        val dataStoreManager = DataStoreManager.getInstance(context)
-
+        val dataStoreManager = DataStoreManager.create(context.dataStore)
         lifecycleScope.launch { infoMutableLiveData.postValue(dataStoreManager.readMultiplayerGameResult()) }
 
         return infoMutableLiveData

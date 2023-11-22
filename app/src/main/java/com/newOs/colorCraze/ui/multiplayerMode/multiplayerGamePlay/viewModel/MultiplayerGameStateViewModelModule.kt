@@ -13,4 +13,5 @@ object MultiplayerGameStateViewModelModule {
 
     @Provides
     fun provideMultiplayerGameStateRepository(): MultiplayerGameStateRepository = MultiplayerGameStateRepositoryImpl()
+
 }

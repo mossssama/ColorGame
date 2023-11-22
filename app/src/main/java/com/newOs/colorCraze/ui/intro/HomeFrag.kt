@@ -3,6 +3,9 @@ package com.newOs.colorCraze.ui.intro
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -18,13 +21,11 @@ import timber.log.Timber
 
 class HomeFrag : Fragment() {
 
-    private lateinit var dataStoreManager: DataStoreManager
+    val android.content.Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")        // Create a DataStore instance using preferencesDataStore extension
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: FragmentIntroBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_intro,container,false)
         val adsManager = com.newOs.colorCraze.ads.AdsManager(requireContext())
-
-        dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)
 
         initOnClickListeners(binding)                                   /* Init onClickListeners */
 
@@ -35,6 +36,7 @@ class HomeFrag : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        val dataStoreManager = DataStoreManager.create(requireContext().dataStore)
         lifecycleScope.launch { dataStoreManager.saveGameOver(false) }
         Timber.i("onResume")
     }

@@ -13,4 +13,5 @@ object GameStateViewModelModule {
 
     @Provides
     fun provideGameStateRepository(): GameStateRepository = GameStateRepositoryImpl()
+
 }

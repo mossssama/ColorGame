@@ -28,7 +28,7 @@ class ProgressFrag : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /* Go to MultiPlayer GamePlay when the other player clicks on startPlaying */
+        /* Go to MultiPlayer GamePlayImpl when the other player clicks on startPlaying */
         fireStoreManager =
             com.newOs.colorCraze.firebase.FirestoreManager(Firebase.firestore)
         fireStoreManager.listenToStartPlayingChanges(args.friendName) { startPlaying ->

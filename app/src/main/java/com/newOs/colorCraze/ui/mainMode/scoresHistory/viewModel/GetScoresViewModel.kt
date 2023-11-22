@@ -2,6 +2,7 @@ package com.newOs.colorCraze.ui.mainMode.scoresHistory.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.newOs.colorCraze.datastore.DataStoreManager
 import com.newOs.colorCraze.room.Score
 import com.newOs.colorCraze.room.ScoreDatabase
@@ -9,7 +10,6 @@ import com.newOs.colorCraze.ui.mainMode.scoresHistory.model.ScoreItem
 import com.newOs.colorCraze.ui.mainMode.scoresHistory.repository.GetScoresRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -26,7 +26,7 @@ class GetScoresViewModel @Inject constructor(private val getResultsRepo: GetScor
 
     suspend fun readResults(scoreDatabase: ScoreDatabase, gameMode: String): List<Score> = withContext(Dispatchers.IO) { scoreDatabase.scoreDao.getAllScoresByGameMode(gameMode) }
 
-    fun setGameOverToFalse(dataStoreManager: DataStoreManager) { GlobalScope.launch { dataStoreManager.saveGameOver(false) } }
+    fun setGameOverToFalse(dataStoreManager: DataStoreManager) { viewModelScope.launch { dataStoreManager.saveGameOver(false) } }
 
     private fun clearArray(){ newArrayList.clear() }
 }

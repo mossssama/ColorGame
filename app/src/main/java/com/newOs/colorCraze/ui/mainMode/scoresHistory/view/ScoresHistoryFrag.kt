@@ -1,14 +1,18 @@
 package com.newOs.colorCraze.ui.mainMode.scoresHistory.view
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.newOs.colorCraze.R
@@ -24,6 +28,7 @@ import kotlinx.coroutines.launch
 class ScoresHistoryFrag : Fragment() {
     private val args: ResultFragArgs by navArgs()
     private val viewModel: GetScoresViewModel by viewModels()
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")        // Create a DataStore instance using preferencesDataStore extension
 
     private lateinit var binding: FragmentScoresHistoryBinding
 
@@ -36,8 +41,7 @@ class ScoresHistoryFrag : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val scoreDatabase = ScoreDatabase.getInstance(requireActivity().baseContext)
-        val dataStoreManager = DataStoreManager.getInstance(requireActivity().applicationContext)
-
+        val dataStoreManager = DataStoreManager.create(requireContext().dataStore)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         lifecycleScope.launch {
@@ -54,7 +58,7 @@ class ScoresHistoryFrag : Fragment() {
     }
 
     private fun goToGamePlayFragment(){
-        Navigation.findNavController(binding.root).navigate(ScoresHistoryFragDirections.returnToGamePlayFragment(args.gameMode))
+        findNavController().navigate(ScoresHistoryFragDirections.returnToGamePlayFragment(args.gameMode))
     }
 
 }
