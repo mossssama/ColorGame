@@ -6,7 +6,7 @@
 
 <h2>🚀 Download from here</h2>
 
-[https://play.google.com/store/apps/details?id=com.newOs.colorCraze](https://play.google.com/store/apps/details?id=com.newOs.colorCraze)
+[https://www.amazon.ca/mossssama-ColorCraze/dp/B0DF5W6WT3](https://play.google.com/store/apps/details?id=com.newOs.colorCraze)
 
   
   
